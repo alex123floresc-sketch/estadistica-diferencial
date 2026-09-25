@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estadística Inferencial · Módulo 1</title>
+  <meta name="description" content="Calculadora de tamaño muestral, afijación proporcional, muestreo sistemático y prueba Z para dos medias. 100 % en el navegador." />
+
+  <!-- Tipografía -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS (Play CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] } } }
+    };
+  </script>
+
+  <!-- KaTeX (fórmulas) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+
+  <!-- Chart.js (gráficos) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Componentes reutilizables (Tailwind @apply) -->
+  <style type="text/tailwindcss">
+    @layer components {
+      .card        { @apply bg-white rounded-xl border border-slate-200 shadow-sm; }
+      .card-h      { @apply px-5 py-3.5 border-b border-slate-100 flex items-center justify-between gap-3; }
+      .card-t      { @apply text-sm font-semibold text-slate-700; }
+      .card-b      { @apply p-5; }
+      .lbl         { @apply block text-sm font-medium text-slate-700 mb-1; }
+      .inp         { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500
+                            disabled:bg-slate-100 disabled:text-slate-400; }
+      .inp-invalid { @apply border-red-400 bg-red-50/50 focus:ring-red-400/30 focus:border-red-500; }
+      .err         { @apply text-xs text-red-600 mt-1 min-h-[1rem]; }
+      .hint        { @apply text-xs text-slate-500 mt-1; }
+      .warn        { @apply rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800; }
+      .seg         { @apply inline-flex w-full rounded-lg bg-slate-100 p-1 gap-1; }
+      .seg-btn     { @apply flex-1 rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:text-slate-900; }
+      .seg-btn.active { @apply bg-white text-indigo-700 shadow-sm; }
+      .btn         { @apply inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500/30 disabled:opacity-40 disabled:cursor-not-allowed; }
+      .btn-primary { @apply bg-indigo-600 text-white hover:bg-indigo-700; }
+      .btn-ghost   { @apply bg-white text-slate-700 border border-slate-300 hover:bg-slate-50; }
+      .btn-danger  { @apply bg-white text-red-600 border border-red-200 hover:bg-red-50; }
+      .chip        { @apply rounded-md border border-slate-300 bg-white px-2 py-0.5 text-xs text-slate-600 hover:border-indigo-400 hover:text-indigo-700; }
+      .kpi         { @apply rounded-xl border border-slate-200 bg-white p-4 shadow-sm; }
+      .kpi-l       { @apply text-xs font-medium uppercase tracking-wide text-slate-500; }
+      .kpi-v       { @apply mt-1 text-2xl font-semibold text-slate-900 tabular-nums break-all; }
+      .kpi-s       { @apply mt-0.5 text-xs text-slate-500; }
+      .kpi-accent  { @apply border-indigo-600 bg-indigo-600; }
+      .kpi-accent .kpi-l, .kpi-accent .kpi-s { @apply text-indigo-100; }
+      .kpi-accent .kpi-v { @apply text-white; }
+      .nav-link    { @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white; }
+      .nav-link.active { @apply bg-indigo-600/20 text-white ring-1 ring-inset ring-indigo-500/40; }
+      .nav-ico     { @apply grid h-7 w-7 shrink-0 place-items-center rounded-md bg-slate-800 text-xs font-semibold text-indigo-300; }
+      .nav-link.active .nav-ico { @apply bg-indigo-600 text-white; }
+      .step        { @apply flex gap-3 py-3 border-b border-slate-100 last:border-0; }
+      .step-n      { @apply grid h-6 w-6 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-semibold text-indigo-700; }
+      .step-t      { @apply text-sm font-medium text-slate-700; }
+      .step-html   { @apply text-sm text-slate-600 mt-1; }
+      .tbl th      { @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 bg-slate-50; }
+      .tbl td      { @apply px-3 py-2 text-sm text-slate-700 tabular-nums border-t border-slate-100; }
+      .cell        { @apply flex h-7 items-center justify-center rounded border border-slate-200 text-[10px] text-slate-500 tabular-nums; }
+      .cell-alt    { @apply bg-slate-50; }
+      .cell-sel    { @apply border-indigo-600 bg-indigo-600 font-semibold text-white; }
+      .cell-start  { @apply ring-2 ring-amber-400 ring-offset-1; }
+      .cell-out    { @apply bg-slate-200 text-slate-400 border-slate-200; }
+    }
+  </style>
+  <style>
+    /* Las ecuaciones largas se desplazan horizontalmente en pantallas pequeñas */
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: .25rem 0; margin: .35rem 0; }
+    .katex { font-size: 1.08em; }
+  </style>
+</head>
+
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
+
+  <!-- =====================================================================
+       SIDEBAR
+       ===================================================================== -->
+  <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/50 lg:hidden"></div>
+
+  <aside id="sidebar"
+         class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col bg-slate-900 transition-transform duration-200 lg:translate-x-0">
+    <div class="flex items-center gap-3 border-b border-slate-800 px-5 py-5">
+      <div class="grid h-9 w-9 place-items-center rounded-lg bg-indigo-600 font-bold text-white">σ</div>
+      <div>
+        <p class="text-sm font-semibold text-white">Estadística Inferencial</p>
+        <p class="text-xs text-slate-400">Calculadora del curso</p>
+      </div>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-3 py-4">
+      <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Módulo 1 · Muestreo y prueba Z</p>
+      <a href="#tamano" class="nav-link" data-nav="tamano"><span class="nav-ico">n</span>Tamaño de muestra</a>
+      <a href="#afijacion" class="nav-link" data-nav="afijacion"><span class="nav-ico">nᵢ</span>Afijación proporcional</a>
+      <a href="#sistematico" class="nav-link" data-nav="sistematico"><span class="nav-ico">k</span>Muestreo sistemático</a>
+      <a href="#pruebaz" class="nav-link" data-nav="pruebaz"><span class="nav-ico">Z</span>Prueba Z · dos medias</a>
+    </nav>
+
+    <div class="border-t border-slate-800 px-5 py-4 text-xs text-slate-500">
+      Todos los cálculos se ejecutan en su navegador. No se envían datos a ningún servidor.
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       CONTENIDO PRINCIPAL
+       ===================================================================== -->
+  <div class="lg:pl-72">
+    <header class="sticky top-0 z-20 flex items-center gap-3 border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur sm:px-6">
+      <button id="menu-btn" class="btn btn-ghost px-2 lg:hidden" aria-label="Abrir menú">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="min-w-0">
+        <p class="text-xs text-slate-500">Módulo 1</p>
+        <h1 id="page-title" class="truncate text-base font-semibold text-slate-900">Tamaño de muestra</h1>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
+
+      <!-- ===============================================================
+           SECCIÓN 1 · TAMAÑO DE MUESTRA
+           =============================================================== -->
+      <section id="sec-tamano" class="space-y-6" data-title="Tamaño de muestra">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900">Calculadora de tamaño de muestra</h2>
+            <p class="mt-1 text-sm text-slate-500">Estimación de la media poblacional (μ) o de la proporción poblacional (P), con población infinita o finita.</p>
+          </div>
+          <div class="actions flex flex-wrap gap-2" data-sec="s1"></div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <!-- Entradas -->
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div>
+                <span class="lbl">Parámetro a estimar</span>
+                <div class="seg" id="s1-seg-param">
+                  <button type="button" class="seg-btn active" data-val="media">Media (μ)</button>
+                  <button type="button" class="seg-btn" data-val="prop">Proporción (P)</button>
+                </div>
+              </div>
+              <div>
+                <span class="lbl">Tipo de población</span>
+                <div class="seg" id="s1-seg-pob">
+                  <button type="button" class="seg-btn active" data-val="inf">Infinita (N ≥ 100 000)</button>
+                  <button type="button" class="seg-btn" data-val="fin">Finita (N &lt; 100 000)</button>
+                </div>
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="lbl" for="s1-conf">Nivel de confianza (1 − α)</label>
+                  <select id="s1-conf" class="inp">
+                    <option value="1.645">90 % (Z = 1.645)</option>
+                    <option value="1.96" selected>95 % (Z = 1.96)</option>
+                    <option value="2.576">99 % (Z = 2.576)</option>
+                    <option value="custom">Z personalizado…</option>
+                  </select>
+                </div>
+                <div id="s1-z-wrap" class="hidden">
+                  <label class="lbl" for="s1-z">Valor de Z</label>
+                  <input id="s1-z" type="number" step="any" min="0" class="inp" value="1.96" />
+                  <p id="s1-z-err" class="err"></p>
+                </div>
+              </div>
+
+              <!-- Solo media -->
+              <div class="only-media grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="lbl" for="s1-disp-type">Dato de dispersión</label>
+                  <select id="s1-disp-type" class="inp">
+                    <option value="sd">Desviación estándar (σ)</option>
+                    <option value="var">Varianza (σ²)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="lbl" for="s1-disp" id="s1-disp-lbl">Valor de σ</label>
+                  <input id="s1-disp" type="number" step="any" min="0" class="inp" value="15" />
+                  <p id="s1-disp-err" class="err"></p>
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="lbl" for="s1-e-media">Margen de error (e)</label>
+                  <input id="s1-e-media" type="number" step="any" min="0" class="inp" value="3" />
+                  <p class="hint">En las mismas unidades que σ.</p>
+                  <p id="s1-e-media-err" class="err"></p>
+                </div>
+              </div>
+
+              <!-- Solo proporción -->
+              <div class="only-prop hidden grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="lbl" for="s1-p">Proporción estimada (P)</label>
+                  <input id="s1-p" type="number" step="0.01" min="0" max="1" class="inp" value="0.3" />
+                  <p id="s1-p-err" class="err"></p>
+                </div>
+                <div>
+                  <label class="lbl" for="s1-e-prop">Margen de error (e)</label>
+                  <input id="s1-e-prop" type="number" step="0.01" min="0" max="1" class="inp" value="0.05" />
+                  <p id="s1-e-prop-err" class="err"></p>
+                </div>
+                <label class="sm:col-span-2 flex items-start gap-2 text-sm text-slate-700">
+                  <input id="s1-p-unk" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                  <span>P desconocida: asumir <b>P = 0.5</b> y <b>Q = 0.5</b> (máxima variabilidad)</span>
+                </label>
+                <p class="hint sm:col-span-2 -mt-2">Use formato decimal: 30 % → 0.30 · 5 % → 0.05.</p>
+              </div>
+
+              <!-- Solo finita -->
+              <div class="only-fin hidden">
+                <label class="lbl" for="s1-N">Tamaño de la población (N)</label>
+                <input id="s1-N" type="number" step="1" min="2" class="inp" value="5000" />
+                <p id="s1-N-err" class="err"></p>
+              </div>
+
+              <p id="s1-warn" class="warn hidden"></p>
+            </div>
+          </div>
+
+          <!-- Resultados -->
+          <div class="space-y-6 lg:col-span-3">
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi"><p class="kpi-l">n exacto</p><p id="s1-k-n" class="kpi-v">—</p><p class="kpi-s">sin redondear</p></div>
+              <div class="kpi kpi-accent"><p class="kpi-l">Tamaño de muestra</p><p id="s1-k-nup" class="kpi-v">—</p><p class="kpi-s">⌈n⌉ redondeo por exceso</p></div>
+              <div class="kpi"><p class="kpi-l">Z<sub>1−α/2</sub></p><p id="s1-k-z" class="kpi-v">—</p><p class="kpi-s">valor crítico</p></div>
+              <div class="kpi"><p class="kpi-l">Confianza</p><p id="s1-k-conf" class="kpi-v">—</p><p class="kpi-s">1 − α</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Sensibilidad de n al margen de error</p></div>
+              <div class="card-b">
+                <div class="relative h-64">
+                  <canvas id="s1-chart"></canvas>
+                  <div id="s1-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+                <p class="hint mt-2">A menor margen de error, mayor tamaño de muestra: reducir e a la mitad multiplica n aproximadamente por 4.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
+          <div class="card-b"><ol id="s1-steps"></ol></div>
+        </div>
+      </section>
+
+      <!-- ===============================================================
+           SECCIÓN 2 · AFIJACIÓN PROPORCIONAL
+           =============================================================== -->
+      <section id="sec-afijacion" class="hidden space-y-6" data-title="Afijación proporcional">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900">Afijación proporcional</h2>
+            <p class="mt-1 text-sm text-slate-500">Muestreo estratificado: cada estrato recibe una parte de la muestra proporcional a su tamaño.</p>
+          </div>
+          <div class="actions flex flex-wrap gap-2" data-sec="s2"></div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div>
+                <label class="lbl" for="s2-n">Tamaño total de la muestra (n)</label>
+                <input id="s2-n" type="number" step="1" min="1" class="inp" value="100" />
+                <p id="s2-n-err" class="err"></p>
+              </div>
+              <div>
+                <div class="mb-2 grid grid-cols-[1fr_7rem_2.25rem] gap-2 text-xs font-medium text-slate-500">
+                  <span>Nombre del estrato</span><span>Nᵢ</span><span></span>
+                </div>
+                <div id="s2-rows" class="space-y-1"></div>
+                <button id="s2-add" type="button" class="btn btn-ghost mt-2 w-full justify-center">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+                  Agregar estrato
+                </button>
+                <p class="hint">Se requieren al menos 2 estratos.</p>
+              </div>
+              <p id="s2-warn" class="warn hidden"></p>
+            </div>
+          </div>
+
+          <div class="space-y-6 lg:col-span-3">
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi"><p class="kpi-l">Población N</p><p id="s2-k-N" class="kpi-v">—</p><p class="kpi-s">N = Σ Nᵢ</p></div>
+              <div class="kpi kpi-accent"><p class="kpi-l">Muestra n</p><p id="s2-k-n" class="kpi-v">—</p><p class="kpi-s">Σ nᵢ asignados</p></div>
+              <div class="kpi"><p class="kpi-l">Estratos</p><p id="s2-k-L" class="kpi-v">—</p><p class="kpi-s">número de grupos</p></div>
+              <div class="kpi"><p class="kpi-l">Fracción f</p><p id="s2-k-f" class="kpi-v">—</p><p class="kpi-s">f = n / N</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Distribución de la muestra por estrato</p></div>
+              <div class="card-b grid gap-6 md:grid-cols-2">
+                <div class="overflow-x-auto">
+                  <table class="tbl w-full">
+                    <thead><tr><th>Estrato</th><th class="text-right">Nᵢ</th><th class="text-right">Nᵢ/N</th><th class="text-right">nᵢ exacto</th><th class="text-right">nᵢ</th></tr></thead>
+                    <tbody id="s2-tbody"></tbody>
+                  </table>
+                </div>
+                <div class="relative h-64">
+                  <canvas id="s2-chart"></canvas>
+                  <div id="s2-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
+          <div class="card-b"><ol id="s2-steps"></ol></div>
+        </div>
+      </section>
+
+      <!-- ===============================================================
+           SECCIÓN 3 · MUESTREO SISTEMÁTICO
+           =============================================================== -->
+      <section id="sec-sistematico" class="hidden space-y-6" data-title="Muestreo sistemático">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900">Simulador de muestreo sistemático</h2>
+            <p class="mt-1 text-sm text-slate-500">Se elige un arranque aleatorio r y luego un elemento cada k posiciones.</p>
+          </div>
+          <div class="actions flex flex-wrap gap-2" data-sec="s3"></div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="lbl" for="s3-N">Población (N)</label>
+                  <input id="s3-N" type="number" step="1" min="2" class="inp" value="500" />
+                  <p id="s3-N-err" class="err"></p>
+                </div>
+                <div>
+                  <label class="lbl" for="s3-n">Tamaño de muestra (n)</label>
+                  <input id="s3-n" type="number" step="1" min="1" class="inp" value="40" />
+                  <p id="s3-n-err" class="err"></p>
+                </div>
+              </div>
+              <button id="s3-random" type="button" class="btn btn-primary w-full justify-center">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M5.1 15a7 7 0 0 0 12.9 2M18.9 9A7 7 0 0 0 6 7"/></svg>
+                Nuevo arranque aleatorio (r)
+              </button>
+              <div class="rounded-lg bg-slate-50 p-3">
+                <p class="text-xs font-medium text-slate-500">Regla de selección</p>
+                <div id="s3-rule"></div>
+                <div id="s3-rule-num"></div>
+              </div>
+              <p id="s3-warn" class="warn hidden"></p>
+            </div>
+          </div>
+
+          <div class="space-y-6 lg:col-span-3">
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi kpi-accent"><p class="kpi-l">Salto k</p><p id="s3-k-k" class="kpi-v">—</p><p class="kpi-s">k = ⌊N / n⌋</p></div>
+              <div class="kpi"><p class="kpi-l">Arranque r</p><p id="s3-k-r" class="kpi-v">—</p><p class="kpi-s">aleatorio en [1, k]</p></div>
+              <div class="kpi"><p class="kpi-l">N / n</p><p id="s3-k-ratio" class="kpi-v">—</p><p class="kpi-s">cociente exacto</p></div>
+              <div class="kpi"><p class="kpi-l">Último elemento</p><p id="s3-k-last" class="kpi-v">—</p><p class="kpi-s">r + (n − 1)k</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Elementos seleccionados</p><span id="s3-count" class="text-xs text-slate-500"></span></div>
+              <div class="card-b"><div id="s3-seq" class="flex max-h-40 flex-wrap gap-1.5 overflow-y-auto"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">
+            <p class="card-t">Visualización de la población</p>
+            <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+              <span class="flex items-center gap-1"><span class="h-3 w-3 rounded bg-indigo-600"></span>Seleccionado</span>
+              <span class="flex items-center gap-1"><span class="h-3 w-3 rounded bg-indigo-600 ring-2 ring-amber-400"></span>Arranque r</span>
+              <span class="flex items-center gap-1"><span class="h-3 w-3 rounded bg-slate-200"></span>Fuera del alcance</span>
+            </div>
+          </div>
+          <div class="card-b">
+            <p class="hint mb-3">Cada fila es un bloque de k elementos: el elemento seleccionado ocupa la misma posición r en cada bloque.</p>
+            <div class="overflow-x-auto"><div id="s3-grid" class="grid gap-1"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
+          <div class="card-b"><ol id="s3-steps"></ol></div>
+        </div>
+      </section>
+
+      <!-- ===============================================================
+           SECCIÓN 4 · PRUEBA Z PARA DOS MEDIAS
+           =============================================================== -->
+      <section id="sec-pruebaz" class="hidden space-y-6" data-title="Prueba Z · dos medias">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900">Comparación de dos medias poblacionales (prueba Z)</h2>
+            <p class="mt-1 text-sm text-slate-500">Varianzas poblacionales conocidas y muestras independientes.</p>
+          </div>
+          <div class="actions flex flex-wrap gap-2" data-sec="s4"></div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <fieldset class="space-y-2 rounded-lg border border-slate-200 p-3">
+                  <legend class="px-1 text-xs font-semibold text-indigo-700">Muestra 1</legend>
+                  <div><label class="lbl" for="s4-x1">Media X̄₁</label><input id="s4-x1" type="number" step="any" class="inp" value="78" /><p id="s4-x1-err" class="err"></p></div>
+                  <div><label class="lbl" for="s4-v1">Varianza σ₁²</label><input id="s4-v1" type="number" step="any" min="0" class="inp" value="64" /><p id="s4-v1-err" class="err"></p></div>
+                  <div><label class="lbl" for="s4-n1">Tamaño n₁</label><input id="s4-n1" type="number" step="1" min="1" class="inp" value="40" /><p id="s4-n1-err" class="err"></p></div>
+                </fieldset>
+                <fieldset class="space-y-2 rounded-lg border border-slate-200 p-3">
+                  <legend class="px-1 text-xs font-semibold text-blue-700">Muestra 2</legend>
+                  <div><label class="lbl" for="s4-x2">Media X̄₂</label><input id="s4-x2" type="number" step="any" class="inp" value="74" /><p id="s4-x2-err" class="err"></p></div>
+                  <div><label class="lbl" for="s4-v2">Varianza σ₂²</label><input id="s4-v2" type="number" step="any" min="0" class="inp" value="81" /><p id="s4-v2-err" class="err"></p></div>
+                  <div><label class="lbl" for="s4-n2">Tamaño n₂</label><input id="s4-n2" type="number" step="1" min="1" class="inp" value="50" /><p id="s4-n2-err" class="err"></p></div>
+                </fieldset>
+              </div>
+              <p class="hint -mt-2">Si conoce la desviación estándar σ, elévela al cuadrado para obtener σ².</p>
+              <div>
+                <label class="lbl" for="s4-alpha">Nivel de significancia (α)</label>
+                <input id="s4-alpha" type="number" step="0.01" min="0" max="0.5" class="inp" value="0.05" />
+                <div class="mt-1.5 flex gap-1.5">
+                  <button type="button" class="chip" data-alpha="0.10">0.10</button>
+                  <button type="button" class="chip" data-alpha="0.05">0.05</button>
+                  <button type="button" class="chip" data-alpha="0.01">0.01</button>
+                </div>
+                <p id="s4-alpha-err" class="err"></p>
+              </div>
+              <div>
+                <label class="lbl" for="s4-tail">Tipo de prueba (H₁)</label>
+                <select id="s4-tail" class="inp">
+                  <option value="two">Dos colas: μ₁ ≠ μ₂</option>
+                  <option value="left">Cola izquierda: μ₁ &lt; μ₂</option>
+                  <option value="right">Cola derecha: μ₁ &gt; μ₂</option>
+                </select>
+              </div>
+              <p id="s4-warn" class="warn hidden"></p>
+            </div>
+          </div>
+
+          <div class="space-y-6 lg:col-span-3">
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi"><p class="kpi-l">Z calculado</p><p id="s4-k-zc" class="kpi-v">—</p><p class="kpi-s">estadístico Z<sub>c</sub></p></div>
+              <div class="kpi"><p class="kpi-l">Z crítico</p><p id="s4-k-zt" class="kpi-v">—</p><p id="s4-k-zt-s" class="kpi-s">valor de tabla</p></div>
+              <div class="kpi"><p class="kpi-l">p-valor</p><p id="s4-k-p" class="kpi-v">—</p><p class="kpi-s">probabilidad asociada</p></div>
+              <div id="s4-k-dec-card" class="kpi"><p class="kpi-l">Decisión</p><p id="s4-k-dec" class="kpi-v text-lg">—</p><p id="s4-k-dec-s" class="kpi-s">sobre H₀</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Distribución normal estándar N(0, 1)</p><span id="s4-region" class="text-xs text-slate-500"></span></div>
+              <div class="card-b">
+                <div class="relative h-72">
+                  <canvas id="s4-chart"></canvas>
+                  <div id="s4-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
+          <div class="card-b"><ol id="s4-steps"></ol></div>
+        </div>
+      </section>
+
+      <footer class="pb-4 pt-2 text-center text-xs text-slate-400">
+        Estadística Inferencial · Módulo 1 — Cálculos realizados íntegramente en el navegador.
+      </footer>
+    </main>
+  </div>
+
+  <!-- Notificación flotante -->
+  <div id="toast"
+       class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 translate-y-2 rounded-lg bg-slate-900 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition duration-200"></div>
+
+  <script>
+  'use strict';
+
+  /* =========================================================================
+     1. UTILIDADES GENERALES
+     ========================================================================= */
+  const $ = (id) => document.getElementById(id);
+
+  /** Formatea un número con hasta `d` decimales, sin ceros sobrantes. */
+  const fmt = (x, d = 4) => {
+    if (!Number.isFinite(x)) return '—';
+    const r = Number(x.toFixed(d));
+    return (Object.is(r, -0) ? 0 : r).toString();
+  };
+  /** Número entre paréntesis si es negativo (para sustituciones en fórmulas). */
+  const par = (x, d = 4) => (x < 0 ? `(${fmt(x, d)})` : fmt(x, d));
+  /** Redondeo por exceso tolerante a errores de punto flotante (96.0000000001 → 96). */
+  const ceilSafe = (x) => Math.ceil(Number(x.toFixed(9)));
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /** Renderiza TeX con KaTeX (o texto plano si KaTeX no cargó). */
+  function tex(el, src, display = true) {
+    if (window.katex) katex.render(src, el, { displayMode: display, throwOnError: false });
+    else el.textContent = src;
+  }
+
+  /* ---------- Validación de campos ---------- */
+  function setErr(el, msg) {
+    const err = $(el.id + '-err');
+    if (err) err.textContent = msg;
+    el.classList.toggle('inp-invalid', !!msg);
+  }
+
+  /**
+   * Lee y valida un campo numérico. Devuelve el número o null si no es válido.
+   * Opciones: min, minEx (excluyente), max, maxEx, int, msg (mensaje de rango).
+   * "Campo requerido" solo se muestra si el usuario ya tocó el campo.
+   */
+  function readField(id, opt = {}) {
+    const el = $(id);
+    const raw = el.value.trim();
+    const bad = el.validity && el.validity.badInput;
+    let msg = '', v = null;
+    if (bad) msg = 'Ingrese un número válido.';
+    else if (raw === '') msg = 'Campo requerido.';
+    else {
+      v = Number(raw);
+      if (!Number.isFinite(v)) msg = 'Ingrese un número válido.';
+      else if (opt.int && !Number.isInteger(v)) msg = 'Debe ser un número entero.';
+      else if (opt.minEx !== undefined && v <= opt.minEx) msg = opt.msg || `Debe ser mayor que ${opt.minEx}.`;
+      else if (opt.min !== undefined && v < opt.min) msg = opt.msg || `Debe ser mayor o igual que ${opt.min}.`;
+      else if (opt.maxEx !== undefined && v >= opt.maxEx) msg = opt.msg || `Debe ser menor que ${opt.maxEx}.`;
+      else if (opt.max !== undefined && v > opt.max) msg = opt.msg || `Debe ser menor o igual que ${opt.max}.`;
+    }
+    const visible = msg && (raw !== '' || bad || el.dataset.touched === '1');
+    setErr(el, visible ? msg : '');
+    return msg ? null : v;
+  }
+
+  // Marca los campos como "tocados" (fase de captura: antes que los recálculos)
+  document.addEventListener('input', (e) => { if (e.target.matches('.inp')) e.target.dataset.touched = '1'; }, true);
+
+  function resetFields(ids) {
+    ids.forEach((id) => { const el = $(id); el.value = ''; delete el.dataset.touched; setErr(el, ''); });
+  }
+  function setWarn(id, html) { const w = $(id); w.innerHTML = html || ''; w.classList.toggle('hidden', !html); }
+  function setText(id, v) { $(id).textContent = v; }
+
+  /* ---------- Notificación, copiar y exportar ---------- */
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.remove('opacity-0', 'translate-y-2');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.add('opacity-0', 'translate-y-2'), 2200);
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    toast('Resumen copiado al portapapeles');
+  }
+  function downloadText(text, filename) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+    a.download = filename; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('Resumen exportado');
+  }
+  const stamp = () => `Generado: ${new Date().toLocaleString('es-PE')}`;
+
+  /* ---------- Procedimiento paso a paso ---------- */
+  /** steps: [{ title, tex?: string|string[], html?: string }] */
+  function renderSteps(container, steps) {
+    container.innerHTML = steps.map((s, i) => `
+      <li class="step">
+        <span class="step-n">${i + 1}</span>
+        <div class="min-w-0 flex-1">
+          <p class="step-t">${s.title}</p>
+          ${[].concat(s.tex || []).map(() => '<div class="step-tex"></div>').join('')}
+          ${s.html ? `<div class="step-html">${s.html}</div>` : ''}
+        </div>
+      </li>`).join('');
+    container.querySelectorAll('.step').forEach((li, i) => {
+      const texs = [].concat(steps[i].tex || []);
+      li.querySelectorAll('.step-tex').forEach((el, j) => tex(el, texs[j]));
+    });
+  }
+  function placeholderSteps(container) {
+    container.innerHTML = '<li class="py-2 text-sm italic text-slate-400">Complete los datos con valores válidos para ver el procedimiento.</li>';
+  }
+
+  /* ---------- Gráficos (Chart.js) ---------- */
+  const charts = {};
+  const PALETTE = ['#4f46e5', '#2563eb', '#0ea5e9', '#14b8a6', '#8b5cf6', '#64748b', '#6366f1', '#0284c7', '#a855f7', '#475569'];
+  if (window.Chart) {
+    Chart.defaults.font.family = 'Inter, ui-sans-serif, system-ui, sans-serif';
+    Chart.defaults.color = '#64748b';
+    Chart.defaults.borderColor = '#e2e8f0';
+  }
+  /** Crea el gráfico o actualiza sus datos si ya existe (evita parpadeos). */
+  function upsertChart(key, config) {
+    if (!window.Chart) return;
+    $(key + '-chart-empty').classList.add('hidden');
+    $(key + '-chart-empty').classList.remove('grid');
+    if (charts[key]) {
+      charts[key].data = config.data;
+      charts[key].options = config.options;
+      charts[key].update('none');
+    } else {
+      charts[key] = new Chart($(key + '-chart'), config);
+    }
+  }
+  function clearChart(key) {
+    if (charts[key]) { charts[key].destroy(); delete charts[key]; }
+    $(key + '-chart-empty').classList.remove('hidden');
+    $(key + '-chart-empty').classList.add('grid');
+  }
+
+  /* =========================================================================
+     2. DISTRIBUCIÓN NORMAL ESTÁNDAR
+     ========================================================================= */
+  const Normal = {
+    /** Densidad φ(z) */
+    pdf: (z) => Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI),
+
+    /** Función de distribución Φ(z) — erf de Abramowitz & Stegun 7.1.26 */
+    cdf(z) {
+      const x = Math.abs(z) / Math.SQRT2;
+      const t = 1 / (1 + 0.3275911 * x);
+      const erf = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+      return z >= 0 ? 0.5 * (1 + erf) : 0.5 * (1 - erf);
+    },
+
+    /** Cuantil Φ⁻¹(p) — algoritmo de Acklam (error relativo < 1.2e-9) */
+    inv(p) {
+      const a = [-3.969683028665376e+01, 2.209460984245205e+02, -2.759285104469687e+02, 1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00];
+      const b = [-5.447609879822406e+01, 1.615858368580409e+02, -1.556989798598866e+02, 6.680131188771972e+01, -1.328068155288572e+01];
+      const c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00, -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00];
+      const d = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00, 3.754408661907416e+00];
+      const pl = 0.02425;
+      let q, r;
+      if (p < pl) {
+        q = Math.sqrt(-2 * Math.log(p));
+        return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+      }
+      if (p <= 1 - pl) {
+        q = p - 0.5; r = q * q;
+        return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+      }
+      q = Math.sqrt(-2 * Math.log(1 - p));
+      return -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+    }
+  };
+
+  /* Controles segmentados (botones tipo "toggle") */
+  function initSeg(container, onChange) {
+    container.querySelectorAll('[data-val]').forEach((b) => b.addEventListener('click', () => {
+      setSeg(container, b.dataset.val);
+      onChange(b.dataset.val);
+    }));
+  }
+  function setSeg(container, val) {
+    container.querySelectorAll('[data-val]').forEach((b) => {
+      b.classList.toggle('active', b.dataset.val === val);
+      b.setAttribute('aria-pressed', b.dataset.val === val);
+    });
+  }
+
+  /* =========================================================================
+     3. SECCIÓN 1 · TAMAÑO DE MUESTRA
+     ========================================================================= */
+  const S1 = {
+    state: { param: 'media', pob: 'inf' },
+    result: null,
+    CONF_LABEL: { '1.645': 0.90, '1.96': 0.95, '2.576': 0.99 },
+
+    init() {
+      initSeg($('s1-seg-param'), (v) => { this.state.param = v; this.compute(); });
+      initSeg($('s1-seg-pob'), (v) => { this.state.pob = v; this.compute(); });
+      $('sec-tamano').addEventListener('input', () => this.compute());
+      $('sec-tamano').addEventListener('change', () => this.compute());
+      this.compute();
+    },
+
+    /** Muestra u oculta campos según las opciones elegidas. */
+    syncUI() {
+      const media = this.state.param === 'media';
+      document.querySelectorAll('#sec-tamano .only-media').forEach((el) => el.classList.toggle('hidden', !media));
+      document.querySelectorAll('#sec-tamano .only-prop').forEach((el) => el.classList.toggle('hidden', media));
+      document.querySelectorAll('#sec-tamano .only-fin').forEach((el) => el.classList.toggle('hidden', this.state.pob !== 'fin'));
+      $('s1-z-wrap').classList.toggle('hidden', $('s1-conf').value !== 'custom');
+      $('s1-disp-lbl').textContent = $('s1-disp-type').value === 'sd' ? 'Valor de σ' : 'Valor de σ²';
+      const unk = $('s1-p-unk').checked;
+      $('s1-p').disabled = unk;
+      if (unk) { $('s1-p').value = '0.5'; setErr($('s1-p'), ''); }
+    },
+
+    /** Lee las entradas visibles. Devuelve un objeto de datos o null. */
+    read() {
+      const { param, pob } = this.state;
+      const d = { ok: true };
+      const custom = $('s1-conf').value === 'custom';
+      d.Z = custom ? readField('s1-z', { minEx: 0, max: 6, msg: 'Z debe ser mayor que 0 (valores usuales entre 1 y 3.5).' }) : Number($('s1-conf').value);
+      d.conf = d.Z !== null ? (custom ? 2 * Normal.cdf(d.Z) - 1 : this.CONF_LABEL[$('s1-conf').value]) : null;
+
+      if (param === 'media') {
+        d.dispType = $('s1-disp-type').value;
+        d.disp = readField('s1-disp', { minEx: 0, msg: 'La dispersión debe ser mayor que 0.' });
+        if (d.disp !== null) d.s2 = d.dispType === 'sd' ? d.disp ** 2 : d.disp;
+        d.e = readField('s1-e-media', { minEx: 0, msg: 'El margen de error debe ser mayor que 0.' });
+      } else {
+        d.unknown = $('s1-p-unk').checked;
+        d.P = d.unknown ? 0.5 : readField('s1-p', { minEx: 0, maxEx: 1, msg: 'P debe estar entre 0 y 1 (formato decimal: 30 % → 0.30).' });
+        if (d.P !== null) d.Q = 1 - d.P;
+        d.e = readField('s1-e-prop', { minEx: 0, maxEx: 1, msg: 'e debe estar entre 0 y 1 (formato decimal: 5 % → 0.05).' });
+      }
+      if (pob === 'fin') d.N = readField('s1-N', { min: 2, int: true, msg: 'N debe ser un entero mayor o igual que 2.' });
+
+      // Advertencias no bloqueantes
+      let warn = '';
+      if (pob === 'fin' && d.N >= 100000) warn = 'Con N ≥ 100 000 la población suele tratarse como infinita; la corrección por población finita apenas modifica el resultado.';
+      if (param === 'prop' && d.P !== null && d.e !== null && d.e >= Math.min(d.P, 1 - d.P)) warn = 'El margen de error es mayor o igual que P (o Q): la estimación resultaría poco informativa.';
+      setWarn('s1-warn', warn);
+
+      const needed = param === 'media' ? [d.Z, d.s2, d.e] : [d.Z, d.P, d.e];
+      if (pob === 'fin') needed.push(d.N);
+      return needed.some((v) => v === null || v === undefined) ? null : d;
+    },
+
+    compute() {
+      this.syncUI();
+      const d = this.read();
+      if (!d) return this.showEmpty();
+
+      const media = this.state.param === 'media';
+      const fin = this.state.pob === 'fin';
+      const Z2 = d.Z ** 2;
+      const vNum = media ? d.s2 : d.P * d.Q;       // σ²  ó  P·Q
+      const A = Z2 * vNum;                          // Z²·σ²  ó  Z²·P·Q
+      const e2 = d.e ** 2;
+      const n0 = A / e2;                            // población infinita
+      const n = fin ? (A * d.N) / (A + e2 * (d.N - 1)) : n0;
+      const nUp = ceilSafe(n);
+      this.result = { ...d, media, fin, Z2, vNum, A, e2, n0, n, nUp };
+
+      // KPIs
+      setText('s1-k-n', fmt(n, 4));
+      setText('s1-k-nup', nUp.toLocaleString('es-PE'));
+      setText('s1-k-z', fmt(d.Z, 4));
+      setText('s1-k-conf', `${fmt(d.conf * 100, 2)} %`);
+
+      this.renderSteps();
+      this.renderChart();
+    },
+
+    renderSteps() {
+      const r = this.result;
+      const vTex = r.media ? String.raw`\sigma^2` : String.raw`P \cdot Q`;
+      const vSub = r.media ? fmt(r.vNum) : String.raw`${fmt(r.P)} \cdot ${fmt(r.Q)}`;
+      const steps = [];
+
+      // 1. Datos
+      const datos = [String.raw`1-\alpha = ${fmt(r.conf, 4)}`, String.raw`Z_{1-\alpha/2} = ${fmt(r.Z)}`];
+      if (r.media) datos.push(r.dispType === 'sd' ? String.raw`\sigma = ${fmt(r.disp)}` : String.raw`\sigma^2 = ${fmt(r.disp)}`);
+      else datos.push(String.raw`P = ${fmt(r.P)}`);
+      datos.push(String.raw`e = ${fmt(r.e, 6)}`);
+      if (r.fin) datos.push(String.raw`N = ${r.N}`);
+      steps.push({ title: 'Identificar los datos', tex: datos.join(String.raw`,\quad `) });
+
+      // 2. Varianza o P·Q
+      if (r.media && r.dispType === 'sd') {
+        steps.push({ title: 'Obtener la varianza poblacional', tex: String.raw`\sigma^2 = (${fmt(r.disp)})^2 = ${fmt(r.vNum)}` });
+      } else if (!r.media) {
+        steps.push({
+          title: 'Calcular Q y el producto P·Q',
+          tex: String.raw`Q = 1 - P = 1 - ${fmt(r.P)} = ${fmt(r.Q)} \qquad P \cdot Q = ${fmt(r.P)} \cdot ${fmt(r.Q)} = ${fmt(r.vNum, 6)}`,
+          html: r.unknown ? 'Como P es desconocida se asume P = Q = 0.5, que maximiza P·Q y produce el tamaño de muestra más conservador.' : ''
+        });
+      }
+
+      // 3. Fórmula
+      steps.push({
+        title: `Fórmula para población ${r.fin ? 'finita' : 'infinita'}`,
+        tex: r.fin
+          ? String.raw`n = \frac{Z_{1-\alpha/2}^2 \cdot ${vTex} \cdot N}{Z_{1-\alpha/2}^2 \cdot ${vTex} + e^2 \cdot (N-1)}`
+          : String.raw`n = \frac{Z_{1-\alpha/2}^2 \cdot ${vTex}}{e^2}`
+      });
+
+      // 4 y 5. Sustitución y operaciones
+      if (r.fin) {
+        steps.push({
+          title: 'Sustituir los valores',
+          tex: String.raw`n = \frac{(${fmt(r.Z)})^2 \cdot ${vSub} \cdot ${r.N}}{(${fmt(r.Z)})^2 \cdot ${vSub} + (${fmt(r.e, 6)})^2 \cdot (${r.N} - 1)}`
+        });
+        const den = r.A + r.e2 * (r.N - 1);
+        steps.push({
+          title: 'Resolver las operaciones',
+          tex: [
+            String.raw`n = \frac{${fmt(r.A)} \cdot ${r.N}}{${fmt(r.A)} + ${fmt(r.e2, 6)} \cdot ${r.N - 1}}`,
+            String.raw`n = \frac{${fmt(r.A * r.N)}}{${fmt(r.A)} + ${fmt(r.e2 * (r.N - 1))}} = \frac{${fmt(r.A * r.N)}}{${fmt(den)}}`
+          ]
+        });
+      } else {
+        steps.push({
+          title: 'Sustituir los valores',
+          tex: String.raw`n = \frac{(${fmt(r.Z)})^2 \cdot ${vSub}}{(${fmt(r.e, 6)})^2}`
+        });
+        steps.push({
+          title: 'Resolver las operaciones',
+          tex: String.raw`n = \frac{${fmt(r.Z2)} \cdot ${fmt(r.vNum, 6)}}{${fmt(r.e2, 6)}} = \frac{${fmt(r.A)}}{${fmt(r.e2, 6)}}`
+        });
+      }
+
+      // 6. Resultado
+      const param = r.media ? 'la media poblacional μ' : 'la proporción poblacional P';
+      const err = r.media ? `±${fmt(r.e, 6)}` : `±${fmt(r.e * 100, 4)} %`;
+      steps.push({
+        title: 'Resultado y redondeo por exceso',
+        tex: String.raw`n = ${fmt(r.n)} \;\Rightarrow\; n = \lceil ${fmt(r.n)} \rceil = ${r.nUp}`,
+        html: `Se requieren <b>${r.nUp.toLocaleString('es-PE')}</b> unidades muestrales para estimar ${param} con ${fmt(r.conf * 100, 2)} % de confianza y un error máximo de ${err}.`
+          + (r.fin ? ` Sin la corrección por población finita se necesitarían ${ceilSafe(r.n0).toLocaleString('es-PE')} (n₀ = ${fmt(r.n0)}).` : '')
+      });
+
+      renderSteps($('s1-steps'), steps);
+    },
+
+    renderChart() {
+      const r = this.result;
+      const nOf = (e) => { const e2 = e * e; return r.fin ? (r.A * r.N) / (r.A + e2 * (r.N - 1)) : r.A / e2; };
+      const lo = r.e * 0.5;
+      const hi = r.media ? r.e * 2 : Math.min(r.e * 2, 0.99);
+      const pts = [];
+      for (let i = 0; i <= 40; i++) { const e = lo + (hi - lo) * i / 40; pts.push({ x: e, y: nOf(e) }); }
+
+      upsertChart('s1', {
+        type: 'line',
+        data: {
+          datasets: [
+            { label: 'n requerido', data: pts, borderColor: '#4f46e5', backgroundColor: 'rgba(79,70,229,0.08)', fill: 'origin', borderWidth: 2, pointRadius: 0, tension: 0.25 },
+            { label: 'Valor actual', data: [{ x: r.e, y: r.n }], borderColor: '#f59e0b', backgroundColor: '#f59e0b', pointRadius: 6, pointHoverRadius: 7, showLine: false }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          interaction: { mode: 'nearest', intersect: false },
+          scales: {
+            x: { type: 'linear', min: lo, max: hi, title: { display: true, text: 'Margen de error (e)' } },
+            y: { beginAtZero: true, title: { display: true, text: 'n' } }
+          },
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12 } },
+            tooltip: { callbacks: { label: (c) => `e = ${fmt(c.parsed.x, 4)} → n = ${fmt(c.parsed.y, 2)} (⌈n⌉ = ${ceilSafe(c.parsed.y)})` } }
+          }
+        }
+      });
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s1-k-n', 's1-k-nup', 's1-k-z', 's1-k-conf'].forEach((id) => setText(id, '—'));
+      placeholderSteps($('s1-steps'));
+      clearChart('s1');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      const L = ['CÁLCULO DE TAMAÑO DE MUESTRA', stamp(), ''];
+      L.push(`Parámetro: ${r.media ? 'Media poblacional (μ)' : 'Proporción poblacional (P)'}`);
+      L.push(`Población: ${r.fin ? `Finita (N = ${r.N})` : 'Infinita'}`);
+      L.push(`Nivel de confianza: ${fmt(r.conf * 100, 2)} % (Z = ${fmt(r.Z)})`);
+      if (r.media) L.push(`σ² = ${fmt(r.vNum)}${r.dispType === 'sd' ? ` (σ = ${fmt(r.disp)})` : ''}`);
+      else L.push(`P = ${fmt(r.P)}, Q = ${fmt(r.Q)}${r.unknown ? ' (P desconocida, máxima variabilidad)' : ''}`);
+      L.push(`Margen de error: e = ${fmt(r.e, 6)}`);
+      const v = r.media ? 'σ²' : 'P·Q';
+      L.push('', `Fórmula: ${r.fin ? `n = Z²·${v}·N / (Z²·${v} + e²·(N − 1))` : `n = Z²·${v} / e²`}`);
+      L.push(`n exacto = ${fmt(r.n)}`);
+      L.push(`n (redondeado por exceso) = ${r.nUp}`);
+      if (r.fin) L.push(`n₀ sin corrección por población finita = ${fmt(r.n0)}`);
+      return L.join('\n');
+    },
+
+    clear() {
+      resetFields(['s1-z', 's1-disp', 's1-e-media', 's1-p', 's1-e-prop', 's1-N']);
+      $('s1-p-unk').checked = false;
+      setWarn('s1-warn', '');
+      this.compute();
+    },
+
+    example() {
+      Object.entries({ 's1-z': '1.96', 's1-disp': '15', 's1-e-media': '3', 's1-p': '0.3', 's1-e-prop': '0.05', 's1-N': '5000' })
+        .forEach(([id, v]) => { $(id).value = v; });
+      $('s1-conf').value = '1.96';
+      $('s1-disp-type').value = 'sd';
+      $('s1-p-unk').checked = false;
+      this.compute();
+    }
+  };
+
+  /* =========================================================================
+     4. SECCIÓN 2 · AFIJACIÓN PROPORCIONAL
+     ========================================================================= */
+  const S2 = {
+    strata: [],
+    uid: 0,
+    result: null,
+    DEFAULT: [
+      { name: 'Urbano', N: 523 },
+      { name: 'Periurbano', N: 311 },
+      { name: 'Rural', N: 166 }
+    ],
+
+    init() {
+      this.setStrata(this.DEFAULT);
+      $('s2-add').addEventListener('click', () => {
+        this.strata.push({ id: ++this.uid, name: `Estrato ${this.strata.length + 1}`, N: '' });
+        this.renderRows();
+        this.compute();
+        $(`st-N-${this.uid}`).focus();
+      });
+      // Delegación: edición y eliminación de estratos
+      $('s2-rows').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-remove]');
+        if (!btn || this.strata.length <= 2) return;
+        this.strata = this.strata.filter((s) => s.id !== Number(btn.dataset.remove));
+        this.renderRows();
+        this.compute();
+      });
+      $('sec-afijacion').addEventListener('input', () => this.compute());
+      this.compute();
+    },
+
+    setStrata(list) {
+      this.strata = list.map((s) => ({ id: ++this.uid, name: s.name, N: s.N }));
+      this.renderRows();
+    },
+
+    renderRows() {
+      const canRemove = this.strata.length > 2;
+      $('s2-rows').innerHTML = this.strata.map((s, i) => `
+        <div class="grid grid-cols-[1fr_7rem_2.25rem] items-start gap-2">
+          <div class="relative">
+            <span class="absolute left-3 top-3 h-2.5 w-2.5 rounded-full" style="background:${PALETTE[i % PALETTE.length]}"></span>
+            <input id="st-name-${s.id}" class="inp pl-8" value="${esc(s.name)}" placeholder="Nombre" aria-label="Nombre del estrato ${i + 1}" />
+            <p id="st-name-${s.id}-err" class="err"></p>
+          </div>
+          <div>
+            <input id="st-N-${s.id}" type="number" step="1" min="1" class="inp" value="${s.N}" placeholder="Nᵢ" aria-label="Tamaño del estrato ${i + 1}" />
+            <p id="st-N-${s.id}-err" class="err"></p>
+          </div>
+          <button type="button" class="btn btn-ghost h-[38px] justify-center px-0" data-remove="${s.id}" ${canRemove ? '' : 'disabled'} title="Quitar estrato">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>`).join('');
+    },
+
+    read() {
+      let ok = true;
+      const rows = this.strata.map((s) => {
+        const nameEl = $(`st-name-${s.id}`);
+        s.name = nameEl.value;
+        s.N = $(`st-N-${s.id}`).value;
+        const name = nameEl.value.trim();
+        setErr(nameEl, name ? '' : 'Ingrese un nombre.');
+        const Ni = readField(`st-N-${s.id}`, { min: 1, int: true, msg: 'Entero ≥ 1.' });
+        if (!name || Ni === null) ok = false;
+        return { name, Ni };
+      });
+      let n = readField('s2-n', { min: 1, int: true, msg: 'n debe ser un entero mayor o igual que 1.' });
+      if (!ok || n === null) return null;
+      const N = rows.reduce((a, r) => a + r.Ni, 0);
+      if (n > N) { setErr($('s2-n'), `n no puede superar el tamaño de la población (N = ${N}).`); return null; }
+      return { rows, n, N };
+    },
+
+    compute() {
+      const d = this.read();
+      if (!d) return this.showEmpty();
+      const { rows, n, N } = d;
+
+      rows.forEach((r) => { r.W = r.Ni / N; r.exact = r.W * n; r.ni = Math.floor(r.exact); });
+      // Redondeo por el método del mayor residuo: garantiza Σ nᵢ = n
+      let rest = n - rows.reduce((a, r) => a + r.ni, 0);
+      [...rows].sort((a, b) => (b.exact - Math.floor(b.exact)) - (a.exact - Math.floor(a.exact)))
+        .slice(0, rest).forEach((r) => { r.ni += 1; });
+      this.result = { rows, n, N };
+
+      setText('s2-k-N', N.toLocaleString('es-PE'));
+      setText('s2-k-n', n.toLocaleString('es-PE'));
+      setText('s2-k-L', rows.length);
+      setText('s2-k-f', `${fmt((n / N) * 100, 2)} %`);
+      setWarn('s2-warn', rows.some((r) => r.ni === 0) ? 'Algún estrato recibe nᵢ = 0. Considere aumentar n o agrupar estratos pequeños.' : '');
+
+      // Tabla
+      $('s2-tbody').innerHTML = rows.map((r, i) => `
+        <tr>
+          <td><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full" style="background:${PALETTE[i % PALETTE.length]}"></span>${esc(r.name)}</td>
+          <td class="text-right">${r.Ni.toLocaleString('es-PE')}</td>
+          <td class="text-right">${fmt(r.W, 4)}</td>
+          <td class="text-right">${fmt(r.exact, 4)}</td>
+          <td class="text-right font-semibold text-indigo-700">${r.ni}</td>
+        </tr>`).join('') + `
+        <tr class="bg-slate-50 font-semibold">
+          <td>Total</td><td class="text-right">${N.toLocaleString('es-PE')}</td><td class="text-right">1</td>
+          <td class="text-right">${fmt(n, 4)}</td><td class="text-right text-indigo-700">${n}</td>
+        </tr>`;
+
+      // Gráfico de dona
+      upsertChart('s2', {
+        type: 'doughnut',
+        data: {
+          labels: rows.map((r) => r.name),
+          datasets: [{ data: rows.map((r) => r.ni), backgroundColor: rows.map((_, i) => PALETTE[i % PALETTE.length]), borderColor: '#fff', borderWidth: 2 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: { duration: 250 }, cutout: '58%',
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12 } },
+            tooltip: { callbacks: { label: (c) => ` ${c.label}: nᵢ = ${c.raw} (${fmt((c.raw / n) * 100, 2)} %)` } }
+          }
+        }
+      });
+
+      // Procedimiento
+      const Ns = rows.map((r) => r.Ni);
+      const sumTex = rows.length <= 8 ? Ns.join(' + ') : `${Ns.slice(0, 3).join(' + ')} + \\dots + ${Ns[Ns.length - 1]}`;
+      renderSteps($('s2-steps'), [
+        { title: 'Tamaño total de la población', tex: String.raw`N = \sum_{i=1}^{${rows.length}} N_i = ${sumTex} = ${N}` },
+        { title: 'Fracción de muestreo', tex: String.raw`f = \frac{n}{N} = \frac{${n}}{${N}} = ${fmt(n / N, 6)}` },
+        { title: 'Fórmula de afijación proporcional', tex: String.raw`n_i = \left(\frac{N_i}{N}\right) \cdot n` },
+        {
+          title: 'Aplicar a cada estrato',
+          tex: rows.map((r, i) => String.raw`n_{${i + 1}} = \left(\frac{${r.Ni}}{${N}}\right) \cdot ${n} = ${fmt(r.W, 6)} \cdot ${n} = ${fmt(r.exact, 4)}`),
+          html: rows.map((r, i) => `n<sub>${i + 1}</sub>: ${esc(r.name)}`).join(' · ')
+        },
+        {
+          title: 'Redondeo a enteros',
+          tex: String.raw`\sum n_i = ${rows.map((r) => r.ni).join(' + ')} = ${n}`,
+          html: 'Se toma la parte entera de cada nᵢ y las unidades faltantes se asignan a los estratos con mayor parte decimal (método del mayor residuo), de modo que la suma sea exactamente n.'
+        }
+      ]);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s2-k-N', 's2-k-n', 's2-k-L', 's2-k-f'].forEach((id) => setText(id, '—'));
+      $('s2-tbody').innerHTML = '<tr><td colspan="5" class="py-4 text-center italic text-slate-400">Sin datos válidos</td></tr>';
+      setWarn('s2-warn', '');
+      placeholderSteps($('s2-steps'));
+      clearChart('s2');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      const L = ['AFIJACIÓN PROPORCIONAL (MUESTREO ESTRATIFICADO)', stamp(), ''];
+      L.push(`Población total N = ${r.N}`, `Muestra total n = ${r.n}`, `Fracción de muestreo f = ${fmt(r.n / r.N, 6)}`, '');
+      L.push('Fórmula: nᵢ = (Nᵢ / N) · n', '');
+      L.push(['Estrato', 'Nᵢ', 'Nᵢ/N', 'nᵢ exacto', 'nᵢ'].join('\t'));
+      r.rows.forEach((x) => L.push([x.name, x.Ni, fmt(x.W, 4), fmt(x.exact, 4), x.ni].join('\t')));
+      L.push(['Total', r.N, 1, r.n, r.n].join('\t'));
+      return L.join('\n');
+    },
+
+    clear() {
+      this.setStrata([{ name: '', N: '' }, { name: '', N: '' }]);
+      resetFields(['s2-n']);
+      this.compute();
+    },
+
+    example() {
+      this.setStrata(this.DEFAULT);
+      $('s2-n').value = '100';
+      this.compute();
+    }
+  };
+
+  /* =========================================================================
+     5. SECCIÓN 3 · MUESTREO SISTEMÁTICO
+     ========================================================================= */
+  const S3 = {
+    r: null,
+    result: null,
+    GRID_MAX: 2000,     // tamaño máximo de población que se dibuja celda a celda
+    LIST_MAX: 400,      // máximo de elementos mostrados como etiquetas
+
+    init() {
+      tex($('s3-rule'), String.raw`r,\; r+k,\; r+2k,\; \dots,\; r+(n-1)k`);
+      $('sec-sistematico').addEventListener('input', () => this.compute());
+      $('s3-random').addEventListener('click', () => { this.r = null; this.compute(true); });
+      this.compute();
+    },
+
+    compute(forceNew = false) {
+      const N = readField('s3-N', { min: 2, int: true, msg: 'N debe ser un entero mayor o igual que 2.' });
+      const n = readField('s3-n', { min: 1, int: true, msg: 'n debe ser un entero mayor o igual que 1.' });
+      if (N === null || n === null) return this.showEmpty();
+      if (n > N) { setErr($('s3-n'), `n no puede superar N (${N}).`); return this.showEmpty(); }
+
+      const k = Math.floor(N / n);
+      // Nuevo arranque solo si se solicita o si el anterior ya no es válido
+      if (forceNew || this.r === null || this.r > k) this.r = Math.floor(Math.random() * k) + 1;
+      const r = this.r;
+      const seq = Array.from({ length: n }, (_, j) => r + j * k);
+      const last = seq[seq.length - 1];
+      this.result = { N, n, k, r, seq, last };
+
+      setText('s3-k-k', k);
+      setText('s3-k-r', r);
+      setText('s3-k-ratio', fmt(N / n, 4));
+      setText('s3-k-last', last);
+
+      const show = seq.slice(0, 4);
+      tex($('s3-rule-num'), n <= 4 ? show.join(String.raw`,\; `) : String.raw`${show.join(String.raw`,\; `)},\; \dots,\; ${last}`);
+
+      const residual = N - n * k;
+      setWarn('s3-warn', residual > 0
+        ? `N/n = ${fmt(N / n, 4)} no es entero: los últimos ${residual} elemento(s) (del ${n * k + 1} al ${N}) nunca pueden ser seleccionados con k = ${k}.`
+        : '');
+
+      // Secuencia como etiquetas
+      $('s3-count').textContent = `${n} elemento(s)`;
+      $('s3-seq').innerHTML = seq.slice(0, this.LIST_MAX)
+        .map((x) => `<span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium tabular-nums text-indigo-700 ${x === r ? 'ring-2 ring-amber-400' : ''}">${x}</span>`).join('')
+        + (n > this.LIST_MAX ? `<span class="px-2 py-0.5 text-xs text-slate-500">… y ${n - this.LIST_MAX} más (incluidos en el resumen exportado)</span>` : '');
+
+      this.renderGrid();
+      this.renderSteps();
+    },
+
+    renderGrid() {
+      const { N, n, k, r } = this.result;
+      const grid = $('s3-grid');
+      if (N > this.GRID_MAX) {
+        grid.style.gridTemplateColumns = '';
+        grid.innerHTML = `<p class="text-sm italic text-slate-400">La cuadrícula se muestra para N ≤ ${this.GRID_MAX.toLocaleString('es-PE')}.</p>`;
+        return;
+      }
+      // Una fila por bloque de k elementos (si k es manejable)
+      grid.style.gridTemplateColumns = k <= 25 ? `repeat(${k}, minmax(2.1rem, 1fr))` : 'repeat(auto-fill, minmax(2.1rem, 1fr))';
+      let html = '';
+      for (let i = 1; i <= N; i++) {
+        let cls = 'cell';
+        if (i > n * k) cls += ' cell-out';
+        else if ((i - r) % k === 0 && i >= r) cls += ' cell-sel' + (i === r ? ' cell-start' : '');
+        else if (Math.floor((i - 1) / k) % 2 === 1) cls += ' cell-alt';
+        html += `<div class="${cls}" title="Elemento ${i}">${i}</div>`;
+      }
+      grid.innerHTML = html;
+    },
+
+    renderSteps() {
+      const { N, n, k, r, last } = this.result;
+      const steps = [
+        { title: 'Constante de salto (intervalo de selección)', tex: String.raw`k = \left\lfloor \frac{N}{n} \right\rfloor = \left\lfloor \frac{${N}}{${n}} \right\rfloor = \lfloor ${fmt(N / n, 4)} \rfloor = ${k}` },
+        { title: 'Arranque aleatorio', tex: String.raw`r \sim \text{Uniforme}\{1, 2, \dots, ${k}\} \;\Rightarrow\; r = ${r}`, html: 'Se elige al azar un número entero entre 1 y k (use el botón para generar otro arranque).' },
+        { title: 'Término general de la secuencia', tex: String.raw`x_j = r + (j-1)\,k, \qquad j = 1, 2, \dots, n` }
+      ];
+      const ex = [String.raw`x_1 = ${r}`];
+      if (n >= 2) ex.push(String.raw`x_2 = ${r} + ${k} = ${r + k}`);
+      if (n >= 3) ex.push(String.raw`x_3 = ${r} + 2(${k}) = ${r + 2 * k}`);
+      steps.push({ title: 'Primeros elementos', tex: ex.join(String.raw`,\quad `) });
+      if (n > 3) steps.push({ title: 'Último elemento', tex: String.raw`x_{${n}} = ${r} + (${n}-1)(${k}) = ${last} \;\le\; N = ${N}` });
+      renderSteps($('s3-steps'), steps);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s3-k-k', 's3-k-r', 's3-k-ratio', 's3-k-last'].forEach((id) => setText(id, '—'));
+      $('s3-rule-num').innerHTML = '';
+      $('s3-count').textContent = '';
+      $('s3-seq').innerHTML = '<span class="text-sm italic text-slate-400">Sin datos válidos</span>';
+      $('s3-grid').innerHTML = '';
+      setWarn('s3-warn', '');
+      placeholderSteps($('s3-steps'));
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      return [
+        'MUESTREO SISTEMÁTICO', stamp(), '',
+        `Población N = ${r.N}`, `Muestra n = ${r.n}`,
+        `Salto k = ⌊N / n⌋ = ⌊${fmt(r.N / r.n, 4)}⌋ = ${r.k}`,
+        `Arranque aleatorio r = ${r.r}`,
+        'Regla: r, r + k, r + 2k, …, r + (n − 1)k', '',
+        'Elementos seleccionados:', r.seq.join(', ')
+      ].join('\n');
+    },
+
+    clear() { resetFields(['s3-N', 's3-n']); this.r = null; this.compute(); },
+    example() { $('s3-N').value = '500'; $('s3-n').value = '40'; this.r = null; this.compute(); }
+  };
+
+  /* =========================================================================
+     6. SECCIÓN 4 · PRUEBA Z PARA DOS MEDIAS
+     ========================================================================= */
+  const S4 = {
+    result: null,
+    FIELDS: ['s4-x1', 's4-x2', 's4-v1', 's4-v2', 's4-n1', 's4-n2', 's4-alpha'],
+
+    init() {
+      $('sec-pruebaz').addEventListener('input', () => this.compute());
+      $('sec-pruebaz').addEventListener('change', () => this.compute());
+      document.querySelectorAll('[data-alpha]').forEach((b) => b.addEventListener('click', () => {
+        $('s4-alpha').value = b.dataset.alpha;
+        this.compute();
+      }));
+      this.compute();
+    },
+
+    compute() {
+      const x1 = readField('s4-x1'), x2 = readField('s4-x2');
+      const v1 = readField('s4-v1', { minEx: 0, msg: 'La varianza debe ser mayor que 0.' });
+      const v2 = readField('s4-v2', { minEx: 0, msg: 'La varianza debe ser mayor que 0.' });
+      const n1 = readField('s4-n1', { min: 1, int: true, msg: 'Entero ≥ 1.' });
+      const n2 = readField('s4-n2', { min: 1, int: true, msg: 'Entero ≥ 1.' });
+      const alpha = readField('s4-alpha', { minEx: 0, maxEx: 0.5, msg: 'α debe estar entre 0 y 0.5 (ej. 0.05).' });
+      const tail = $('s4-tail').value;
+      setWarn('s4-warn', (n1 !== null && n1 < 30) || (n2 !== null && n2 < 30)
+        ? 'Alguna muestra tiene menos de 30 observaciones: la prueba Z requiere que las poblaciones sean normales (con varianzas conocidas).' : '');
+      if ([x1, x2, v1, v2, n1, n2, alpha].some((v) => v === null)) return this.showEmpty();
+
+      const a1 = v1 / n1, a2 = v2 / n2;
+      const se = Math.sqrt(a1 + a2);
+      const diff = x1 - x2;
+      const zc = diff / se;
+
+      let zcrit, reject, p;
+      if (tail === 'two') {
+        zcrit = Normal.inv(1 - alpha / 2);
+        reject = Math.abs(zc) > zcrit;
+        p = 2 * (1 - Normal.cdf(Math.abs(zc)));
+      } else if (tail === 'left') {
+        zcrit = -Normal.inv(1 - alpha);
+        reject = zc < zcrit;
+        p = Normal.cdf(zc);
+      } else {
+        zcrit = Normal.inv(1 - alpha);
+        reject = zc > zcrit;
+        p = 1 - Normal.cdf(zc);
+      }
+      p = Math.min(1, Math.max(0, p));
+      this.result = { x1, x2, v1, v2, n1, n2, alpha, tail, a1, a2, se, diff, zc, zcrit, reject, p };
+
+      // KPIs
+      setText('s4-k-zc', fmt(zc, 4));
+      setText('s4-k-zt', tail === 'two' ? `±${fmt(zcrit, 4)}` : fmt(zcrit, 4));
+      setText('s4-k-zt-s', tail === 'two' ? `Z₁₋α/₂ (α = ${fmt(alpha)})` : `${tail === 'left' ? 'Z_α' : 'Z₁₋α'} (α = ${fmt(alpha)})`);
+      setText('s4-k-p', p < 0.0001 ? '< 0.0001' : fmt(p, 4));
+      setText('s4-k-dec', reject ? 'Se rechaza H₀' : 'No se rechaza H₀');
+      setText('s4-k-dec-s', reject ? `p = ${p < 0.0001 ? '< 0.0001' : fmt(p, 4)} < α` : `p = ${fmt(p, 4)} ≥ α`);
+      $('s4-k-dec-card').className = 'kpi ' + (reject ? '!border-red-200 !bg-red-50' : '!border-emerald-200 !bg-emerald-50');
+      $('s4-k-dec').className = 'kpi-v text-lg ' + (reject ? '!text-red-700' : '!text-emerald-700');
+      $('s4-region').textContent = 'Rechazo: ' + (tail === 'two'
+        ? `Z < −${fmt(zcrit, 3)} o Z > ${fmt(zcrit, 3)}`
+        : tail === 'left' ? `Z < ${fmt(zcrit, 3)}` : `Z > ${fmt(zcrit, 3)}`);
+
+      this.renderChart();
+      this.renderSteps();
+    },
+
+    renderChart() {
+      const { zc, zcrit, tail } = this.result;
+      const lim = Math.min(8, Math.max(4, Math.abs(zc) + 0.75, Math.abs(zcrit) + 0.75));
+      const curve = [];
+      for (let i = 0; i <= 400; i++) { const x = -lim + (2 * lim * i) / 400; curve.push({ x, y: Normal.pdf(x) }); }
+      const region = (a, b) => {
+        const s = Math.max(a, -lim), e = Math.min(b, lim), pts = [];
+        for (let i = 0; i <= 120; i++) { const x = s + ((e - s) * i) / 120; pts.push({ x, y: Normal.pdf(x) }); }
+        return pts;
+      };
+      const zone = (data) => ({ label: 'Zona de rechazo', data, borderColor: 'rgba(220,38,38,0.9)', backgroundColor: 'rgba(220,38,38,0.28)', borderWidth: 1, fill: 'origin', pointRadius: 0 });
+      const zones = tail === 'two' ? [zone(region(-lim, -zcrit)), zone(region(zcrit, lim))]
+        : tail === 'left' ? [zone(region(-lim, zcrit))] : [zone(region(zcrit, lim))];
+
+      const zx = Math.max(-lim, Math.min(lim, zc));
+      const outOfScale = zx !== zc;
+
+      upsertChart('s4', {
+        type: 'line',
+        data: {
+          datasets: [
+            { label: 'N(0, 1)', data: curve, borderColor: '#4f46e5', backgroundColor: 'rgba(79,70,229,0.07)', fill: 'origin', borderWidth: 2, pointRadius: 0 },
+            ...zones,
+            {
+              label: `Zc = ${fmt(zc, 4)}${outOfScale ? ' (fuera de escala)' : ''}`, isMarker: true,
+              data: [{ x: zx, y: 0 }, { x: zx, y: 0.43 }],
+              borderColor: '#d97706', backgroundColor: '#d97706', borderWidth: 2, borderDash: [6, 4],
+              pointRadius: [0, 5], pointHoverRadius: [0, 6], fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          interaction: { mode: 'nearest', intersect: true },
+          scales: {
+            x: { type: 'linear', min: -lim, max: lim, ticks: { stepSize: 1 }, title: { display: true, text: 'Z' } },
+            y: { min: 0, max: 0.45, title: { display: true, text: 'φ(z)' } }
+          },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                // Evita duplicar "Zona de rechazo" en la prueba de dos colas
+                filter: (item, data) => data.datasets.findIndex((d) => d.label === item.text) === item.datasetIndex
+              }
+            },
+            tooltip: {
+              filter: (c) => c.dataset.isMarker && c.dataIndex === 1,
+              callbacks: { label: () => `Zc = ${fmt(zc, 4)}` }
+            }
+          }
+        }
+      });
+    },
+
+    renderSteps() {
+      const r = this.result;
+      const H = {
+        two:   [String.raw`H_0: \mu_1 = \mu_2`, String.raw`H_1: \mu_1 \neq \mu_2`],
+        left:  [String.raw`H_0: \mu_1 \geq \mu_2`, String.raw`H_1: \mu_1 < \mu_2`],
+        right: [String.raw`H_0: \mu_1 \leq \mu_2`, String.raw`H_1: \mu_1 > \mu_2`]
+      }[r.tail];
+      const critTex = {
+        two:   String.raw`Z_{\text{crítico}} = \pm Z_{1-\alpha/2} = \pm Z_{${fmt(1 - r.alpha / 2, 4)}} = \pm ${fmt(r.zcrit, 4)}`,
+        left:  String.raw`Z_{\text{crítico}} = Z_{\alpha} = Z_{${fmt(r.alpha, 4)}} = ${fmt(r.zcrit, 4)}`,
+        right: String.raw`Z_{\text{crítico}} = Z_{1-\alpha} = Z_{${fmt(1 - r.alpha, 4)}} = ${fmt(r.zcrit, 4)}`
+      }[r.tail];
+
+      let ruleTex, pTex;
+      const dec = r.reject ? String.raw`\text{Se rechaza } H_0` : String.raw`\text{No se rechaza } H_0`;
+      const pStr = r.p < 0.0001 ? String.raw`< 0.0001` : String.raw`= ${fmt(r.p, 4)}`;
+      if (r.tail === 'two') {
+        ruleTex = String.raw`|Z_c| = ${fmt(Math.abs(r.zc), 4)} ${r.reject ? '>' : String.raw`\leq`} ${fmt(r.zcrit, 4)} \;\Rightarrow\; ${dec}`;
+        pTex = String.raw`p = 2\,P(Z > |Z_c|) ${pStr}`;
+      } else if (r.tail === 'left') {
+        ruleTex = String.raw`Z_c = ${fmt(r.zc, 4)} ${r.reject ? '<' : String.raw`\geq`} ${fmt(r.zcrit, 4)} \;\Rightarrow\; ${dec}`;
+        pTex = String.raw`p = P(Z < Z_c) ${pStr}`;
+      } else {
+        ruleTex = String.raw`Z_c = ${fmt(r.zc, 4)} ${r.reject ? '>' : String.raw`\leq`} ${fmt(r.zcrit, 4)} \;\Rightarrow\; ${dec}`;
+        pTex = String.raw`p = P(Z > Z_c) ${pStr}`;
+      }
+
+      const claim = { two: 'las medias poblacionales son diferentes (μ₁ ≠ μ₂)', left: 'la media poblacional 1 es menor que la media poblacional 2 (μ₁ < μ₂)', right: 'la media poblacional 1 es mayor que la media poblacional 2 (μ₁ > μ₂)' }[r.tail];
+      const concl = r.reject
+        ? `Al nivel de significancia α = ${fmt(r.alpha)}, existe evidencia estadística suficiente para afirmar que ${claim}.`
+        : `Al nivel de significancia α = ${fmt(r.alpha)}, no existe evidencia estadística suficiente para afirmar que ${claim}.`;
+
+      renderSteps($('s4-steps'), [
+        { title: 'Plantear las hipótesis', tex: H.join(String.raw`\qquad`) },
+        { title: 'Nivel de significancia y valor crítico', tex: [String.raw`\alpha = ${fmt(r.alpha)}`, critTex] },
+        { title: 'Estadístico de prueba', tex: String.raw`Z_c = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}` },
+        {
+          title: 'Sustituir y calcular',
+          tex: [
+            String.raw`Z_c = \frac{${fmt(r.x1)} - ${par(r.x2)}}{\sqrt{\dfrac{${fmt(r.v1)}}{${r.n1}} + \dfrac{${fmt(r.v2)}}{${r.n2}}}}`,
+            String.raw`Z_c = \frac{${fmt(r.diff)}}{\sqrt{${fmt(r.a1, 6)} + ${fmt(r.a2, 6)}}} = \frac{${fmt(r.diff)}}{\sqrt{${fmt(r.a1 + r.a2, 6)}}} = \frac{${fmt(r.diff)}}{${fmt(r.se, 6)}} = ${fmt(r.zc, 4)}`
+          ]
+        },
+        { title: 'Regla de decisión', tex: ruleTex },
+        { title: 'p-valor (criterio equivalente)', tex: String.raw`${pTex} \;${r.reject ? '<' : String.raw`\geq`}\; \alpha = ${fmt(r.alpha)}` },
+        { title: 'Conclusión', html: concl }
+      ]);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s4-k-zc', 's4-k-zt', 's4-k-p', 's4-k-dec'].forEach((id) => setText(id, '—'));
+      setText('s4-k-zt-s', 'valor de tabla');
+      setText('s4-k-dec-s', 'sobre H₀');
+      $('s4-k-dec-card').className = 'kpi';
+      $('s4-k-dec').className = 'kpi-v text-lg';
+      $('s4-region').textContent = '';
+      placeholderSteps($('s4-steps'));
+      clearChart('s4');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      const h1 = { two: 'μ₁ ≠ μ₂', left: 'μ₁ < μ₂', right: 'μ₁ > μ₂' }[r.tail];
+      const h0 = { two: 'μ₁ = μ₂', left: 'μ₁ ≥ μ₂', right: 'μ₁ ≤ μ₂' }[r.tail];
+      return [
+        'PRUEBA Z PARA LA DIFERENCIA DE DOS MEDIAS', stamp(), '',
+        `Muestra 1: X̄₁ = ${fmt(r.x1)}, σ₁² = ${fmt(r.v1)}, n₁ = ${r.n1}`,
+        `Muestra 2: X̄₂ = ${fmt(r.x2)}, σ₂² = ${fmt(r.v2)}, n₂ = ${r.n2}`,
+        `H₀: ${h0}    H₁: ${h1}    α = ${fmt(r.alpha)}`, '',
+        'Zc = (X̄₁ − X̄₂) / √(σ₁²/n₁ + σ₂²/n₂)',
+        `Error estándar = ${fmt(r.se, 6)}`,
+        `Zc = ${fmt(r.zc, 4)}`,
+        `Z crítico = ${r.tail === 'two' ? '±' : ''}${fmt(r.zcrit, 4)}`,
+        `p-valor = ${r.p < 0.0001 ? '< 0.0001' : fmt(r.p, 4)}`,
+        `Decisión: ${r.reject ? 'Se rechaza H₀' : 'No se rechaza H₀'}`
+      ].join('\n');
+    },
+
+    clear() { resetFields(this.FIELDS.filter((id) => id !== 's4-alpha')); $('s4-alpha').value = '0.05'; this.compute(); },
+    example() {
+      Object.entries({ 's4-x1': '78', 's4-x2': '74', 's4-v1': '64', 's4-v2': '81', 's4-n1': '40', 's4-n2': '50', 's4-alpha': '0.05' })
+        .forEach(([id, v]) => { $(id).value = v; setErr($(id), ''); });
+      $('s4-tail').value = 'two';
+      this.compute();
+    }
+  };
+
+  /* =========================================================================
+     7. BARRA DE ACCIONES (copiar, exportar, ejemplo, limpiar)
+     ========================================================================= */
+  const MODULES = { s1: S1, s2: S2, s3: S3, s4: S4 };
+  const FILES = { s1: 'tamano-muestra', s2: 'afijacion-proporcional', s3: 'muestreo-sistematico', s4: 'prueba-z-dos-medias' };
+  const ICON = {
+    copy: '<path stroke-linecap="round" stroke-linejoin="round" d="M8 8V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3M5 8h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/>',
+    export: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/>',
+    example: '<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M5.1 15a7 7 0 0 0 12.9 2M18.9 9A7 7 0 0 0 6 7"/>',
+    clear: '<path stroke-linecap="round" stroke-linejoin="round" d="M5 7h14M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>'
+  };
+  const svg = (k) => `<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">${ICON[k]}</svg>`;
+
+  document.querySelectorAll('.actions').forEach((bar) => {
+    const sec = bar.dataset.sec;
+    bar.innerHTML = `
+      <button type="button" class="btn btn-primary" data-act="copy">${svg('copy')}Copiar resumen</button>
+      <button type="button" class="btn btn-ghost" data-act="export">${svg('export')}Exportar .txt</button>
+      <button type="button" class="btn btn-ghost" data-act="example">${svg('example')}Ejemplo</button>
+      <button type="button" class="btn btn-danger" data-act="clear">${svg('clear')}Limpiar datos</button>`;
+    bar.addEventListener('click', (e) => {
+      const act = e.target.closest('[data-act]')?.dataset.act;
+      if (!act) return;
+      const mod = MODULES[sec];
+      if (act === 'clear') { mod.clear(); toast('Datos limpiados'); return; }
+      if (act === 'example') { mod.example(); return; }
+      const text = mod.summary();
+      if (!text) { toast('Complete primero los datos con valores válidos'); return; }
+      if (act === 'copy') copyText(text);
+      else downloadText(text, `${FILES[sec]}.txt`);
+    });
+  });
+
+  /* =========================================================================
+     8. NAVEGACIÓN (router por hash + sidebar responsivo)
+     ========================================================================= */
+  const SECTIONS = ['tamano', 'afijacion', 'sistematico', 'pruebaz'];
+
+  function openSidebar(open) {
+    $('sidebar').classList.toggle('-translate-x-full', !open);
+    $('overlay').classList.toggle('hidden', !open);
+  }
+  $('menu-btn').addEventListener('click', () => openSidebar(true));
+  $('overlay').addEventListener('click', () => openSidebar(false));
+
+  function route() {
+    let h = location.hash.slice(1);
+    if (!SECTIONS.includes(h)) h = 'tamano';
+    SECTIONS.forEach((s) => $('sec-' + s).classList.toggle('hidden', s !== h));
+    document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('active', a.dataset.nav === h));
+    $('page-title').textContent = $('sec-' + h).dataset.title;
+    document.title = `${$('sec-' + h).dataset.title} · Estadística Inferencial`;
+    openSidebar(false);
+    window.scrollTo({ top: 0 });
+  }
+  window.addEventListener('hashchange', route);
+
+  /* =========================================================================
+     9. INICIO
+     ========================================================================= */
+  route();
+  S1.init();
+  S2.init();
+  S3.init();
+  S4.init();
+  </script>
+</body>
+</html>
