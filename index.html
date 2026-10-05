@@ -15,8 +15,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] } } }
     };
+    // Aplica el tema guardado (o el del sistema) antes de pintar, para evitar parpadeos
+    (function () {
+      let t = null;
+      try { t = localStorage.getItem('tema'); } catch (e) {}
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+    })();
   </script>
 
   <!-- KaTeX (fórmulas) -->
@@ -29,59 +36,156 @@
   <!-- Componentes reutilizables (Tailwind @apply) -->
   <style type="text/tailwindcss">
     @layer components {
-      .card        { @apply bg-white rounded-xl border border-slate-200 shadow-sm; }
-      .card-h      { @apply px-5 py-3.5 border-b border-slate-100 flex items-center justify-between gap-3; }
-      .card-t      { @apply text-sm font-semibold text-slate-700; }
+      /* Tarjetas */
+      .card        { @apply bg-white rounded-2xl border border-slate-200/80 shadow-sm shadow-slate-200/60
+                            dark:bg-slate-900 dark:border-slate-800 dark:shadow-none; }
+      .card-h      { @apply px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 dark:border-slate-800; }
+      .card-t      { @apply flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-100; }
+      .card-t::before { content: ''; @apply h-4 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-blue-500; }
       .card-b      { @apply p-5; }
-      .lbl         { @apply block text-sm font-medium text-slate-700 mb-1; }
-      .inp         { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm
-                            focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500
-                            disabled:bg-slate-100 disabled:text-slate-400; }
-      .inp-invalid { @apply border-red-400 bg-red-50/50 focus:ring-red-400/30 focus:border-red-500; }
-      .err         { @apply text-xs text-red-600 mt-1 min-h-[1rem]; }
-      .hint        { @apply text-xs text-slate-500 mt-1; }
-      .warn        { @apply rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800; }
-      .seg         { @apply inline-flex w-full rounded-lg bg-slate-100 p-1 gap-1; }
-      .seg-btn     { @apply flex-1 rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:text-slate-900; }
-      .seg-btn.active { @apply bg-white text-indigo-700 shadow-sm; }
+
+      /* Encabezado de cada tema */
+      .hero        { @apply relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-600 p-6 text-white shadow-lg shadow-indigo-500/20
+                            dark:from-indigo-700 dark:via-indigo-800 dark:to-blue-900 dark:shadow-none sm:p-7; }
+      .hero-ico    { @apply grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white/15 text-lg font-bold ring-1 ring-inset ring-white/25 backdrop-blur; }
+      .hero-eyebrow{ @apply text-xs font-medium text-indigo-100/90; }
+      .hero-title  { @apply mt-0.5 text-xl font-semibold tracking-tight sm:text-2xl; }
+      .hero-desc   { @apply mt-1 max-w-2xl text-sm text-indigo-100; }
+      .hero-formula{ @apply mt-4 inline-block max-w-full overflow-x-auto rounded-xl bg-white/10 px-4 py-1 ring-1 ring-inset ring-white/15; }
+      .btn-hero    { @apply bg-white text-indigo-700 shadow-sm hover:bg-indigo-50; }
+      .btn-hero-ghost { @apply bg-white/10 text-white ring-1 ring-inset ring-white/25 hover:bg-white/20; }
+
+      /* Formularios */
+      .lbl         { @apply block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300; }
+      .inp         { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition
+                            focus:outline-none focus:ring-4 focus:ring-indigo-500/15 focus:border-indigo-500
+                            disabled:bg-slate-100 disabled:text-slate-400
+                            dark:bg-slate-950 dark:border-slate-700 dark:text-slate-100 dark:disabled:bg-slate-800 dark:disabled:text-slate-500; }
+      .inp-invalid { @apply border-red-400 bg-red-50/60 focus:ring-red-400/20 focus:border-red-500 dark:bg-red-950/30 dark:border-red-500/70; }
+      .err         { @apply mt-1 flex items-center gap-1 text-xs font-medium text-red-600 dark:text-red-400; }
+      .err::before { content: '!'; @apply grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full bg-red-500 text-[9px] font-bold text-white; }
+      .hint        { @apply text-xs text-slate-500 mt-1 dark:text-slate-400; }
+      .warn        { @apply flex gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800
+                            dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200; }
+      .warn::before{ content: '⚠'; }
+      .seg         { @apply inline-flex w-full rounded-xl bg-slate-100 p-1 gap-1 dark:bg-slate-800; }
+      .seg-btn     { @apply flex-1 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:text-slate-900
+                            dark:text-slate-400 dark:hover:text-white; }
+      .seg-btn.active { @apply bg-white text-indigo-700 shadow-sm ring-1 ring-slate-200 dark:bg-slate-950 dark:text-indigo-300 dark:ring-slate-700; }
+      .group-box   { @apply space-y-3 rounded-xl border border-slate-200 p-4 dark:border-slate-700; }
+
+      /* Botones */
       .btn         { @apply inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition
                             focus:outline-none focus:ring-2 focus:ring-indigo-500/30 disabled:opacity-40 disabled:cursor-not-allowed; }
-      .btn-primary { @apply bg-indigo-600 text-white hover:bg-indigo-700; }
-      .btn-ghost   { @apply bg-white text-slate-700 border border-slate-300 hover:bg-slate-50; }
-      .btn-danger  { @apply bg-white text-red-600 border border-red-200 hover:bg-red-50; }
-      .chip        { @apply rounded-md border border-slate-300 bg-white px-2 py-0.5 text-xs text-slate-600 hover:border-indigo-400 hover:text-indigo-700; }
-      .kpi         { @apply rounded-xl border border-slate-200 bg-white p-4 shadow-sm; }
-      .kpi-l       { @apply text-xs font-medium uppercase tracking-wide text-slate-500; }
-      .kpi-v       { @apply mt-1 text-2xl font-semibold text-slate-900 tabular-nums break-all; }
-      .kpi-s       { @apply mt-0.5 text-xs text-slate-500; }
-      .kpi-accent  { @apply border-indigo-600 bg-indigo-600; }
+      .btn-primary { @apply bg-indigo-600 text-white shadow-sm hover:bg-indigo-700; }
+      .btn-ghost   { @apply bg-white text-slate-700 border border-slate-300 hover:bg-slate-50
+                            dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800; }
+      .btn-danger  { @apply bg-white text-red-600 border border-red-200 hover:bg-red-50 hover:border-red-300
+                            dark:bg-slate-900 dark:border-red-900/70 dark:text-red-400 dark:hover:bg-red-950/40; }
+      .btn-xs      { @apply px-2 py-1 text-xs; }
+      .chip       { @apply rounded-full border border-slate-300 bg-white px-2.5 py-0.5 text-xs text-slate-600 transition hover:border-indigo-400 hover:text-indigo-700
+                            dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:text-indigo-300; }
+
+      /* Tarjetas KPI */
+      .kpi         { @apply relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm shadow-slate-200/60 transition
+                            dark:bg-slate-900 dark:border-slate-800 dark:shadow-none; }
+      .kpi-l       { @apply text-xs font-medium text-slate-500 dark:text-slate-400; }
+      .kpi-v       { @apply mt-1.5 text-2xl font-semibold tracking-tight text-slate-900 tabular-nums break-all dark:text-white; }
+      .kpi-s       { @apply mt-0.5 text-xs text-slate-500 dark:text-slate-400; }
+      .kpi-accent  { @apply border-transparent bg-gradient-to-br from-indigo-600 to-blue-600 shadow-indigo-500/30 dark:from-indigo-600 dark:to-blue-700; }
       .kpi-accent .kpi-l, .kpi-accent .kpi-s { @apply text-indigo-100; }
       .kpi-accent .kpi-v { @apply text-white; }
-      .nav-link    { @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white; }
-      .nav-link.active { @apply bg-indigo-600/20 text-white ring-1 ring-inset ring-indigo-500/40; }
-      .nav-ico     { @apply grid h-7 w-7 shrink-0 place-items-center rounded-md bg-slate-800 text-xs font-semibold text-indigo-300; }
-      .nav-link.active .nav-ico { @apply bg-indigo-600 text-white; }
-      .step        { @apply flex gap-3 py-3 border-b border-slate-100 last:border-0; }
-      .step-n      { @apply grid h-6 w-6 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-semibold text-indigo-700; }
-      .step-t      { @apply text-sm font-medium text-slate-700; }
-      .step-html   { @apply text-sm text-slate-600 mt-1; }
-      .tbl th      { @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 bg-slate-50; }
-      .tbl td      { @apply px-3 py-2 text-sm text-slate-700 tabular-nums border-t border-slate-100; }
-      .cell        { @apply flex h-7 items-center justify-center rounded border border-slate-200 text-[10px] text-slate-500 tabular-nums; }
-      .cell-alt    { @apply bg-slate-50; }
-      .cell-sel    { @apply border-indigo-600 bg-indigo-600 font-semibold text-white; }
-      .cell-start  { @apply ring-2 ring-amber-400 ring-offset-1; }
-      .cell-out    { @apply bg-slate-200 text-slate-400 border-slate-200; }
+      .kpi-ok      { @apply !border-emerald-200 !bg-emerald-50 dark:!border-emerald-900 dark:!bg-emerald-950/40; }
+      .kpi-bad     { @apply !border-red-200 !bg-red-50 dark:!border-red-900 dark:!bg-red-950/40; }
+
+      /* Navegación */
+      .nav-link    { @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white; }
+      .nav-link.active { @apply bg-gradient-to-r from-indigo-600/30 to-indigo-600/5 text-white ring-1 ring-inset ring-indigo-400/30; }
+      .nav-ico     { @apply grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-800 text-xs font-semibold text-indigo-300 transition; }
+      .nav-link.active .nav-ico { @apply bg-gradient-to-br from-indigo-500 to-blue-500 text-white shadow-lg shadow-indigo-900/50; }
+
+      /* Procedimiento paso a paso (línea de tiempo) */
+      .step        { @apply relative flex gap-4 pb-4 last:pb-0; }
+      .step::before{ content: ''; @apply absolute left-[15px] top-9 bottom-0 w-0.5 rounded-full bg-gradient-to-b from-indigo-300 to-slate-200 dark:from-indigo-700 dark:to-slate-800; }
+      .step:last-child::before { display: none; }
+      .step-n      { @apply z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 text-xs font-bold text-white shadow-md shadow-indigo-500/30 ring-4 ring-white transition
+                            dark:shadow-none dark:ring-slate-900; }
+      .step-box    { @apply min-w-0 flex-1 rounded-xl border border-slate-200/80 bg-white transition hover:border-indigo-300 hover:shadow-md hover:shadow-indigo-500/5
+                            dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-700; }
+      .step-head   { @apply flex w-full items-center gap-2 px-4 py-2.5 text-left; }
+      .step-t      { @apply flex-1 text-sm font-semibold text-slate-800 dark:text-slate-100; }
+      .step-chev   { @apply h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200; }
+      .step-body   { @apply grid transition-[grid-template-rows] duration-300 ease-out; grid-template-rows: 1fr; }
+      .step-body > div { @apply min-h-0 overflow-hidden; }
+      .step-inner  { @apply space-y-2 px-4 pb-4; }
+      .step.collapsed .step-body { grid-template-rows: 0fr; }
+      .step.collapsed .step-chev { @apply -rotate-90; }
+      .step-tex    { @apply relative rounded-lg border-l-4 border-indigo-400 bg-gradient-to-r from-indigo-50/80 to-slate-50/40 px-4 pr-10 text-slate-800
+                            dark:border-indigo-500 dark:from-indigo-950/40 dark:to-slate-950/20 dark:text-slate-100; }
+      .step-copy   { @apply absolute right-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-md text-slate-400 opacity-0 transition hover:bg-white hover:text-indigo-600 focus:opacity-100
+                            dark:hover:bg-slate-800 dark:hover:text-indigo-300; }
+      .step-html   { @apply text-sm leading-relaxed text-slate-600 dark:text-slate-400; }
+      .step-html b { @apply text-slate-900 dark:text-white; }
+      /* Último paso: resultado destacado */
+      .step-final .step-n   { @apply from-emerald-500 to-teal-600 shadow-emerald-500/30; }
+      .step-final .step-box { @apply border-emerald-200 bg-gradient-to-br from-emerald-50 to-white hover:border-emerald-300
+                                     dark:border-emerald-900 dark:from-emerald-950/40 dark:to-slate-900 dark:hover:border-emerald-700; }
+      .step-final .step-tex { @apply border-emerald-500 from-emerald-100/70 to-emerald-50/30 dark:from-emerald-900/30 dark:to-emerald-950/10; }
+      .step-badge  { @apply rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300; }
+      .steps-meta  { @apply rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300; }
+      .steps-progress { @apply mb-5 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800; }
+      .steps-progress > span { @apply block h-full rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-emerald-500 transition-all duration-500; }
+
+      /* Barra de navegación superior */
+      .topnav-link { @apply rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900
+                            dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white; }
+      .topnav-link.active { @apply bg-indigo-50 text-indigo-700 dark:bg-indigo-950/70 dark:text-indigo-300; }
+      .icon-btn    { @apply grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 hover:text-indigo-600
+                            dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-indigo-300; }
+
+      /* Tablas y cuadrícula */
+      .tbl th      { @apply px-3 py-2 text-left text-xs font-semibold text-slate-500 bg-slate-50 first:rounded-l-lg last:rounded-r-lg dark:bg-slate-800/60 dark:text-slate-400; }
+      .tbl td      { @apply px-3 py-2 text-sm text-slate-700 tabular-nums border-t border-slate-100 dark:text-slate-300 dark:border-slate-800; }
+      .cell        { @apply flex h-7 items-center justify-center rounded-md border border-slate-200 text-[10px] text-slate-500 tabular-nums
+                            dark:border-slate-700 dark:text-slate-400; }
+      .cell-alt    { @apply bg-slate-50 dark:bg-slate-800/50; }
+      .cell-sel    { @apply border-indigo-600 bg-indigo-600 font-semibold text-white dark:border-indigo-500 dark:bg-indigo-600 dark:text-white; }
+      .cell-start  { @apply ring-2 ring-amber-400 ring-offset-1 dark:ring-offset-slate-900; }
+      .cell-out    { @apply bg-slate-200 text-slate-400 border-slate-200 dark:bg-slate-800 dark:text-slate-600 dark:border-slate-800; }
+      .tag         { @apply rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium tabular-nums text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300; }
     }
   </style>
   <style>
     /* Las ecuaciones largas se desplazan horizontalmente en pantallas pequeñas */
-    .katex-display { overflow-x: auto; overflow-y: hidden; padding: .25rem 0; margin: .35rem 0; }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: .35rem 0; margin: .4rem 0; }
     .katex { font-size: 1.08em; }
+    .hero .katex-display { margin: .25rem 0; }
+    /* Los mensajes de error vacíos no ocupan espacio */
+    .err:empty { display: none; }
+    /* Transición al cambiar de tema */
+    main section:not(.hidden) { animation: aparecer .25s ease-out; }
+    @keyframes aparecer { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    /* Fondo decorativo de los encabezados */
+    .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 9999px;
+                   background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%); pointer-events: none; }
+    .hero > * { position: relative; z-index: 1; }
+    /* Procedimiento: botón de copiar visible al pasar el cursor; entrada escalonada de los pasos */
+    .step-tex:hover .step-copy { opacity: 1; }
+    .steps-anim .step { animation: aparecer .4s ease-out both; animation-delay: calc(var(--i) * 70ms); }
+    .step-box:hover .step-n, .step:hover .step-n { transform: scale(1.08); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    /* Impresión: solo el contenido, con todos los pasos expandidos */
+    @media print {
+      #sidebar, #topnav, .actions, .steps-tools, #toast, #overlay { display: none !important; }
+      .lg\:pl-72 { padding-left: 0 !important; }
+      .step.collapsed .step-body { grid-template-rows: 1fr !important; }
+    }
   </style>
 </head>
 
-<body class="bg-slate-50 font-sans text-slate-800 antialiased">
+<body class="bg-slate-50 font-sans text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-200">
 
   <!-- =====================================================================
        SIDEBAR
@@ -106,8 +210,15 @@
       <a href="#pruebaz" class="nav-link" data-nav="pruebaz"><span class="nav-ico">Z</span>Prueba Z · dos medias</a>
     </nav>
 
-    <div class="border-t border-slate-800 px-5 py-4 text-xs text-slate-500">
-      Todos los cálculos se ejecutan en su navegador. No se envían datos a ningún servidor.
+    <div class="space-y-3 border-t border-slate-800 px-5 py-4">
+      <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 p-3">
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 text-xs font-bold text-white">AF</div>
+        <div class="min-w-0">
+          <p class="text-[11px] text-slate-400">Desarrollado por</p>
+          <p class="text-xs font-semibold leading-snug text-white">Flores Calcina Alexander Edson</p>
+        </div>
+      </div>
+      <p class="text-[11px] leading-relaxed text-slate-500">Todos los cálculos se ejecutan en su navegador. No se envían datos a ningún servidor.</p>
     </div>
   </aside>
 
@@ -115,13 +226,47 @@
        CONTENIDO PRINCIPAL
        ===================================================================== -->
   <div class="lg:pl-72">
-    <header class="sticky top-0 z-20 flex items-center gap-3 border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur sm:px-6">
-      <button id="menu-btn" class="btn btn-ghost px-2 lg:hidden" aria-label="Abrir menú">
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
-      <div class="min-w-0">
-        <p class="text-xs text-slate-500">Módulo 1</p>
-        <h1 id="page-title" class="truncate text-base font-semibold text-slate-900">Tamaño de muestra</h1>
+    <!-- Barra de navegación superior -->
+    <header id="topnav" class="sticky top-0 z-20 border-b border-slate-200/80 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/80">
+      <div class="flex items-center gap-3 px-4 py-2.5 sm:px-6">
+        <button id="menu-btn" class="icon-btn lg:hidden" aria-label="Abrir menú">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="min-w-0 flex-1 xl:flex-none">
+          <p class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+            Módulo 1
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </p>
+          <h1 id="page-title" class="truncate text-base font-semibold text-slate-900 dark:text-white">Tamaño de muestra</h1>
+        </div>
+
+        <nav class="mx-auto hidden items-center gap-1 xl:flex" aria-label="Temas del módulo">
+          <a href="#tamano" class="topnav-link" data-nav="tamano">Tamaño de muestra</a>
+          <a href="#afijacion" class="topnav-link" data-nav="afijacion">Afijación</a>
+          <a href="#sistematico" class="topnav-link" data-nav="sistematico">Sistemático</a>
+          <a href="#pruebaz" class="topnav-link" data-nav="pruebaz">Prueba Z</a>
+        </nav>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Autor y derechos de autor -->
+          <div class="hidden items-center gap-2.5 rounded-xl border border-slate-200 bg-white/70 py-1 pl-1 pr-3 dark:border-slate-800 dark:bg-slate-900/70 sm:flex"
+               title="© Flores Calcina Alexander Edson · Todos los derechos reservados">
+            <div class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-blue-600 text-xs font-bold text-white">AF</div>
+            <div class="leading-tight">
+              <p class="text-xs font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">© <span class="js-year">2026</span> · Todos los derechos reservados</p>
+            </div>
+          </div>
+          <button id="theme-btn" class="icon-btn" aria-label="Cambiar tema claro / oscuro" title="Cambiar tema">
+            <svg class="h-5 w-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <svg class="hidden h-5 w-5 dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- En móvil, el autor se muestra en una franja propia -->
+      <div class="border-t border-slate-100 bg-gradient-to-r from-indigo-50 via-white to-blue-50 px-4 py-1 text-[11px] text-slate-600
+                  dark:border-slate-800 dark:from-indigo-950/50 dark:via-slate-950 dark:to-blue-950/50 dark:text-slate-300 text-center leading-snug sm:hidden">
+        © <span class="js-year">2026</span> <b class="font-semibold text-slate-800 dark:text-white">Flores Calcina Alexander Edson</b> · Todos los derechos reservados
       </div>
     </header>
 
@@ -131,12 +276,19 @@
            SECCIÓN 1 · TAMAÑO DE MUESTRA
            =============================================================== -->
       <section id="sec-tamano" class="space-y-6" data-title="Tamaño de muestra">
-        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 class="text-xl font-semibold text-slate-900">Calculadora de tamaño de muestra</h2>
-            <p class="mt-1 text-sm text-slate-500">Estimación de la media poblacional (μ) o de la proporción poblacional (P), con población infinita o finita.</p>
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">n</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Tema 1 · Muestreo</p>
+                <h2 class="hero-title">Calculadora de tamaño de muestra</h2>
+                <p class="hero-desc">Estimación de la media poblacional (μ) o de la proporción poblacional (P), con población infinita o finita.</p>
+                <div class="hero-formula" data-tex="n = \dfrac{Z^2 \sigma^2}{e^2}"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s1"></div>
           </div>
-          <div class="actions flex flex-wrap gap-2" data-sec="s1"></div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-5">
@@ -210,7 +362,7 @@
                   <input id="s1-e-prop" type="number" step="0.01" min="0" max="1" class="inp" value="0.05" />
                   <p id="s1-e-prop-err" class="err"></p>
                 </div>
-                <label class="sm:col-span-2 flex items-start gap-2 text-sm text-slate-700">
+                <label class="sm:col-span-2 flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
                   <input id="s1-p-unk" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
                   <span>P desconocida: asumir <b>P = 0.5</b> y <b>Q = 0.5</b> (máxima variabilidad)</span>
                 </label>
@@ -250,8 +402,21 @@
         </div>
 
         <div class="card">
-          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
-          <div class="card-b"><ol id="s1-steps"></ol></div>
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s1-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s1-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <div class="steps-progress hidden"><span style="width:0"></span></div>
+            <ol id="s1-steps"></ol>
+          </div>
         </div>
       </section>
 
@@ -259,12 +424,19 @@
            SECCIÓN 2 · AFIJACIÓN PROPORCIONAL
            =============================================================== -->
       <section id="sec-afijacion" class="hidden space-y-6" data-title="Afijación proporcional">
-        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 class="text-xl font-semibold text-slate-900">Afijación proporcional</h2>
-            <p class="mt-1 text-sm text-slate-500">Muestreo estratificado: cada estrato recibe una parte de la muestra proporcional a su tamaño.</p>
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">nᵢ</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Tema 2 · Muestreo estratificado</p>
+                <h2 class="hero-title">Afijación proporcional</h2>
+                <p class="hero-desc">Muestreo estratificado: cada estrato recibe una parte de la muestra proporcional a su tamaño.</p>
+                <div class="hero-formula" data-tex="n_i = \dfrac{N_i}{N}\, n"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s2"></div>
           </div>
-          <div class="actions flex flex-wrap gap-2" data-sec="s2"></div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-5">
@@ -277,7 +449,7 @@
                 <p id="s2-n-err" class="err"></p>
               </div>
               <div>
-                <div class="mb-2 grid grid-cols-[1fr_7rem_2.25rem] gap-2 text-xs font-medium text-slate-500">
+                <div class="mb-2 grid grid-cols-[1fr_7rem_2.25rem] gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
                   <span>Nombre del estrato</span><span>Nᵢ</span><span></span>
                 </div>
                 <div id="s2-rows" class="space-y-1"></div>
@@ -317,8 +489,21 @@
         </div>
 
         <div class="card">
-          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
-          <div class="card-b"><ol id="s2-steps"></ol></div>
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s2-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s2-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <div class="steps-progress hidden"><span style="width:0"></span></div>
+            <ol id="s2-steps"></ol>
+          </div>
         </div>
       </section>
 
@@ -326,12 +511,19 @@
            SECCIÓN 3 · MUESTREO SISTEMÁTICO
            =============================================================== -->
       <section id="sec-sistematico" class="hidden space-y-6" data-title="Muestreo sistemático">
-        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 class="text-xl font-semibold text-slate-900">Simulador de muestreo sistemático</h2>
-            <p class="mt-1 text-sm text-slate-500">Se elige un arranque aleatorio r y luego un elemento cada k posiciones.</p>
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">k</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Tema 3 · Muestreo probabilístico</p>
+                <h2 class="hero-title">Simulador de muestreo sistemático</h2>
+                <p class="hero-desc">Se elige un arranque aleatorio r y luego un elemento cada k posiciones.</p>
+                <div class="hero-formula" data-tex="x_j = r + (j-1)\,k"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s3"></div>
           </div>
-          <div class="actions flex flex-wrap gap-2" data-sec="s3"></div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-5">
@@ -354,7 +546,7 @@
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M5.1 15a7 7 0 0 0 12.9 2M18.9 9A7 7 0 0 0 6 7"/></svg>
                 Nuevo arranque aleatorio (r)
               </button>
-              <div class="rounded-lg bg-slate-50 p-3">
+              <div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
                 <p class="text-xs font-medium text-slate-500">Regla de selección</p>
                 <div id="s3-rule"></div>
                 <div id="s3-rule-num"></div>
@@ -393,8 +585,21 @@
         </div>
 
         <div class="card">
-          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
-          <div class="card-b"><ol id="s3-steps"></ol></div>
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s3-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s3-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <div class="steps-progress hidden"><span style="width:0"></span></div>
+            <ol id="s3-steps"></ol>
+          </div>
         </div>
       </section>
 
@@ -402,12 +607,19 @@
            SECCIÓN 4 · PRUEBA Z PARA DOS MEDIAS
            =============================================================== -->
       <section id="sec-pruebaz" class="hidden space-y-6" data-title="Prueba Z · dos medias">
-        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 class="text-xl font-semibold text-slate-900">Comparación de dos medias poblacionales (prueba Z)</h2>
-            <p class="mt-1 text-sm text-slate-500">Varianzas poblacionales conocidas y muestras independientes.</p>
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">Z</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Tema 4 · Prueba de hipótesis</p>
+                <h2 class="hero-title">Comparación de dos medias poblacionales (prueba Z)</h2>
+                <p class="hero-desc">Varianzas poblacionales conocidas y muestras independientes.</p>
+                <div class="hero-formula" data-tex="Z_c = \dfrac{\bar X_1-\bar X_2}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s4"></div>
           </div>
-          <div class="actions flex flex-wrap gap-2" data-sec="s4"></div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-5">
@@ -415,13 +627,13 @@
             <div class="card-h"><p class="card-t">Datos de entrada</p></div>
             <div class="card-b space-y-4">
               <div class="grid gap-4 sm:grid-cols-2">
-                <fieldset class="space-y-2 rounded-lg border border-slate-200 p-3">
+                <fieldset class="group-box !space-y-2 !p-3">
                   <legend class="px-1 text-xs font-semibold text-indigo-700">Muestra 1</legend>
                   <div><label class="lbl" for="s4-x1">Media X̄₁</label><input id="s4-x1" type="number" step="any" class="inp" value="78" /><p id="s4-x1-err" class="err"></p></div>
                   <div><label class="lbl" for="s4-v1">Varianza σ₁²</label><input id="s4-v1" type="number" step="any" min="0" class="inp" value="64" /><p id="s4-v1-err" class="err"></p></div>
                   <div><label class="lbl" for="s4-n1">Tamaño n₁</label><input id="s4-n1" type="number" step="1" min="1" class="inp" value="40" /><p id="s4-n1-err" class="err"></p></div>
                 </fieldset>
-                <fieldset class="space-y-2 rounded-lg border border-slate-200 p-3">
+                <fieldset class="group-box !space-y-2 !p-3">
                   <legend class="px-1 text-xs font-semibold text-blue-700">Muestra 2</legend>
                   <div><label class="lbl" for="s4-x2">Media X̄₂</label><input id="s4-x2" type="number" step="any" class="inp" value="74" /><p id="s4-x2-err" class="err"></p></div>
                   <div><label class="lbl" for="s4-v2">Varianza σ₂²</label><input id="s4-v2" type="number" step="any" min="0" class="inp" value="81" /><p id="s4-v2-err" class="err"></p></div>
@@ -471,13 +683,38 @@
         </div>
 
         <div class="card">
-          <div class="card-h"><p class="card-t">Procedimiento paso a paso</p></div>
-          <div class="card-b"><ol id="s4-steps"></ol></div>
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s4-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s4-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <div class="steps-progress hidden"><span style="width:0"></span></div>
+            <ol id="s4-steps"></ol>
+          </div>
         </div>
       </section>
 
-      <footer class="pb-4 pt-2 text-center text-xs text-slate-400">
-        Estadística Inferencial · Módulo 1 — Cálculos realizados íntegramente en el navegador.
+      <footer class="mt-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-5 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
+          <div class="flex items-center gap-3">
+            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-sm font-bold text-white">AF</div>
+            <div>
+              <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Calculadora de Estadística Inferencial · Módulo 1</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            © <span class="js-year">2026</span> Flores Calcina Alexander Edson. Todos los derechos reservados.<br class="hidden sm:block" />
+            <span class="text-slate-400 dark:text-slate-500">Cálculos realizados íntegramente en el navegador.</span>
+          </p>
+        </div>
       </footer>
     </main>
   </div>
@@ -562,14 +799,14 @@
     clearTimeout(toast._t);
     toast._t = setTimeout(() => t.classList.add('opacity-0', 'translate-y-2'), 2200);
   }
-  async function copyText(text) {
+  async function copyText(text, msg = 'Resumen copiado al portapapeles') {
     try { await navigator.clipboard.writeText(text); }
     catch {
       const ta = document.createElement('textarea');
       ta.value = text; document.body.appendChild(ta); ta.select();
       document.execCommand('copy'); ta.remove();
     }
-    toast('Resumen copiado al portapapeles');
+    toast(msg);
   }
   function downloadText(text, filename) {
     const a = document.createElement('a');
@@ -582,33 +819,114 @@
 
   /* ---------- Procedimiento paso a paso ---------- */
   /** steps: [{ title, tex?: string|string[], html?: string }] */
+  const CHEVRON = '<svg class="step-chev" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>';
+  const COPY_ICO = '<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 8V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3M5 8h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/></svg>';
+
+  /**
+   * Pinta el procedimiento como una línea de tiempo de tarjetas plegables.
+   * El último paso se destaca como resultado. Los pasos plegados por el usuario
+   * se conservan al recalcular, y la animación de entrada solo se ejecuta
+   * cuando cambia la estructura del procedimiento (no en cada pulsación).
+   */
   function renderSteps(container, steps) {
-    container.innerHTML = steps.map((s, i) => `
-      <li class="step">
-        <span class="step-n">${i + 1}</span>
-        <div class="min-w-0 flex-1">
-          <p class="step-t">${s.title}</p>
-          ${[].concat(s.tex || []).map(() => '<div class="step-tex"></div>').join('')}
-          ${s.html ? `<div class="step-html">${s.html}</div>` : ''}
+    const sig = steps.map((s) => s.title).join('|');
+    const animate = container.dataset.sig !== sig;
+    const collapsed = animate ? new Set() : new Set([...container.querySelectorAll('.step.collapsed')].map((li) => li.dataset.i));
+    container.dataset.sig = sig;
+    container.classList.remove('steps-anim');
+
+    container.innerHTML = steps.map((s, i) => {
+      const last = i === steps.length - 1;
+      return `
+      <li class="step${last ? ' step-final' : ''}${collapsed.has(String(i)) ? ' collapsed' : ''}" data-i="${i}" style="--i:${i}">
+        <span class="step-n">${last ? '✓' : i + 1}</span>
+        <div class="step-box">
+          <button type="button" class="step-head" aria-expanded="${!collapsed.has(String(i))}">
+            <span class="step-t">${s.title}</span>
+            ${last ? '<span class="step-badge">Resultado</span>' : ''}
+            ${CHEVRON}
+          </button>
+          <div class="step-body"><div><div class="step-inner">
+            ${[].concat(s.tex || []).map((_, j) => `<div class="step-tex" data-j="${j}"><button type="button" class="step-copy" title="Copiar fórmula (LaTeX)" aria-label="Copiar fórmula">${COPY_ICO}</button><div class="step-math"></div></div>`).join('')}
+            ${s.html ? `<div class="step-html">${s.html}</div>` : ''}
+          </div></div></div>
         </div>
-      </li>`).join('');
+      </li>`;
+    }).join('');
     container.querySelectorAll('.step').forEach((li, i) => {
       const texs = [].concat(steps[i].tex || []);
-      li.querySelectorAll('.step-tex').forEach((el, j) => tex(el, texs[j]));
+      li.querySelectorAll('.step-math').forEach((el, j) => tex(el, texs[j]));
     });
+    container._tex = steps.map((s) => [].concat(s.tex || []));
+    if (animate) { void container.offsetWidth; container.classList.add('steps-anim'); }
+    updateStepsMeta(container, steps.length);
   }
   function placeholderSteps(container) {
-    container.innerHTML = '<li class="py-2 text-sm italic text-slate-400">Complete los datos con valores válidos para ver el procedimiento.</li>';
+    delete container.dataset.sig;
+    container.innerHTML = `
+      <li class="flex flex-col items-center gap-2 rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center dark:border-slate-700">
+        <span class="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6M9 11h6M9 15h3M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>
+        </span>
+        <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Aún no hay procedimiento</p>
+        <p class="text-xs text-slate-400">Complete los datos con valores válidos para ver la resolución paso a paso.</p>
+      </li>`;
+    updateStepsMeta(container, 0);
   }
+  /** Contador de pasos y barra de avance (proporción de pasos desplegados). */
+  function updateStepsMeta(container, total) {
+    const meta = $(container.id + '-meta');
+    const bar = container.parentElement.querySelector('.steps-progress');
+    meta.classList.toggle('hidden', !total);
+    bar.classList.toggle('hidden', !total);
+    if (!total) return;
+    const open = total - container.querySelectorAll('.step.collapsed').length;
+    meta.textContent = `${total} pasos`;
+    bar.firstElementChild.style.width = `${(open / total) * 100}%`;
+  }
+  /* Interacción del procedimiento (delegada): plegar, copiar fórmula, expandir/contraer, imprimir */
+  document.addEventListener('click', (e) => {
+    const copy = e.target.closest('.step-copy');
+    if (copy) {
+      const ol = copy.closest('ol'), li = copy.closest('.step');
+      copyText(ol._tex[li.dataset.i][copy.parentElement.dataset.j], 'Fórmula LaTeX copiada');
+      return;
+    }
+    const head = e.target.closest('.step-head');
+    if (head) {
+      const li = head.closest('.step');
+      li.classList.toggle('collapsed');
+      head.setAttribute('aria-expanded', !li.classList.contains('collapsed'));
+      updateStepsMeta(li.closest('ol'), li.closest('ol').children.length);
+      return;
+    }
+    const tool = e.target.closest('[data-steps-act]');
+    if (tool) {
+      const ol = $(tool.parentElement.dataset.steps);
+      const act = tool.dataset.stepsAct;
+      if (act === 'print') { window.print(); return; }
+      ol.querySelectorAll('.step').forEach((li) => {
+        li.classList.toggle('collapsed', act === 'collapse');
+        li.querySelector('.step-head').setAttribute('aria-expanded', act !== 'collapse');
+      });
+      if (ol.querySelector('.step')) updateStepsMeta(ol, ol.children.length);
+    }
+  });
 
   /* ---------- Gráficos (Chart.js) ---------- */
   const charts = {};
   const PALETTE = ['#4f46e5', '#2563eb', '#0ea5e9', '#14b8a6', '#8b5cf6', '#64748b', '#6366f1', '#0284c7', '#a855f7', '#475569'];
-  if (window.Chart) {
+  /** Colores de ejes y cuadrícula según el tema activo. */
+  function applyChartTheme() {
+    if (!window.Chart) return;
+    const dark = document.documentElement.classList.contains('dark');
     Chart.defaults.font.family = 'Inter, ui-sans-serif, system-ui, sans-serif';
-    Chart.defaults.color = '#64748b';
-    Chart.defaults.borderColor = '#e2e8f0';
+    Chart.defaults.color = dark ? '#94a3b8' : '#64748b';
+    Chart.defaults.borderColor = dark ? '#1e293b' : '#e2e8f0';
   }
+  /** Color de fondo de las tarjetas (separador entre sectores de la dona). */
+  const cardBg = () => (document.documentElement.classList.contains('dark') ? '#0f172a' : '#fff');
+  applyChartTheme();
   /** Crea el gráfico o actualiza sus datos si ya existe (evita parpadeos). */
   function upsertChart(key, config) {
     if (!window.Chart) return;
@@ -1012,7 +1330,7 @@
           <td class="text-right">${fmt(r.exact, 4)}</td>
           <td class="text-right font-semibold text-indigo-700">${r.ni}</td>
         </tr>`).join('') + `
-        <tr class="bg-slate-50 font-semibold">
+        <tr class="bg-slate-50 font-semibold dark:bg-slate-800/60">
           <td>Total</td><td class="text-right">${N.toLocaleString('es-PE')}</td><td class="text-right">1</td>
           <td class="text-right">${fmt(n, 4)}</td><td class="text-right text-indigo-700">${n}</td>
         </tr>`;
@@ -1022,7 +1340,7 @@
         type: 'doughnut',
         data: {
           labels: rows.map((r) => r.name),
-          datasets: [{ data: rows.map((r) => r.ni), backgroundColor: rows.map((_, i) => PALETTE[i % PALETTE.length]), borderColor: '#fff', borderWidth: 2 }]
+          datasets: [{ data: rows.map((r) => r.ni), backgroundColor: rows.map((_, i) => PALETTE[i % PALETTE.length]), borderColor: cardBg(), borderWidth: 2 }]
         },
         options: {
           responsive: true, maintainAspectRatio: false, animation: { duration: 250 }, cutout: '58%',
@@ -1133,7 +1451,7 @@
       // Secuencia como etiquetas
       $('s3-count').textContent = `${n} elemento(s)`;
       $('s3-seq').innerHTML = seq.slice(0, this.LIST_MAX)
-        .map((x) => `<span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium tabular-nums text-indigo-700 ${x === r ? 'ring-2 ring-amber-400' : ''}">${x}</span>`).join('')
+        .map((x) => `<span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium tabular-nums text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 ${x === r ? 'ring-2 ring-amber-400' : ''}">${x}</span>`).join('')
         + (n > this.LIST_MAX ? `<span class="px-2 py-0.5 text-xs text-slate-500">… y ${n - this.LIST_MAX} más (incluidos en el resumen exportado)</span>` : '');
 
       this.renderGrid();
@@ -1361,7 +1679,7 @@
         : `Al nivel de significancia α = ${fmt(r.alpha)}, no existe evidencia estadística suficiente para afirmar que ${claim}.`;
 
       renderSteps($('s4-steps'), [
-        { title: 'Plantear las hipótesis', tex: H.join(String.raw`\qquad`) },
+        { title: 'Plantear las hipótesis', tex: H.join(String.raw`\qquad `) },
         { title: 'Nivel de significancia y valor crítico', tex: [String.raw`\alpha = ${fmt(r.alpha)}`, critTex] },
         { title: 'Estadístico de prueba', tex: String.raw`Z_c = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}` },
         {
@@ -1433,10 +1751,10 @@
   document.querySelectorAll('.actions').forEach((bar) => {
     const sec = bar.dataset.sec;
     bar.innerHTML = `
-      <button type="button" class="btn btn-primary" data-act="copy">${svg('copy')}Copiar resumen</button>
-      <button type="button" class="btn btn-ghost" data-act="export">${svg('export')}Exportar .txt</button>
-      <button type="button" class="btn btn-ghost" data-act="example">${svg('example')}Ejemplo</button>
-      <button type="button" class="btn btn-danger" data-act="clear">${svg('clear')}Limpiar datos</button>`;
+      <button type="button" class="btn btn-hero" data-act="copy">${svg('copy')}Copiar resumen</button>
+      <button type="button" class="btn btn-hero-ghost" data-act="export">${svg('export')}Exportar .txt</button>
+      <button type="button" class="btn btn-hero-ghost" data-act="example">${svg('example')}Ejemplo</button>
+      <button type="button" class="btn btn-hero-ghost hover:!bg-red-500/80" data-act="clear">${svg('clear')}Limpiar datos</button>`;
     bar.addEventListener('click', (e) => {
       const act = e.target.closest('[data-act]')?.dataset.act;
       if (!act) return;
@@ -1462,6 +1780,16 @@
   $('menu-btn').addEventListener('click', () => openSidebar(true));
   $('overlay').addEventListener('click', () => openSidebar(false));
 
+  /* Tema claro / oscuro (se recuerda en este navegador) */
+  $('theme-btn').addEventListener('click', () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('tema', dark ? 'dark' : 'light'); } catch (e) {}
+    applyChartTheme();
+    // Se vuelven a crear los gráficos para que tomen los nuevos colores
+    Object.keys(charts).forEach((k) => { charts[k].destroy(); delete charts[k]; });
+    Object.values(MODULES).forEach((m) => m.compute());
+  });
+
   function route() {
     let h = location.hash.slice(1);
     if (!SECTIONS.includes(h)) h = 'tamano';
@@ -1477,6 +1805,8 @@
   /* =========================================================================
      9. INICIO
      ========================================================================= */
+  document.querySelectorAll('.js-year').forEach((el) => { el.textContent = new Date().getFullYear(); });
+  document.querySelectorAll('[data-tex]').forEach((el) => tex(el, el.dataset.tex));
   route();
   S1.init();
   S2.init();
