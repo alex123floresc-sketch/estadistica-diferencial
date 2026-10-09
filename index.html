@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estadística Inferencial · Módulo 1</title>
+  <title>Estadística Inferencial con IA</title>
   <meta name="description" content="Calculadora de tamaño muestral, afijación proporcional, muestreo sistemático y prueba Z para dos medias. 100 % en el navegador." />
 
   <!-- Tipografía -->
@@ -41,19 +41,29 @@
                             dark:bg-slate-900 dark:border-slate-800 dark:shadow-none; }
       .card-h      { @apply px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 dark:border-slate-800; }
       .card-t      { @apply flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-100; }
-      .card-t::before { content: ''; @apply h-4 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-blue-500; }
+      .card-t::before { content: ''; @apply h-4 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-violet-500; }
       .card-b      { @apply p-5; }
 
       /* Encabezado de cada tema */
-      .hero        { @apply relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-600 to-blue-600 p-6 text-white shadow-lg shadow-indigo-500/20
-                            dark:from-indigo-700 dark:via-indigo-800 dark:to-blue-900 dark:shadow-none sm:p-7; }
-      .hero-ico    { @apply grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white/15 text-lg font-bold ring-1 ring-inset ring-white/25 backdrop-blur; }
-      .hero-eyebrow{ @apply text-xs font-medium text-indigo-100/90; }
-      .hero-title  { @apply mt-0.5 text-xl font-semibold tracking-tight sm:text-2xl; }
-      .hero-desc   { @apply mt-1 max-w-2xl text-sm text-indigo-100; }
-      .hero-formula{ @apply mt-4 inline-block max-w-full overflow-x-auto rounded-xl bg-white/10 px-4 py-1 ring-1 ring-inset ring-white/15; }
-      .btn-hero    { @apply bg-white text-indigo-700 shadow-sm hover:bg-indigo-50; }
-      .btn-hero-ghost { @apply bg-white/10 text-white ring-1 ring-inset ring-white/25 hover:bg-white/20; }
+      .hero        { @apply relative rounded-2xl border border-slate-200/80 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 sm:p-7; }
+      .hero-ico    { @apply grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-lg font-bold text-white shadow-lg shadow-violet-500/25; }
+      .hero-eyebrow{ @apply text-xs font-medium text-slate-500 dark:text-slate-400; }
+      .hero-title  { @apply mt-0.5 text-xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-2xl; }
+      .hero-desc   { @apply mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400; }
+      .hero-formula{ @apply mt-4 inline-block max-w-full overflow-x-auto rounded-xl bg-slate-50 px-4 py-1 text-slate-800 dark:bg-slate-800/60 dark:text-slate-100; }
+      .btn-hero    { @apply bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm hover:from-indigo-700 hover:to-violet-700; }
+      .btn-hero-ghost { @apply border border-slate-200 bg-white text-slate-700 hover:bg-slate-50
+                               dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800; }
+
+      /* Asistente IA: explicación en lenguaje sencillo */
+      .ai-card     { @apply relative rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-indigo-50 p-4
+                            dark:border-violet-900/60 dark:from-violet-950/40 dark:via-slate-900 dark:to-indigo-950/40; }
+      .ai-head     { @apply mb-2 flex items-center gap-2 text-xs font-semibold text-violet-700 dark:text-violet-300; }
+      .ai-dot      { @apply grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[11px] text-white; }
+      .ai-text     { @apply text-sm leading-relaxed text-slate-700 dark:text-slate-300; }
+      .ai-text b   { @apply text-slate-900 dark:text-white; }
+      .ai-badge    { @apply inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-indigo-500/10 to-violet-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-violet-700 ring-1 ring-inset ring-violet-500/20
+                            dark:text-violet-300; }
 
       /* Formularios */
       .lbl         { @apply block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300; }
@@ -92,17 +102,18 @@
       .kpi-l       { @apply text-xs font-medium text-slate-500 dark:text-slate-400; }
       .kpi-v       { @apply mt-1.5 text-2xl font-semibold tracking-tight text-slate-900 tabular-nums break-all dark:text-white; }
       .kpi-s       { @apply mt-0.5 text-xs text-slate-500 dark:text-slate-400; }
-      .kpi-accent  { @apply border-transparent bg-gradient-to-br from-indigo-600 to-blue-600 shadow-indigo-500/30 dark:from-indigo-600 dark:to-blue-700; }
+      .kpi-accent  { @apply border-transparent bg-gradient-to-br from-indigo-600 to-violet-600 shadow-violet-500/30 dark:from-indigo-600 dark:to-violet-700; }
       .kpi-accent .kpi-l, .kpi-accent .kpi-s { @apply text-indigo-100; }
       .kpi-accent .kpi-v { @apply text-white; }
       .kpi-ok      { @apply !border-emerald-200 !bg-emerald-50 dark:!border-emerald-900 dark:!bg-emerald-950/40; }
       .kpi-bad     { @apply !border-red-200 !bg-red-50 dark:!border-red-900 dark:!bg-red-950/40; }
 
       /* Navegación */
-      .nav-link    { @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white; }
-      .nav-link.active { @apply bg-gradient-to-r from-indigo-600/30 to-indigo-600/5 text-white ring-1 ring-inset ring-indigo-400/30; }
-      .nav-ico     { @apply grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-800 text-xs font-semibold text-indigo-300 transition; }
-      .nav-link.active .nav-ico { @apply bg-gradient-to-br from-indigo-500 to-blue-500 text-white shadow-lg shadow-indigo-900/50; }
+      .nav-link    { @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900
+                            dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white; }
+      .nav-link.active { @apply bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300; }
+      .nav-ico     { @apply grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-500 transition dark:bg-slate-800 dark:text-slate-400; }
+      .nav-link.active .nav-ico { @apply bg-gradient-to-br from-indigo-500 to-violet-600 text-white; }
 
       /* Procedimiento paso a paso (línea de tiempo) */
       .step        { @apply relative flex gap-4 pb-4 last:pb-0; }
@@ -133,8 +144,6 @@
       .step-final .step-tex { @apply border-emerald-500 from-emerald-100/70 to-emerald-50/30 dark:from-emerald-900/30 dark:to-emerald-950/10; }
       .step-badge  { @apply rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300; }
       .steps-meta  { @apply rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300; }
-      .steps-progress { @apply mb-5 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800; }
-      .steps-progress > span { @apply block h-full rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-emerald-500 transition-all duration-500; }
 
       /* Barra de navegación superior */
       .topnav-link { @apply rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900
@@ -165,10 +174,9 @@
     /* Transición al cambiar de tema */
     main section:not(.hidden) { animation: aparecer .25s ease-out; }
     @keyframes aparecer { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-    /* Fondo decorativo de los encabezados */
-    .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 9999px;
-                   background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%); pointer-events: none; }
-    .hero > * { position: relative; z-index: 1; }
+    /* Texto del asistente: aparece con un leve fundido cuando cambia */
+    .ai-anim { animation: aparecer .35s ease-out; }
+    .ai-grad { background: linear-gradient(90deg, #4f46e5, #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent; }
     /* Procedimiento: botón de copiar visible al pasar el cursor; entrada escalonada de los pasos */
     .step-tex:hover .step-copy { opacity: 1; }
     .steps-anim .step { animation: aparecer .4s ease-out both; animation-delay: calc(var(--i) * 70ms); }
@@ -193,32 +201,28 @@
   <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-900/50 lg:hidden"></div>
 
   <aside id="sidebar"
-         class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col bg-slate-900 transition-transform duration-200 lg:translate-x-0">
-    <div class="flex items-center gap-3 border-b border-slate-800 px-5 py-5">
-      <div class="grid h-9 w-9 place-items-center rounded-lg bg-indigo-600 font-bold text-white">σ</div>
+         class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white transition-transform duration-200 dark:border-slate-800 dark:bg-slate-900 lg:translate-x-0">
+    <div class="flex items-center gap-3 px-5 py-5">
+      <div class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-lg font-bold text-white shadow-lg shadow-violet-500/30">✦</div>
       <div>
-        <p class="text-sm font-semibold text-white">Estadística Inferencial</p>
-        <p class="text-xs text-slate-400">Calculadora del curso</p>
+        <p class="text-sm font-semibold text-slate-900 dark:text-white">Estadística Inferencial</p>
+        <p class="text-xs font-medium ai-grad">Calculadora asistida por IA</p>
       </div>
     </div>
 
-    <nav class="flex-1 overflow-y-auto px-3 py-4">
-      <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Módulo 1 · Muestreo y prueba Z</p>
+    <nav class="flex-1 overflow-y-auto px-3 py-2">
+      <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Módulo 1 · Muestreo y prueba Z</p>
       <a href="#tamano" class="nav-link" data-nav="tamano"><span class="nav-ico">n</span>Tamaño de muestra</a>
       <a href="#afijacion" class="nav-link" data-nav="afijacion"><span class="nav-ico">nᵢ</span>Afijación proporcional</a>
       <a href="#sistematico" class="nav-link" data-nav="sistematico"><span class="nav-ico">k</span>Muestreo sistemático</a>
       <a href="#pruebaz" class="nav-link" data-nav="pruebaz"><span class="nav-ico">Z</span>Prueba Z · dos medias</a>
     </nav>
 
-    <div class="space-y-3 border-t border-slate-800 px-5 py-4">
-      <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 p-3">
-        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 text-xs font-bold text-white">AF</div>
-        <div class="min-w-0">
-          <p class="text-[11px] text-slate-400">Desarrollado por</p>
-          <p class="text-xs font-semibold leading-snug text-white">Flores Calcina Alexander Edson</p>
-        </div>
+    <div class="px-4 py-4">
+      <div class="ai-card !p-3">
+        <p class="ai-head !mb-1"><span class="ai-dot">✦</span>Hecho con IA</p>
+        <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">Diseñada y programada con ayuda de Claude (Anthropic). Los cálculos se ejecutan en su navegador; no se envían datos a ningún servidor.</p>
       </div>
-      <p class="text-[11px] leading-relaxed text-slate-500">Todos los cálculos se ejecutan en su navegador. No se envían datos a ningún servidor.</p>
     </div>
   </aside>
 
@@ -232,7 +236,7 @@
         <button id="menu-btn" class="icon-btn lg:hidden" aria-label="Abrir menú">
           <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div class="min-w-0 flex-1 xl:flex-none">
+        <div class="min-w-0 flex-1">
           <p class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
             Módulo 1
             <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
@@ -240,22 +244,13 @@
           <h1 id="page-title" class="truncate text-base font-semibold text-slate-900 dark:text-white">Tamaño de muestra</h1>
         </div>
 
-        <nav class="mx-auto hidden items-center gap-1 xl:flex" aria-label="Temas del módulo">
-          <a href="#tamano" class="topnav-link" data-nav="tamano">Tamaño de muestra</a>
-          <a href="#afijacion" class="topnav-link" data-nav="afijacion">Afijación</a>
-          <a href="#sistematico" class="topnav-link" data-nav="sistematico">Sistemático</a>
-          <a href="#pruebaz" class="topnav-link" data-nav="pruebaz">Prueba Z</a>
-        </nav>
 
         <div class="flex items-center gap-2 sm:gap-3">
+          <span class="ai-badge hidden md:inline-flex">✦ Asistente IA activo</span>
           <!-- Autor y derechos de autor -->
-          <div class="hidden items-center gap-2.5 rounded-xl border border-slate-200 bg-white/70 py-1 pl-1 pr-3 dark:border-slate-800 dark:bg-slate-900/70 sm:flex"
-               title="© Flores Calcina Alexander Edson · Todos los derechos reservados">
-            <div class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-blue-600 text-xs font-bold text-white">AF</div>
-            <div class="leading-tight">
-              <p class="text-xs font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400">© <span class="js-year">2026</span> · Todos los derechos reservados</p>
-            </div>
+          <div class="hidden text-right leading-tight sm:block" title="© Flores Calcina Alexander Edson · Todos los derechos reservados">
+            <p class="text-xs font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">© <span class="js-year">2026</span> · Todos los derechos reservados</p>
           </div>
           <button id="theme-btn" class="icon-btn" aria-label="Cambiar tema claro / oscuro" title="Cambiar tema">
             <svg class="h-5 w-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -264,8 +259,7 @@
         </div>
       </div>
       <!-- En móvil, el autor se muestra en una franja propia -->
-      <div class="border-t border-slate-100 bg-gradient-to-r from-indigo-50 via-white to-blue-50 px-4 py-1 text-[11px] text-slate-600
-                  dark:border-slate-800 dark:from-indigo-950/50 dark:via-slate-950 dark:to-blue-950/50 dark:text-slate-300 text-center leading-snug sm:hidden">
+      <div class="border-t border-slate-100 px-4 py-1 text-center text-[11px] leading-snug text-slate-600 dark:border-slate-800 dark:text-slate-300 sm:hidden">
         © <span class="js-year">2026</span> <b class="font-semibold text-slate-800 dark:text-white">Flores Calcina Alexander Edson</b> · Todos los derechos reservados
       </div>
     </header>
@@ -382,6 +376,10 @@
 
           <!-- Resultados -->
           <div class="space-y-6 lg:col-span-3">
+            <div class="ai-card">
+              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
+              <p id="s1-ai" class="ai-text"></p>
+            </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi"><p class="kpi-l">n exacto</p><p id="s1-k-n" class="kpi-v">—</p><p class="kpi-s">sin redondear</p></div>
               <div class="kpi kpi-accent"><p class="kpi-l">Tamaño de muestra</p><p id="s1-k-nup" class="kpi-v">—</p><p class="kpi-s">⌈n⌉ redondeo por exceso</p></div>
@@ -414,8 +412,7 @@
             </div>
           </div>
           <div class="card-b">
-            <div class="steps-progress hidden"><span style="width:0"></span></div>
-            <ol id="s1-steps"></ol>
+                        <ol id="s1-steps"></ol>
           </div>
         </div>
       </section>
@@ -464,6 +461,10 @@
           </div>
 
           <div class="space-y-6 lg:col-span-3">
+            <div class="ai-card">
+              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
+              <p id="s2-ai" class="ai-text"></p>
+            </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi"><p class="kpi-l">Población N</p><p id="s2-k-N" class="kpi-v">—</p><p class="kpi-s">N = Σ Nᵢ</p></div>
               <div class="kpi kpi-accent"><p class="kpi-l">Muestra n</p><p id="s2-k-n" class="kpi-v">—</p><p class="kpi-s">Σ nᵢ asignados</p></div>
@@ -501,8 +502,7 @@
             </div>
           </div>
           <div class="card-b">
-            <div class="steps-progress hidden"><span style="width:0"></span></div>
-            <ol id="s2-steps"></ol>
+                        <ol id="s2-steps"></ol>
           </div>
         </div>
       </section>
@@ -556,6 +556,10 @@
           </div>
 
           <div class="space-y-6 lg:col-span-3">
+            <div class="ai-card">
+              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
+              <p id="s3-ai" class="ai-text"></p>
+            </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi kpi-accent"><p class="kpi-l">Salto k</p><p id="s3-k-k" class="kpi-v">—</p><p class="kpi-s">k = ⌊N / n⌋</p></div>
               <div class="kpi"><p class="kpi-l">Arranque r</p><p id="s3-k-r" class="kpi-v">—</p><p class="kpi-s">aleatorio en [1, k]</p></div>
@@ -597,8 +601,7 @@
             </div>
           </div>
           <div class="card-b">
-            <div class="steps-progress hidden"><span style="width:0"></span></div>
-            <ol id="s3-steps"></ol>
+                        <ol id="s3-steps"></ol>
           </div>
         </div>
       </section>
@@ -664,6 +667,10 @@
           </div>
 
           <div class="space-y-6 lg:col-span-3">
+            <div class="ai-card">
+              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
+              <p id="s4-ai" class="ai-text"></p>
+            </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi"><p class="kpi-l">Z calculado</p><p id="s4-k-zc" class="kpi-v">—</p><p class="kpi-s">estadístico Z<sub>c</sub></p></div>
               <div class="kpi"><p class="kpi-l">Z crítico</p><p id="s4-k-zt" class="kpi-v">—</p><p id="s4-k-zt-s" class="kpi-s">valor de tabla</p></div>
@@ -695,8 +702,7 @@
             </div>
           </div>
           <div class="card-b">
-            <div class="steps-progress hidden"><span style="width:0"></span></div>
-            <ol id="s4-steps"></ol>
+                        <ol id="s4-steps"></ol>
           </div>
         </div>
       </section>
@@ -704,7 +710,7 @@
       <footer class="mt-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-5 dark:border-slate-800 dark:bg-slate-900">
         <div class="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
           <div class="flex items-center gap-3">
-            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-sm font-bold text-white">AF</div>
+            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white">AF</div>
             <div>
               <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
               <p class="text-xs text-slate-500 dark:text-slate-400">Calculadora de Estadística Inferencial · Módulo 1</p>
@@ -712,7 +718,7 @@
           </div>
           <p class="text-xs text-slate-500 dark:text-slate-400">
             © <span class="js-year">2026</span> Flores Calcina Alexander Edson. Todos los derechos reservados.<br class="hidden sm:block" />
-            <span class="text-slate-400 dark:text-slate-500">Cálculos realizados íntegramente en el navegador.</span>
+            <span class="text-slate-400 dark:text-slate-500">Desarrollada con asistencia de IA (Claude) · Cálculos realizados en el navegador.</span>
           </p>
         </div>
       </footer>
@@ -873,16 +879,11 @@
       </li>`;
     updateStepsMeta(container, 0);
   }
-  /** Contador de pasos y barra de avance (proporción de pasos desplegados). */
+  /** Contador de pasos del procedimiento. */
   function updateStepsMeta(container, total) {
     const meta = $(container.id + '-meta');
-    const bar = container.parentElement.querySelector('.steps-progress');
     meta.classList.toggle('hidden', !total);
-    bar.classList.toggle('hidden', !total);
-    if (!total) return;
-    const open = total - container.querySelectorAll('.step.collapsed').length;
-    meta.textContent = `${total} pasos`;
-    bar.firstElementChild.style.width = `${(open / total) * 100}%`;
+    if (total) meta.textContent = `${total} pasos`;
   }
   /* Interacción del procedimiento (delegada): plegar, copiar fórmula, expandir/contraer, imprimir */
   document.addEventListener('click', (e) => {
@@ -912,6 +913,18 @@
       if (ol.querySelector('.step')) updateStepsMeta(ol, ol.children.length);
     }
   });
+
+  /* ---------- Asistente IA: interpretación en lenguaje sencillo ---------- */
+  const AI_EMPTY = 'Complete los datos con valores válidos y le explicaré el resultado en palabras sencillas.';
+  /** Escribe la interpretación del resultado; se anima solo cuando el texto cambia. */
+  function aiSay(id, html) {
+    const el = $(id);
+    const txt = html || AI_EMPTY;
+    if (el.innerHTML === txt) return;
+    el.innerHTML = txt;
+    el.classList.remove('ai-anim'); void el.offsetWidth; el.classList.add('ai-anim');
+  }
+  const pct = (x, d = 2) => `${fmt(x * 100, d)} %`;
 
   /* ---------- Gráficos (Chart.js) ---------- */
   const charts = {};
@@ -1081,6 +1094,20 @@
 
       this.renderSteps();
       this.renderChart();
+      this.explain();
+    },
+
+    explain() {
+      const r = this.result;
+      const half = r.e / 2, h2 = half * half;
+      const nHalf = ceilSafe(r.fin ? (r.A * r.N) / (r.A + h2 * (r.N - 1)) : r.A / h2);
+      const que = r.media ? 'la media poblacional (μ)' : 'la proporción poblacional (P)';
+      const err = r.media ? `±${fmt(r.e, 6)}` : `±${pct(r.e)}`;
+      aiSay('s1-ai',
+        `Necesita una muestra de <b>${r.nUp.toLocaleString('es-PE')} elementos</b> para estimar ${que} con ${pct(r.conf)} de confianza y un error máximo de ${err}. `
+        + (r.fin ? `Como la población es finita (N = ${r.N.toLocaleString('es-PE')}), la muestra baja de ${ceilSafe(r.n0).toLocaleString('es-PE')} a ${r.nUp.toLocaleString('es-PE')}. ` : '')
+        + (!r.media && r.unknown ? 'Al no conocer P se usó P = 0.5, el caso más conservador. ' : '')
+        + `Si quisiera la mitad de error, necesitaría unos <b>${nHalf.toLocaleString('es-PE')}</b>.`);
     },
 
     renderSteps() {
@@ -1188,6 +1215,7 @@
     showEmpty() {
       this.result = null;
       ['s1-k-n', 's1-k-nup', 's1-k-z', 's1-k-conf'].forEach((id) => setText(id, '—'));
+      aiSay('s1-ai');
       placeholderSteps($('s1-steps'));
       clearChart('s1');
     },
@@ -1351,6 +1379,14 @@
         }
       });
 
+      // Asistente IA
+      const big = rows.reduce((a, r) => (r.Ni > a.Ni ? r : a));
+      const small = rows.reduce((a, r) => (r.Ni < a.Ni ? r : a));
+      aiSay('s2-ai',
+        `La muestra de <b>${n}</b> se reparte entre ${rows.length} estratos según el peso de cada uno en la población (se encuesta al ${pct(n / N)} de cada estrato). `
+        + `El estrato más grande, <b>${esc(big.name)}</b> (${pct(big.W, 1)} de N), aporta ${big.ni} elementos; el más pequeño, <b>${esc(small.name)}</b>, aporta ${small.ni}. `
+        + (rows.some((r) => r.ni === 0) ? 'Ojo: algún estrato queda sin representantes; conviene aumentar n.' : 'Así la muestra conserva la misma composición que la población.'));
+
       // Procedimiento
       const Ns = rows.map((r) => r.Ni);
       const sumTex = rows.length <= 8 ? Ns.join(' + ') : `${Ns.slice(0, 3).join(' + ')} + \\dots + ${Ns[Ns.length - 1]}`;
@@ -1374,6 +1410,7 @@
     showEmpty() {
       this.result = null;
       ['s2-k-N', 's2-k-n', 's2-k-L', 's2-k-f'].forEach((id) => setText(id, '—'));
+      aiSay('s2-ai');
       $('s2-tbody').innerHTML = '<tr><td colspan="5" class="py-4 text-center italic text-slate-400">Sin datos válidos</td></tr>';
       setWarn('s2-warn', '');
       placeholderSteps($('s2-steps'));
@@ -1456,6 +1493,10 @@
 
       this.renderGrid();
       this.renderSteps();
+      aiSay('s3-ai',
+        `Se elige <b>un elemento cada ${k} posiciones</b>, empezando en el número <b>${r}</b> (sorteado entre 1 y ${k}): ${seq.slice(0, 3).join(', ')}${n > 3 ? ', …' : ''} hasta el ${last}. `
+        + (residual > 0 ? `Como ${N}/${n} no es exacto, los últimos ${residual} elementos nunca salen elegidos.` : 'Como N/n es exacto, todos los elementos tienen la misma probabilidad de salir.')
+        + ' Pulse “Nuevo arranque aleatorio” para ver otra muestra posible.');
     },
 
     renderGrid() {
@@ -1497,6 +1538,7 @@
     showEmpty() {
       this.result = null;
       ['s3-k-k', 's3-k-r', 's3-k-ratio', 's3-k-last'].forEach((id) => setText(id, '—'));
+      aiSay('s3-ai');
       $('s3-rule-num').innerHTML = '';
       $('s3-count').textContent = '';
       $('s3-seq').innerHTML = '<span class="text-sm italic text-slate-400">Sin datos válidos</span>';
@@ -1588,6 +1630,12 @@
 
       this.renderChart();
       this.renderSteps();
+      const claim = { two: 'las dos medias poblacionales son <b>diferentes</b>', left: 'la media 1 es <b>menor</b> que la media 2', right: 'la media 1 es <b>mayor</b> que la media 2' }[tail];
+      const pTxt = p < 0.0001 ? 'menos de 0.01 %' : pct(p);
+      aiSay('s4-ai',
+        `El estadístico Z<sub>c</sub> = ${fmt(zc, 3)} ${reject ? 'cae <b>dentro</b>' : 'queda <b>fuera</b>'} de la zona de rechazo (en rojo). `
+        + (reject ? `Conclusión: con α = ${fmt(alpha)} hay evidencia suficiente para afirmar que ${claim}. ` : `Conclusión: con α = ${fmt(alpha)} no hay evidencia suficiente para afirmar que ${claim}. `)
+        + `En palabras simples: si en realidad las medias fueran iguales, un resultado así de extremo aparecería solo en el ${pTxt} de las muestras (p-valor).`);
     },
 
     renderChart() {
@@ -1698,6 +1746,7 @@
     showEmpty() {
       this.result = null;
       ['s4-k-zc', 's4-k-zt', 's4-k-p', 's4-k-dec'].forEach((id) => setText(id, '—'));
+      aiSay('s4-ai');
       setText('s4-k-zt-s', 'valor de tabla');
       setText('s4-k-dec-s', 'sobre H₀');
       $('s4-k-dec-card').className = 'kpi';
@@ -1754,7 +1803,7 @@
       <button type="button" class="btn btn-hero" data-act="copy">${svg('copy')}Copiar resumen</button>
       <button type="button" class="btn btn-hero-ghost" data-act="export">${svg('export')}Exportar .txt</button>
       <button type="button" class="btn btn-hero-ghost" data-act="example">${svg('example')}Ejemplo</button>
-      <button type="button" class="btn btn-hero-ghost hover:!bg-red-500/80" data-act="clear">${svg('clear')}Limpiar datos</button>`;
+      <button type="button" class="btn btn-hero-ghost hover:!border-red-300 hover:!text-red-600" data-act="clear">${svg('clear')}Limpiar datos</button>`;
     bar.addEventListener('click', (e) => {
       const act = e.target.closest('[data-act]')?.dataset.act;
       if (!act) return;
