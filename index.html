@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estadística Inferencial con IA</title>
+  <title>Estadística Inferencial</title>
   <meta name="description" content="Calculadora de tamaño muestral, afijación proporcional, muestreo sistemático y prueba Z para dos medias. 100 % en el navegador." />
 
   <!-- Tipografía -->
@@ -41,29 +41,25 @@
                             dark:bg-slate-900 dark:border-slate-800 dark:shadow-none; }
       .card-h      { @apply px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3 dark:border-slate-800; }
       .card-t      { @apply flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-100; }
-      .card-t::before { content: ''; @apply h-4 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-violet-500; }
+      .card-t::before { content: ''; @apply h-4 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-blue-500; }
       .card-b      { @apply p-5; }
 
       /* Encabezado de cada tema */
       .hero        { @apply relative rounded-2xl border border-slate-200/80 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 sm:p-7; }
-      .hero-ico    { @apply grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-lg font-bold text-white shadow-lg shadow-violet-500/25; }
+      .hero-ico    { @apply grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-lg font-bold text-white shadow-lg shadow-blue-500/25; }
       .hero-eyebrow{ @apply text-xs font-medium text-slate-500 dark:text-slate-400; }
       .hero-title  { @apply mt-0.5 text-xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-2xl; }
       .hero-desc   { @apply mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400; }
       .hero-formula{ @apply mt-4 inline-block max-w-full overflow-x-auto rounded-xl bg-slate-50 px-4 py-1 text-slate-800 dark:bg-slate-800/60 dark:text-slate-100; }
-      .btn-hero    { @apply bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm hover:from-indigo-700 hover:to-violet-700; }
+      .btn-hero    { @apply bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-sm hover:from-indigo-700 hover:to-blue-700; }
       .btn-hero-ghost { @apply border border-slate-200 bg-white text-slate-700 hover:bg-slate-50
                                dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800; }
 
-      /* Asistente IA: explicación en lenguaje sencillo */
-      .ai-card     { @apply relative rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-indigo-50 p-4
-                            dark:border-violet-900/60 dark:from-violet-950/40 dark:via-slate-900 dark:to-indigo-950/40; }
-      .ai-head     { @apply mb-2 flex items-center gap-2 text-xs font-semibold text-violet-700 dark:text-violet-300; }
-      .ai-dot      { @apply grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[11px] text-white; }
-      .ai-text     { @apply text-sm leading-relaxed text-slate-700 dark:text-slate-300; }
-      .ai-text b   { @apply text-slate-900 dark:text-white; }
-      .ai-badge    { @apply inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-indigo-500/10 to-violet-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-violet-700 ring-1 ring-inset ring-violet-500/20
-                            dark:text-violet-300; }
+      /* Interpretación del resultado en lenguaje sencillo */
+      .int-card    { @apply rounded-2xl border border-indigo-100 bg-indigo-50/60 p-4 dark:border-indigo-900/60 dark:bg-indigo-950/30; }
+      .int-head    { @apply mb-1.5 text-xs font-semibold uppercase tracking-wide text-indigo-700 dark:text-indigo-300; }
+      .int-text    { @apply text-sm leading-relaxed text-slate-700 dark:text-slate-300; }
+      .int-text b  { @apply text-slate-900 dark:text-white; }
 
       /* Formularios */
       .lbl         { @apply block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300; }
@@ -100,9 +96,9 @@
       .kpi         { @apply relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm shadow-slate-200/60 transition
                             dark:bg-slate-900 dark:border-slate-800 dark:shadow-none; }
       .kpi-l       { @apply text-xs font-medium text-slate-500 dark:text-slate-400; }
-      .kpi-v       { @apply mt-1.5 text-2xl font-semibold tracking-tight text-slate-900 tabular-nums break-all dark:text-white; }
+      .kpi-v       { @apply mt-1.5 text-2xl font-semibold tracking-tight text-slate-900 tabular-nums break-words dark:text-white; }
       .kpi-s       { @apply mt-0.5 text-xs text-slate-500 dark:text-slate-400; }
-      .kpi-accent  { @apply border-transparent bg-gradient-to-br from-indigo-600 to-violet-600 shadow-violet-500/30 dark:from-indigo-600 dark:to-violet-700; }
+      .kpi-accent  { @apply border-transparent bg-gradient-to-br from-indigo-600 to-blue-600 shadow-blue-500/30 dark:from-indigo-600 dark:to-blue-700; }
       .kpi-accent .kpi-l, .kpi-accent .kpi-s { @apply text-indigo-100; }
       .kpi-accent .kpi-v { @apply text-white; }
       .kpi-ok      { @apply !border-emerald-200 !bg-emerald-50 dark:!border-emerald-900 dark:!bg-emerald-950/40; }
@@ -113,7 +109,8 @@
                             dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white; }
       .nav-link.active { @apply bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300; }
       .nav-ico     { @apply grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-500 transition dark:bg-slate-800 dark:text-slate-400; }
-      .nav-link.active .nav-ico { @apply bg-gradient-to-br from-indigo-500 to-violet-600 text-white; }
+      .nav-wk      { @apply text-[10px] font-medium text-slate-400; }
+      .nav-link.active .nav-ico { @apply bg-gradient-to-br from-indigo-500 to-blue-600 text-white; }
 
       /* Procedimiento paso a paso (línea de tiempo) */
       .step        { @apply relative flex gap-4 pb-4 last:pb-0; }
@@ -175,8 +172,7 @@
     main section:not(.hidden) { animation: aparecer .25s ease-out; }
     @keyframes aparecer { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     /* Texto del asistente: aparece con un leve fundido cuando cambia */
-    .ai-anim { animation: aparecer .35s ease-out; }
-    .ai-grad { background: linear-gradient(90deg, #4f46e5, #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .int-anim { animation: aparecer .35s ease-out; }
     /* Procedimiento: botón de copiar visible al pasar el cursor; entrada escalonada de los pasos */
     .step-tex:hover .step-copy { opacity: 1; }
     .steps-anim .step { animation: aparecer .4s ease-out both; animation-delay: calc(var(--i) * 70ms); }
@@ -203,27 +199,27 @@
   <aside id="sidebar"
          class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white transition-transform duration-200 dark:border-slate-800 dark:bg-slate-900 lg:translate-x-0">
     <div class="flex items-center gap-3 px-5 py-5">
-      <div class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-lg font-bold text-white shadow-lg shadow-violet-500/30">✦</div>
+      <div class="grid h-10 w-10 place-items-center rounded-xl bg-indigo-600 text-lg font-bold text-white">σ</div>
       <div>
         <p class="text-sm font-semibold text-slate-900 dark:text-white">Estadística Inferencial</p>
-        <p class="text-xs font-medium ai-grad">Calculadora asistida por IA</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Calculadora del curso</p>
       </div>
     </div>
 
-    <nav class="flex-1 overflow-y-auto px-3 py-2">
-      <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Módulo 1 · Muestreo y prueba Z</p>
-      <a href="#tamano" class="nav-link" data-nav="tamano"><span class="nav-ico">n</span>Tamaño de muestra</a>
-      <a href="#afijacion" class="nav-link" data-nav="afijacion"><span class="nav-ico">nᵢ</span>Afijación proporcional</a>
-      <a href="#sistematico" class="nav-link" data-nav="sistematico"><span class="nav-ico">k</span>Muestreo sistemático</a>
-      <a href="#pruebaz" class="nav-link" data-nav="pruebaz"><span class="nav-ico">Z</span>Prueba Z · dos medias</a>
+    <nav class="flex-1 space-y-0.5 overflow-y-auto px-3 py-2">
+      <p class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Muestreo</p>
+      <a href="#tamano" class="nav-link" data-nav="tamano"><span class="nav-ico">n</span><span class="flex-1">Tamaño de muestra</span><span class="nav-wk">Sem 1·3</span></a>
+      <a href="#mas" class="nav-link" data-nav="mas"><span class="nav-ico">MAS</span><span class="flex-1">Muestreo aleatorio simple</span><span class="nav-wk">Sem 1·3</span></a>
+      <a href="#sistematico" class="nav-link" data-nav="sistematico"><span class="nav-ico">k</span><span class="flex-1">Muestreo sistemático</span><span class="nav-wk">Sem 2</span></a>
+      <a href="#afijacion" class="nav-link" data-nav="afijacion"><span class="nav-ico">nᵢ</span><span class="flex-1">Muestreo estratificado</span><span class="nav-wk">Sem 2</span></a>
+      <p class="px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Pruebas de hipótesis</p>
+      <a href="#potencia" class="nav-link" data-nav="potencia"><span class="nav-ico">β</span><span class="flex-1">Errores tipo I y II</span><span class="nav-wk">Sem 4</span></a>
+      <a href="#unapob" class="nav-link" data-nav="unapob"><span class="nav-ico">θ</span><span class="flex-1">Una población</span><span class="nav-wk">Sem 5</span></a>
+      <a href="#varianzas" class="nav-link" data-nav="varianzas"><span class="nav-ico">F</span><span class="flex-1">Prueba F · dos varianzas</span><span class="nav-wk">Sem 6</span></a>
+      <a href="#pruebaz" class="nav-link" data-nav="pruebaz"><span class="nav-ico">Z</span><span class="flex-1">Prueba Z · dos medias</span><span class="nav-wk"></span></a>
     </nav>
 
-    <div class="px-4 py-4">
-      <div class="ai-card !p-3">
-        <p class="ai-head !mb-1"><span class="ai-dot">✦</span>Hecho con IA</p>
-        <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">Diseñada y programada con ayuda de Claude (Anthropic). Los cálculos se ejecutan en su navegador; no se envían datos a ningún servidor.</p>
-      </div>
-    </div>
+    <p class="border-t border-slate-200 px-5 py-4 text-[11px] leading-relaxed text-slate-500 dark:border-slate-800 dark:text-slate-400">Todos los cálculos se hacen en su navegador. No se envían datos a ningún servidor.</p>
   </aside>
 
   <!-- =====================================================================
@@ -238,7 +234,7 @@
         </button>
         <div class="min-w-0 flex-1">
           <p class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
-            Módulo 1
+            <span id="page-group">Muestreo</span>
             <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
           </p>
           <h1 id="page-title" class="truncate text-base font-semibold text-slate-900 dark:text-white">Tamaño de muestra</h1>
@@ -246,7 +242,6 @@
 
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <span class="ai-badge hidden md:inline-flex">✦ Asistente IA activo</span>
           <!-- Autor y derechos de autor -->
           <div class="hidden text-right leading-tight sm:block" title="© Flores Calcina Alexander Edson · Todos los derechos reservados">
             <p class="text-xs font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
@@ -269,13 +264,13 @@
       <!-- ===============================================================
            SECCIÓN 1 · TAMAÑO DE MUESTRA
            =============================================================== -->
-      <section id="sec-tamano" class="space-y-6" data-title="Tamaño de muestra">
+      <section id="sec-tamano" class="space-y-6" data-title="Tamaño de muestra" data-group="Muestreo">
         <div class="hero">
           <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="flex min-w-0 gap-4">
               <div class="hero-ico">n</div>
               <div class="min-w-0">
-                <p class="hero-eyebrow">Tema 1 · Muestreo</p>
+                <p class="hero-eyebrow">Semanas 1 y 3 · Tamaño muestral óptimo</p>
                 <h2 class="hero-title">Calculadora de tamaño de muestra</h2>
                 <p class="hero-desc">Estimación de la media poblacional (μ) o de la proporción poblacional (P), con población infinita o finita.</p>
                 <div class="hero-formula" data-tex="n = \dfrac{Z^2 \sigma^2}{e^2}"></div>
@@ -376,9 +371,9 @@
 
           <!-- Resultados -->
           <div class="space-y-6 lg:col-span-3">
-            <div class="ai-card">
-              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
-              <p id="s1-ai" class="ai-text"></p>
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s1-int" class="int-text"></p>
             </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi"><p class="kpi-l">n exacto</p><p id="s1-k-n" class="kpi-v">—</p><p class="kpi-s">sin redondear</p></div>
@@ -420,14 +415,14 @@
       <!-- ===============================================================
            SECCIÓN 2 · AFIJACIÓN PROPORCIONAL
            =============================================================== -->
-      <section id="sec-afijacion" class="hidden space-y-6" data-title="Afijación proporcional">
+      <section id="sec-afijacion" class="hidden space-y-6" data-title="Muestreo estratificado" data-group="Muestreo">
         <div class="hero">
           <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="flex min-w-0 gap-4">
               <div class="hero-ico">nᵢ</div>
               <div class="min-w-0">
-                <p class="hero-eyebrow">Tema 2 · Muestreo estratificado</p>
-                <h2 class="hero-title">Afijación proporcional</h2>
+                <p class="hero-eyebrow">Semana 2 · Muestreo estratificado</p>
+                <h2 class="hero-title">Muestreo estratificado · afijación proporcional</h2>
                 <p class="hero-desc">Muestreo estratificado: cada estrato recibe una parte de la muestra proporcional a su tamaño.</p>
                 <div class="hero-formula" data-tex="n_i = \dfrac{N_i}{N}\, n"></div>
               </div>
@@ -461,9 +456,9 @@
           </div>
 
           <div class="space-y-6 lg:col-span-3">
-            <div class="ai-card">
-              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
-              <p id="s2-ai" class="ai-text"></p>
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s2-int" class="int-text"></p>
             </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi"><p class="kpi-l">Población N</p><p id="s2-k-N" class="kpi-v">—</p><p class="kpi-s">N = Σ Nᵢ</p></div>
@@ -510,13 +505,13 @@
       <!-- ===============================================================
            SECCIÓN 3 · MUESTREO SISTEMÁTICO
            =============================================================== -->
-      <section id="sec-sistematico" class="hidden space-y-6" data-title="Muestreo sistemático">
+      <section id="sec-sistematico" class="hidden space-y-6" data-title="Muestreo sistemático" data-group="Muestreo">
         <div class="hero">
           <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="flex min-w-0 gap-4">
               <div class="hero-ico">k</div>
               <div class="min-w-0">
-                <p class="hero-eyebrow">Tema 3 · Muestreo probabilístico</p>
+                <p class="hero-eyebrow">Semana 2 · Muestreo sistemático</p>
                 <h2 class="hero-title">Simulador de muestreo sistemático</h2>
                 <p class="hero-desc">Se elige un arranque aleatorio r y luego un elemento cada k posiciones.</p>
                 <div class="hero-formula" data-tex="x_j = r + (j-1)\,k"></div>
@@ -556,9 +551,9 @@
           </div>
 
           <div class="space-y-6 lg:col-span-3">
-            <div class="ai-card">
-              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
-              <p id="s3-ai" class="ai-text"></p>
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s3-int" class="int-text"></p>
             </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi kpi-accent"><p class="kpi-l">Salto k</p><p id="s3-k-k" class="kpi-v">—</p><p class="kpi-s">k = ⌊N / n⌋</p></div>
@@ -609,13 +604,13 @@
       <!-- ===============================================================
            SECCIÓN 4 · PRUEBA Z PARA DOS MEDIAS
            =============================================================== -->
-      <section id="sec-pruebaz" class="hidden space-y-6" data-title="Prueba Z · dos medias">
+      <section id="sec-pruebaz" class="hidden space-y-6" data-title="Prueba Z · dos medias" data-group="Pruebas de hipótesis">
         <div class="hero">
           <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="flex min-w-0 gap-4">
               <div class="hero-ico">Z</div>
               <div class="min-w-0">
-                <p class="hero-eyebrow">Tema 4 · Prueba de hipótesis</p>
+                <p class="hero-eyebrow">Complemento · Comparación de dos medias</p>
                 <h2 class="hero-title">Comparación de dos medias poblacionales (prueba Z)</h2>
                 <p class="hero-desc">Varianzas poblacionales conocidas y muestras independientes.</p>
                 <div class="hero-formula" data-tex="Z_c = \dfrac{\bar X_1-\bar X_2}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}"></div>
@@ -667,9 +662,9 @@
           </div>
 
           <div class="space-y-6 lg:col-span-3">
-            <div class="ai-card">
-              <p class="ai-head"><span class="ai-dot">✦</span>Asistente IA · interpretación del resultado</p>
-              <p id="s4-ai" class="ai-text"></p>
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s4-int" class="int-text"></p>
             </div>
             <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <div class="kpi"><p class="kpi-l">Z calculado</p><p id="s4-k-zc" class="kpi-v">—</p><p class="kpi-s">estadístico Z<sub>c</sub></p></div>
@@ -707,18 +702,412 @@
         </div>
       </section>
 
+      <section id="sec-mas" class="hidden space-y-6" data-title="Muestreo aleatorio simple" data-group="Muestreo">
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico !text-sm">MAS</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Semanas 1 y 3 · Muestreo probabilístico</p>
+                <h2 class="hero-title">Muestreo aleatorio simple (MAS)</h2>
+                <p class="hero-desc">Cada elemento de la base de datos tiene la misma probabilidad de ser elegido. La muestra se extrae con un algoritmo eficiente y se genera el script para automatizarlo.</p>
+                <div class="hero-formula" data-tex="\pi_i = \dfrac{n}{N}"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s5"></div>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div><label class="lbl" for="s5-N" id="s5-N-lbl">Tamaño de la población (N)</label><input id="s5-N" type="number" step="1" min="1" class="inp" value="1000" /><p id="s5-N-err" class="err"></p></div>
+                <div><label class="lbl" for="s5-n" id="s5-n-lbl">Tamaño de la muestra (n)</label><input id="s5-n" type="number" step="1" min="1" class="inp" value="50" /><p id="s5-n-err" class="err"></p></div>
+              </div>
+              <div><label class="lbl" for="s5-seed" id="s5-seed-lbl">Semilla (opcional)</label><input id="s5-seed" type="number" step="1" min="0" placeholder="Aleatoria" class="inp" value="2026" /><p class="hint">Con la misma semilla se obtiene siempre la misma muestra. Déjela vacía para una al azar.</p><p id="s5-seed-err" class="err"></p></div>
+              <button id="s5-random" type="button" class="btn btn-primary w-full justify-center"><svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M5.1 15a7 7 0 0 0 12.9 2M18.9 9A7 7 0 0 0 6 7"/></svg>Nueva muestra aleatoria</button>
+              <p id="s5-warn" class="warn hidden"></p>
+            </div>
+          </div>
+          <div class="space-y-6 lg:col-span-3">
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s5-int" class="int-text"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi kpi-accent"><p class="kpi-l">Muestra n</p><p id="s5-k-n" class="kpi-v">—</p><p class="kpi-s">elementos elegidos</p></div>
+              <div class="kpi"><p class="kpi-l">Fracción f</p><p id="s5-k-f" class="kpi-v">—</p><p class="kpi-s">f = n / N</p></div>
+              <div class="kpi"><p class="kpi-l">Semilla</p><p id="s5-k-seed" class="kpi-v">—</p><p class="kpi-s">reproducible</p></div>
+              <div class="kpi"><p class="kpi-l">Muestras posibles</p><p id="s5-k-comb" class="kpi-v">—</p><p class="kpi-s">C(N, n)</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Cobertura de la población</p></div>
+              <div class="card-b">
+                <div class="relative h-64">
+                  <canvas id="s5-chart"></canvas>
+                  <div id="s5-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+                <p class="hint mt-2">Cada barra cuenta los elegidos de cada tramo. En un MAS todos los tramos reciben aproximadamente la misma cantidad.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-2">
+          <div class="card">
+            <div class="card-h"><p class="card-t">Elementos seleccionados</p><span id="s5-count" class="text-xs text-slate-500"></span></div>
+            <div class="card-b"><div id="s5-seq" class="flex max-h-64 flex-wrap gap-1.5 overflow-y-auto"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-h flex-wrap">
+              <p class="card-t">Script para automatizarlo</p>
+              <div class="flex items-center gap-2">
+                <div class="seg !w-auto" id="s5-seg-lang">
+                  <button type="button" class="seg-btn active" data-val="py">Python</button>
+                  <button type="button" class="seg-btn" data-val="r">R</button>
+                  <button type="button" class="seg-btn" data-val="js">JavaScript</button>
+                </div>
+                <button id="s5-copy-code" type="button" class="btn btn-ghost btn-xs">Copiar</button>
+              </div>
+            </div>
+            <div class="card-b">
+              <pre id="s5-code" class="max-h-64 overflow-auto rounded-xl bg-slate-900 p-4 text-xs leading-relaxed text-slate-100"></pre>
+              <p id="s5-code-hint" class="hint mt-2"></p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s5-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s5-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <ol id="s5-steps"></ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec-potencia" class="hidden space-y-6" data-title="Errores tipo I y II · potencia" data-group="Pruebas de hipótesis">
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">β</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Semana 4 · Prueba de hipótesis</p>
+                <h2 class="hero-title">Errores tipo I y II y potencia de la prueba</h2>
+                <p class="hero-desc">Prueba Z para una media: probabilidad de un falso positivo (α), de un falso negativo (β) y tamaño de muestra que da la potencia deseada.</p>
+                <div class="hero-formula" data-tex="1-\beta = P(\text{rechazar } H_0 \mid H_0 \text{ es falsa})"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s6"></div>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div><label class="lbl" for="s6-mu0" id="s6-mu0-lbl">Media bajo H₀ (μ₀)</label><input id="s6-mu0" type="number" step="any" class="inp" value="100" /><p id="s6-mu0-err" class="err"></p></div>
+                <div><label class="lbl" for="s6-mu1" id="s6-mu1-lbl">Media real (μ₁)</label><input id="s6-mu1" type="number" step="any" class="inp" value="104" /><p class="hint">Diferencia que se quiere detectar.</p><p id="s6-mu1-err" class="err"></p></div>
+                <div><label class="lbl" for="s6-sigma" id="s6-sigma-lbl">Desviación estándar (σ)</label><input id="s6-sigma" type="number" step="any" min="0" class="inp" value="12" /><p id="s6-sigma-err" class="err"></p></div>
+                <div><label class="lbl" for="s6-n" id="s6-n-lbl">Tamaño de muestra (n)</label><input id="s6-n" type="number" step="1" min="1" class="inp" value="36" /><p id="s6-n-err" class="err"></p></div>
+              </div>
+              <div>
+                <label class="lbl" for="s6-alpha">Nivel de significancia (α)</label>
+                <input id="s6-alpha" type="number" step="0.01" min="0" max="0.5" class="inp" value="0.05" />
+                <div class="mt-1.5 flex gap-1.5">
+                  <button type="button" class="chip" data-alpha="0.10">0.10</button>
+                  <button type="button" class="chip" data-alpha="0.05">0.05</button>
+                  <button type="button" class="chip" data-alpha="0.01">0.01</button>
+                </div>
+                <p id="s6-alpha-err" class="err"></p>
+              </div>
+              <div>
+                <label class="lbl" for="s6-tail">Tipo de prueba (H₁)</label>
+                <select id="s6-tail" class="inp">
+                  <option value="two">Dos colas: μ ≠ μ₀</option>
+                  <option value="left">Cola izquierda: μ &lt; μ₀</option>
+                  <option value="right">Cola derecha: μ &gt; μ₀</option>
+                </select>
+              </div>
+              <div><label class="lbl" for="s6-pow" id="s6-pow-lbl">Potencia deseada (1 − β)</label><input id="s6-pow" type="number" step="0.01" min="0" max="1" class="inp" value="0.80" /><p class="hint">Usual: 0.80 o 0.90. Sirve para calcular el n necesario.</p><p id="s6-pow-err" class="err"></p></div>
+              <p id="s6-warn" class="warn hidden"></p>
+            </div>
+          </div>
+          <div class="space-y-6 lg:col-span-3">
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s6-int" class="int-text"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi"><p class="kpi-l">Error tipo I (α)</p><p id="s6-k-a" class="kpi-v">—</p><p class="kpi-s">falso positivo</p></div>
+              <div class="kpi"><p class="kpi-l">Error tipo II (β)</p><p id="s6-k-b" class="kpi-v">—</p><p class="kpi-s">falso negativo</p></div>
+              <div class="kpi kpi-accent"><p class="kpi-l">Potencia (1 − β)</p><p id="s6-k-pow" class="kpi-v">—</p><p class="kpi-s">detecta la diferencia</p></div>
+              <div class="kpi"><p class="kpi-l">n necesario</p><p id="s6-k-nreq" class="kpi-v">—</p><p class="kpi-s" id="s6-k-nreq-s">para la potencia deseada</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Distribución de X̄ bajo H₀ y bajo la media real</p></div>
+              <div class="card-b">
+                <div class="relative h-72">
+                  <canvas id="s6-chart"></canvas>
+                  <div id="s6-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+                <div class="mt-4 overflow-x-auto" id="s6-matrix"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s6-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s6-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <ol id="s6-steps"></ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec-unapob" class="hidden space-y-6" data-title="Prueba para una población" data-group="Pruebas de hipótesis">
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">θ</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Semana 5 · Pruebas paramétricas univariadas</p>
+                <h2 class="hero-title">Prueba de hipótesis para una población</h2>
+                <p class="hero-desc">Contraste sobre la media (Z o t de Student), la proporción (Z) o la varianza (χ²) de una población.</p>
+                <div class="hero-formula" data-tex="Z,\ t,\ \chi^2 = \dfrac{\hat\theta - \theta_0}{\text{EE}}"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s7"></div>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div>
+                <span class="lbl">Parámetro a contrastar</span>
+                <div class="seg" id="s7-seg-param">
+                  <button type="button" class="seg-btn active" data-val="media">Media (μ)</button>
+                  <button type="button" class="seg-btn" data-val="prop">Proporción (P)</button>
+                  <button type="button" class="seg-btn" data-val="var">Varianza (σ²)</button>
+                </div>
+              </div>
+              <div class="only-media grid gap-4 sm:grid-cols-2">
+                <div><label class="lbl" for="s7-xbar" id="s7-xbar-lbl">Media muestral (X̄)</label><input id="s7-xbar" type="number" step="any" class="inp" value="52" /><p id="s7-xbar-err" class="err"></p></div>
+                <div><label class="lbl" for="s7-mu0" id="s7-mu0-lbl">Media bajo H₀ (μ₀)</label><input id="s7-mu0" type="number" step="any" class="inp" value="50" /><p id="s7-mu0-err" class="err"></p></div>
+                <div>
+                  <label class="lbl" for="s7-sd-type">Dato de dispersión</label>
+                  <select id="s7-sd-type" class="inp">
+                    <option value="s">s muestral → t</option>
+                    <option value="sigma">σ conocida → Z</option>
+                  </select>
+                </div>
+                <div><label class="lbl" for="s7-sd" id="s7-sd-lbl">Desviación muestral (s)</label><input id="s7-sd" type="number" step="any" min="0" class="inp" value="6" /><p id="s7-sd-err" class="err"></p></div>
+              </div>
+              <div class="only-prop hidden grid gap-4 sm:grid-cols-2">
+                <div><label class="lbl" for="s7-ph" id="s7-ph-lbl">Proporción muestral (p̂)</label><input id="s7-ph" type="number" step="0.01" min="0" max="1" class="inp" value="0.58" /><p id="s7-ph-err" class="err"></p></div>
+                <div><label class="lbl" for="s7-p0" id="s7-p0-lbl">Proporción bajo H₀ (P₀)</label><input id="s7-p0" type="number" step="0.01" min="0" max="1" class="inp" value="0.5" /><p id="s7-p0-err" class="err"></p></div>
+                <p class="hint sm:col-span-2 -mt-2">Use formato decimal: 58 % → 0.58.</p>
+              </div>
+              <div class="only-var hidden grid gap-4 sm:grid-cols-2">
+                <div><label class="lbl" for="s7-s2" id="s7-s2-lbl">Varianza muestral (s²)</label><input id="s7-s2" type="number" step="any" min="0" class="inp" value="30" /><p id="s7-s2-err" class="err"></p></div>
+                <div><label class="lbl" for="s7-v0" id="s7-v0-lbl">Varianza bajo H₀ (σ₀²)</label><input id="s7-v0" type="number" step="any" min="0" class="inp" value="25" /><p id="s7-v0-err" class="err"></p></div>
+                <p class="hint sm:col-span-2 -mt-2">Si tiene la desviación estándar, elévela al cuadrado.</p>
+              </div>
+              <div><label class="lbl" for="s7-n" id="s7-n-lbl">Tamaño de muestra (n)</label><input id="s7-n" type="number" step="1" min="2" class="inp" value="25" /><p id="s7-n-err" class="err"></p></div>
+              <div>
+                <label class="lbl" for="s7-alpha">Nivel de significancia (α)</label>
+                <input id="s7-alpha" type="number" step="0.01" min="0" max="0.5" class="inp" value="0.05" />
+                <div class="mt-1.5 flex gap-1.5">
+                  <button type="button" class="chip" data-alpha="0.10">0.10</button>
+                  <button type="button" class="chip" data-alpha="0.05">0.05</button>
+                  <button type="button" class="chip" data-alpha="0.01">0.01</button>
+                </div>
+                <p id="s7-alpha-err" class="err"></p>
+              </div>
+              <div>
+                <label class="lbl" for="s7-tail">Tipo de prueba (H₁)</label>
+                <select id="s7-tail" class="inp">
+                  <option value="two">Dos colas: μ ≠ μ₀</option>
+                  <option value="left">Cola izquierda: μ &lt; μ₀</option>
+                  <option value="right">Cola derecha: μ &gt; μ₀</option>
+                </select>
+              </div>
+              <p id="s7-warn" class="warn hidden"></p>
+            </div>
+          </div>
+          <div class="space-y-6 lg:col-span-3">
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s7-int" class="int-text"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi"><p class="kpi-l" id="s7-k-st-l">Estadístico</p><p id="s7-k-st" class="kpi-v">—</p><p class="kpi-s">valor calculado</p></div>
+              <div class="kpi"><p class="kpi-l">Valor crítico</p><p id="s7-k-c" class="kpi-v">—</p><p class="kpi-s" id="s7-k-c-s">de tabla</p></div>
+              <div class="kpi"><p class="kpi-l">p-valor</p><p id="s7-k-p" class="kpi-v">—</p><p class="kpi-s">probabilidad asociada</p></div>
+              <div id="s7-k-dec-card" class="kpi"><p class="kpi-l">Decisión</p><p id="s7-k-dec" class="kpi-v text-lg">—</p><p id="s7-k-dec-s" class="kpi-s">sobre H₀</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Distribución del estadístico de prueba</p><span id="s7-region" class="text-xs text-slate-500"></span></div>
+              <div class="card-b">
+                <div class="relative h-72">
+                  <canvas id="s7-chart"></canvas>
+                  <div id="s7-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s7-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s7-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <ol id="s7-steps"></ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec-varianzas" class="hidden space-y-6" data-title="Prueba F · dos varianzas" data-group="Pruebas de hipótesis">
+        <div class="hero">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 gap-4">
+              <div class="hero-ico">F</div>
+              <div class="min-w-0">
+                <p class="hero-eyebrow">Semana 6 · Comparación de varianzas</p>
+                <h2 class="hero-title">Prueba F para la razón de dos varianzas</h2>
+                <p class="hero-desc">Verifica si dos poblaciones independientes (por ejemplo, la productividad con dos frameworks) tienen la misma varianza, condición previa a comparar sus medias.</p>
+                <div class="hero-formula" data-tex="F_c = \dfrac{s_1^2}{s_2^2}"></div>
+              </div>
+            </div>
+            <div class="actions flex shrink-0 flex-wrap gap-2" data-sec="s8"></div>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-5">
+          <div class="card lg:col-span-2">
+            <div class="card-h"><p class="card-t">Datos de entrada</p></div>
+            <div class="card-b space-y-4">
+              <div>
+                <label class="lbl" for="s8-type">Dato ingresado</label>
+                <select id="s8-type" class="inp">
+                  <option value="var">Varianzas muestrales (s²)</option>
+                  <option value="sd">Desviaciones estándar (s)</option>
+                </select>
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <fieldset class="group-box !space-y-2 !p-3">
+                  <legend class="px-1 text-xs font-semibold text-indigo-700">Grupo 1</legend>
+                  <div><label class="lbl" for="s8-v1" id="s8-v1-lbl">Varianza s₁²</label><input id="s8-v1" type="number" step="any" min="0" class="inp" value="120" /><p id="s8-v1-err" class="err"></p></div>
+                  <div><label class="lbl" for="s8-n1" id="s8-n1-lbl">Tamaño n₁</label><input id="s8-n1" type="number" step="1" min="2" class="inp" value="15" /><p id="s8-n1-err" class="err"></p></div>
+                </fieldset>
+                <fieldset class="group-box !space-y-2 !p-3">
+                  <legend class="px-1 text-xs font-semibold text-blue-700">Grupo 2</legend>
+                  <div><label class="lbl" for="s8-v2" id="s8-v2-lbl">Varianza s₂²</label><input id="s8-v2" type="number" step="any" min="0" class="inp" value="80" /><p id="s8-v2-err" class="err"></p></div>
+                  <div><label class="lbl" for="s8-n2" id="s8-n2-lbl">Tamaño n₂</label><input id="s8-n2" type="number" step="1" min="2" class="inp" value="13" /><p id="s8-n2-err" class="err"></p></div>
+                </fieldset>
+              </div>
+              <div>
+                <label class="lbl" for="s8-alpha">Nivel de significancia (α)</label>
+                <input id="s8-alpha" type="number" step="0.01" min="0" max="0.5" class="inp" value="0.05" />
+                <div class="mt-1.5 flex gap-1.5">
+                  <button type="button" class="chip" data-alpha="0.10">0.10</button>
+                  <button type="button" class="chip" data-alpha="0.05">0.05</button>
+                  <button type="button" class="chip" data-alpha="0.01">0.01</button>
+                </div>
+                <p id="s8-alpha-err" class="err"></p>
+              </div>
+              <div>
+                <label class="lbl" for="s8-tail">Tipo de prueba (H₁)</label>
+                <select id="s8-tail" class="inp">
+                  <option value="two">Dos colas: σ₁² ≠ σ₂²</option>
+                  <option value="left">Cola izquierda: σ₁² &lt; σ₂²</option>
+                  <option value="right">Cola derecha: σ₁² &gt; σ₂²</option>
+                </select>
+              </div>
+              <p id="s8-warn" class="warn hidden"></p>
+            </div>
+          </div>
+          <div class="space-y-6 lg:col-span-3">
+            <div class="int-card">
+              <p class="int-head">Interpretación</p>
+              <p id="s8-int" class="int-text"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+              <div class="kpi"><p class="kpi-l">F calculado</p><p id="s8-k-f" class="kpi-v">—</p><p class="kpi-s">s₁² / s₂²</p></div>
+              <div class="kpi"><p class="kpi-l">F crítico</p><p id="s8-k-c" class="kpi-v">—</p><p class="kpi-s" id="s8-k-c-s">de tabla</p></div>
+              <div class="kpi"><p class="kpi-l">p-valor</p><p id="s8-k-p" class="kpi-v">—</p><p class="kpi-s">probabilidad asociada</p></div>
+              <div id="s8-k-dec-card" class="kpi"><p class="kpi-l">Decisión</p><p id="s8-k-dec" class="kpi-v text-lg">—</p><p id="s8-k-dec-s" class="kpi-s">sobre H₀</p></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><p class="card-t">Distribución F de Fisher</p><span id="s8-region" class="text-xs text-slate-500"></span></div>
+              <div class="card-b">
+                <div class="relative h-72">
+                  <canvas id="s8-chart"></canvas>
+                  <div id="s8-chart-empty" class="absolute inset-0 hidden place-items-center text-sm text-slate-400">Sin datos válidos</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h flex-wrap">
+            <div class="flex items-center gap-2">
+              <p class="card-t">Procedimiento paso a paso</p>
+              <span id="s8-steps-meta" class="steps-meta hidden"></span>
+            </div>
+            <div class="steps-tools flex gap-1.5" data-steps="s8-steps">
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="expand">Expandir todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="collapse">Contraer todo</button>
+              <button type="button" class="btn btn-ghost btn-xs" data-steps-act="print">Imprimir</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <ol id="s8-steps"></ol>
+          </div>
+        </div>
+      </section>
+
       <footer class="mt-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-5 dark:border-slate-800 dark:bg-slate-900">
         <div class="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
           <div class="flex items-center gap-3">
-            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white">AF</div>
+            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-sm font-bold text-white">AF</div>
             <div>
               <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Flores Calcina Alexander Edson</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Calculadora de Estadística Inferencial · Módulo 1</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Calculadora de Estadística Inferencial</p>
             </div>
           </div>
           <p class="text-xs text-slate-500 dark:text-slate-400">
             © <span class="js-year">2026</span> Flores Calcina Alexander Edson. Todos los derechos reservados.<br class="hidden sm:block" />
-            <span class="text-slate-400 dark:text-slate-500">Desarrollada con asistencia de IA (Claude) · Cálculos realizados en el navegador.</span>
+            <span class="text-slate-400 dark:text-slate-500">Cálculos realizados íntegramente en el navegador.</span>
           </p>
         </div>
       </footer>
@@ -914,15 +1303,15 @@
     }
   });
 
-  /* ---------- Asistente IA: interpretación en lenguaje sencillo ---------- */
-  const AI_EMPTY = 'Complete los datos con valores válidos y le explicaré el resultado en palabras sencillas.';
+  /* ---------- Interpretación del resultado en lenguaje sencillo ---------- */
+  const INT_EMPTY = 'Complete los datos con valores válidos para ver la interpretación del resultado.';
   /** Escribe la interpretación del resultado; se anima solo cuando el texto cambia. */
-  function aiSay(id, html) {
+  function interp(id, html) {
     const el = $(id);
-    const txt = html || AI_EMPTY;
+    const txt = html || INT_EMPTY;
     if (el.innerHTML === txt) return;
     el.innerHTML = txt;
-    el.classList.remove('ai-anim'); void el.offsetWidth; el.classList.add('ai-anim');
+    el.classList.remove('int-anim'); void el.offsetWidth; el.classList.add('int-anim');
   }
   const pct = (x, d = 2) => `${fmt(x * 100, d)} %`;
 
@@ -1103,7 +1492,7 @@
       const nHalf = ceilSafe(r.fin ? (r.A * r.N) / (r.A + h2 * (r.N - 1)) : r.A / h2);
       const que = r.media ? 'la media poblacional (μ)' : 'la proporción poblacional (P)';
       const err = r.media ? `±${fmt(r.e, 6)}` : `±${pct(r.e)}`;
-      aiSay('s1-ai',
+      interp('s1-int',
         `Necesita una muestra de <b>${r.nUp.toLocaleString('es-PE')} elementos</b> para estimar ${que} con ${pct(r.conf)} de confianza y un error máximo de ${err}. `
         + (r.fin ? `Como la población es finita (N = ${r.N.toLocaleString('es-PE')}), la muestra baja de ${ceilSafe(r.n0).toLocaleString('es-PE')} a ${r.nUp.toLocaleString('es-PE')}. ` : '')
         + (!r.media && r.unknown ? 'Al no conocer P se usó P = 0.5, el caso más conservador. ' : '')
@@ -1215,7 +1604,7 @@
     showEmpty() {
       this.result = null;
       ['s1-k-n', 's1-k-nup', 's1-k-z', 's1-k-conf'].forEach((id) => setText(id, '—'));
-      aiSay('s1-ai');
+      interp('s1-int');
       placeholderSteps($('s1-steps'));
       clearChart('s1');
     },
@@ -1379,10 +1768,10 @@
         }
       });
 
-      // Asistente IA
+      // Interpretación
       const big = rows.reduce((a, r) => (r.Ni > a.Ni ? r : a));
       const small = rows.reduce((a, r) => (r.Ni < a.Ni ? r : a));
-      aiSay('s2-ai',
+      interp('s2-int',
         `La muestra de <b>${n}</b> se reparte entre ${rows.length} estratos según el peso de cada uno en la población (se encuesta al ${pct(n / N)} de cada estrato). `
         + `El estrato más grande, <b>${esc(big.name)}</b> (${pct(big.W, 1)} de N), aporta ${big.ni} elementos; el más pequeño, <b>${esc(small.name)}</b>, aporta ${small.ni}. `
         + (rows.some((r) => r.ni === 0) ? 'Ojo: algún estrato queda sin representantes; conviene aumentar n.' : 'Así la muestra conserva la misma composición que la población.'));
@@ -1410,7 +1799,7 @@
     showEmpty() {
       this.result = null;
       ['s2-k-N', 's2-k-n', 's2-k-L', 's2-k-f'].forEach((id) => setText(id, '—'));
-      aiSay('s2-ai');
+      interp('s2-int');
       $('s2-tbody').innerHTML = '<tr><td colspan="5" class="py-4 text-center italic text-slate-400">Sin datos válidos</td></tr>';
       setWarn('s2-warn', '');
       placeholderSteps($('s2-steps'));
@@ -1493,7 +1882,7 @@
 
       this.renderGrid();
       this.renderSteps();
-      aiSay('s3-ai',
+      interp('s3-int',
         `Se elige <b>un elemento cada ${k} posiciones</b>, empezando en el número <b>${r}</b> (sorteado entre 1 y ${k}): ${seq.slice(0, 3).join(', ')}${n > 3 ? ', …' : ''} hasta el ${last}. `
         + (residual > 0 ? `Como ${N}/${n} no es exacto, los últimos ${residual} elementos nunca salen elegidos.` : 'Como N/n es exacto, todos los elementos tienen la misma probabilidad de salir.')
         + ' Pulse “Nuevo arranque aleatorio” para ver otra muestra posible.');
@@ -1538,7 +1927,7 @@
     showEmpty() {
       this.result = null;
       ['s3-k-k', 's3-k-r', 's3-k-ratio', 's3-k-last'].forEach((id) => setText(id, '—'));
-      aiSay('s3-ai');
+      interp('s3-int');
       $('s3-rule-num').innerHTML = '';
       $('s3-count').textContent = '';
       $('s3-seq').innerHTML = '<span class="text-sm italic text-slate-400">Sin datos válidos</span>';
@@ -1574,10 +1963,6 @@
     init() {
       $('sec-pruebaz').addEventListener('input', () => this.compute());
       $('sec-pruebaz').addEventListener('change', () => this.compute());
-      document.querySelectorAll('[data-alpha]').forEach((b) => b.addEventListener('click', () => {
-        $('s4-alpha').value = b.dataset.alpha;
-        this.compute();
-      }));
       this.compute();
     },
 
@@ -1620,10 +2005,7 @@
       setText('s4-k-zt', tail === 'two' ? `±${fmt(zcrit, 4)}` : fmt(zcrit, 4));
       setText('s4-k-zt-s', tail === 'two' ? `Z₁₋α/₂ (α = ${fmt(alpha)})` : `${tail === 'left' ? 'Z_α' : 'Z₁₋α'} (α = ${fmt(alpha)})`);
       setText('s4-k-p', p < 0.0001 ? '< 0.0001' : fmt(p, 4));
-      setText('s4-k-dec', reject ? 'Se rechaza H₀' : 'No se rechaza H₀');
-      setText('s4-k-dec-s', reject ? `p = ${p < 0.0001 ? '< 0.0001' : fmt(p, 4)} < α` : `p = ${fmt(p, 4)} ≥ α`);
-      $('s4-k-dec-card').className = 'kpi ' + (reject ? '!border-red-200 !bg-red-50' : '!border-emerald-200 !bg-emerald-50');
-      $('s4-k-dec').className = 'kpi-v text-lg ' + (reject ? '!text-red-700' : '!text-emerald-700');
+      setDecision('s4', reject, p);
       $('s4-region').textContent = 'Rechazo: ' + (tail === 'two'
         ? `Z < −${fmt(zcrit, 3)} o Z > ${fmt(zcrit, 3)}`
         : tail === 'left' ? `Z < ${fmt(zcrit, 3)}` : `Z > ${fmt(zcrit, 3)}`);
@@ -1632,7 +2014,7 @@
       this.renderSteps();
       const claim = { two: 'las dos medias poblacionales son <b>diferentes</b>', left: 'la media 1 es <b>menor</b> que la media 2', right: 'la media 1 es <b>mayor</b> que la media 2' }[tail];
       const pTxt = p < 0.0001 ? 'menos de 0.01 %' : pct(p);
-      aiSay('s4-ai',
+      interp('s4-int',
         `El estadístico Z<sub>c</sub> = ${fmt(zc, 3)} ${reject ? 'cae <b>dentro</b>' : 'queda <b>fuera</b>'} de la zona de rechazo (en rojo). `
         + (reject ? `Conclusión: con α = ${fmt(alpha)} hay evidencia suficiente para afirmar que ${claim}. ` : `Conclusión: con α = ${fmt(alpha)} no hay evidencia suficiente para afirmar que ${claim}. `)
         + `En palabras simples: si en realidad las medias fueran iguales, un resultado así de extremo aparecería solo en el ${pTxt} de las muestras (p-valor).`);
@@ -1745,12 +2127,10 @@
 
     showEmpty() {
       this.result = null;
-      ['s4-k-zc', 's4-k-zt', 's4-k-p', 's4-k-dec'].forEach((id) => setText(id, '—'));
-      aiSay('s4-ai');
+      ['s4-k-zc', 's4-k-zt', 's4-k-p'].forEach((id) => setText(id, '—'));
+      interp('s4-int');
       setText('s4-k-zt-s', 'valor de tabla');
-      setText('s4-k-dec-s', 'sobre H₀');
-      $('s4-k-dec-card').className = 'kpi';
-      $('s4-k-dec').className = 'kpi-v text-lg';
+      clearDecision('s4');
       $('s4-region').textContent = '';
       placeholderSteps($('s4-steps'));
       clearChart('s4');
@@ -1785,10 +2165,889 @@
   };
 
   /* =========================================================================
+     DISTRIBUCIONES t, χ² Y F (funciones gamma y beta incompletas)
+     ========================================================================= */
+  const Dist = {
+    /** ln Γ(x) — aproximación de Lanczos */
+    lgamma(x) {
+      const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+      let y = x, t = x + 5.5, ser = 1.000000000190015;
+      t -= (x + 0.5) * Math.log(t);
+      for (const ci of c) ser += ci / ++y;
+      return -t + Math.log(2.5066282746310005 * ser / x);
+    },
+    /** Fracción continua de la beta incompleta */
+    betacf(a, b, x) {
+      const TINY = 1e-300;
+      const qab = a + b, qap = a + 1, qam = a - 1;
+      let c = 1, d = 1 - (qab * x) / qap;
+      if (Math.abs(d) < TINY) d = TINY;
+      d = 1 / d;
+      let h = d;
+      for (let m = 1; m <= 300; m++) {
+        const m2 = 2 * m;
+        let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));
+        d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY;
+        c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY;
+        d = 1 / d; h *= d * c;
+        aa = (-(a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));
+        d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY;
+        c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY;
+        d = 1 / d;
+        const del = d * c;
+        h *= del;
+        if (Math.abs(del - 1) < 3e-14) break;
+      }
+      return h;
+    },
+    /** Beta incompleta regularizada I_x(a, b) */
+    ibeta(x, a, b) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      const bt = Math.exp(Dist.lgamma(a + b) - Dist.lgamma(a) - Dist.lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+      return x < (a + 1) / (a + b + 2) ? (bt * Dist.betacf(a, b, x)) / a : 1 - (bt * Dist.betacf(b, a, 1 - x)) / b;
+    },
+    /** Gamma incompleta regularizada inferior P(a, x) */
+    gammp(a, x) {
+      if (x <= 0) return 0;
+      const lg = -x + a * Math.log(x) - Dist.lgamma(a);
+      if (x < a + 1) {
+        let ap = a, del = 1 / a, sum = del;
+        for (let i = 0; i < 1000; i++) { ap++; del *= x / ap; sum += del; if (Math.abs(del) < Math.abs(sum) * 1e-15) break; }
+        return sum * Math.exp(lg);
+      }
+      const TINY = 1e-300;
+      let b = x + 1 - a, c = 1 / TINY, d = 1 / b, h = d;
+      for (let i = 1; i < 1000; i++) {
+        const an = -i * (i - a);
+        b += 2;
+        d = an * d + b; if (Math.abs(d) < TINY) d = TINY;
+        c = b + an / c; if (Math.abs(c) < TINY) c = TINY;
+        d = 1 / d;
+        const del = d * c;
+        h *= del;
+        if (Math.abs(del - 1) < 1e-15) break;
+      }
+      return 1 - Math.exp(lg) * h;
+    },
+    /** Inversa de una función de distribución por bisección. */
+    invert(cdf, p, lo, hi) {
+      for (let i = 0; i < 200 && cdf(lo) > p; i++) lo *= 2;
+      for (let i = 0; i < 200 && cdf(hi) < p; i++) hi *= 2;
+      for (let i = 0; i < 200; i++) {
+        const m = (lo + hi) / 2;
+        if (cdf(m) < p) lo = m; else hi = m;
+        if (hi - lo < 1e-12 * Math.max(1, Math.abs(m))) break;
+      }
+      return (lo + hi) / 2;
+    },
+    tCdf(t, df) { const tail = 0.5 * Dist.ibeta(df / (df + t * t), df / 2, 0.5); return t > 0 ? 1 - tail : tail; },
+    tPdf(t, df) { return Math.exp(Dist.lgamma((df + 1) / 2) - Dist.lgamma(df / 2) - 0.5 * Math.log(df * Math.PI) - ((df + 1) / 2) * Math.log(1 + (t * t) / df)); },
+    chiCdf(x, k) { return x <= 0 ? 0 : Dist.gammp(k / 2, x / 2); },
+    chiPdf(x, k) { return x <= 0 ? 0 : Math.exp((k / 2 - 1) * Math.log(x) - x / 2 - (k / 2) * Math.LN2 - Dist.lgamma(k / 2)); },
+    fCdf(x, a, b) { return x <= 0 ? 0 : Dist.ibeta((a * x) / (a * x + b), a / 2, b / 2); },
+    fPdf(x, a, b) {
+      if (x <= 0) return 0;
+      const lbeta = Dist.lgamma(a / 2) + Dist.lgamma(b / 2) - Dist.lgamma((a + b) / 2);
+      return Math.exp(0.5 * (a * Math.log(a * x) + b * Math.log(b) - (a + b) * Math.log(a * x + b)) - Math.log(x) - lbeta);
+    }
+  };
+  /** Distribuciones listas para las pruebas: sym = simétrica alrededor de 0. */
+  const DIST = {
+    z: () => ({ sym: true, cdf: Normal.cdf, inv: Normal.inv, pdf: Normal.pdf }),
+    t: (df) => ({ sym: true, cdf: (x) => Dist.tCdf(x, df), inv: (p) => Dist.invert((x) => Dist.tCdf(x, df), p, -1, 1), pdf: (x) => Dist.tPdf(x, df) }),
+    chi: (k) => ({ sym: false, cdf: (x) => Dist.chiCdf(x, k), inv: (p) => Dist.invert((x) => Dist.chiCdf(x, k), p, 0, 1), pdf: (x) => Dist.chiPdf(x, k) }),
+    f: (a, b) => ({ sym: false, cdf: (x) => Dist.fCdf(x, a, b), inv: (p) => Dist.invert((x) => Dist.fCdf(x, a, b), p, 0, 1), pdf: (x) => Dist.fPdf(x, a, b) })
+  };
+
+  /* ---------- Utilidades comunes de las pruebas de hipótesis ---------- */
+  const Test = {
+    /** Región crítica, decisión y p-valor. */
+    decide(d, s, alpha, tail) {
+      let lo = null, hi = null, reject, p;
+      if (tail === 'two') {
+        if (d.sym) { hi = d.inv(1 - alpha / 2); lo = -hi; } else { lo = d.inv(alpha / 2); hi = d.inv(1 - alpha / 2); }
+        reject = s < lo || s > hi;
+        p = d.sym ? 2 * (1 - d.cdf(Math.abs(s))) : 2 * Math.min(d.cdf(s), 1 - d.cdf(s));
+      } else if (tail === 'left') {
+        lo = d.inv(alpha); reject = s < lo; p = d.cdf(s);
+      } else {
+        hi = d.inv(1 - alpha); reject = s > hi; p = 1 - d.cdf(s);
+      }
+      return { lo, hi, reject, p: Math.min(1, Math.max(0, p)), tail };
+    },
+    pVal: (p) => (p < 0.0001 ? '< 0.0001' : fmt(p, 4)),
+    pLabel: (p) => (p < 0.0001 ? 'p < 0.0001' : `p = ${fmt(p, 4)}`),
+    critKpi(r) {
+      if (r.tail === 'two') return r.lo === -r.hi ? `±${fmt(r.hi, 4)}` : `${fmt(r.lo, 3)} y ${fmt(r.hi, 3)}`;
+      return fmt(r.tail === 'left' ? r.lo : r.hi, 4);
+    },
+    regionText(r, v) {
+      if (r.tail === 'two') return `${v} < ${fmt(r.lo, 3)} o ${v} > ${fmt(r.hi, 3)}`;
+      return r.tail === 'left' ? `${v} < ${fmt(r.lo, 3)}` : `${v} > ${fmt(r.hi, 3)}`;
+    },
+    hyp(sym, v, tail) {
+      return {
+        two:   [String.raw`H_0: ${sym} = ${v}`, String.raw`H_1: ${sym} \neq ${v}`],
+        left:  [String.raw`H_0: ${sym} \geq ${v}`, String.raw`H_1: ${sym} < ${v}`],
+        right: [String.raw`H_0: ${sym} \leq ${v}`, String.raw`H_1: ${sym} > ${v}`]
+      }[tail].join(String.raw`\qquad `);
+    },
+    critTex(N, r, gl) {
+      const g = gl ? String.raw`\qquad (${gl})` : '';
+      if (r.tail === 'two' && r.lo === -r.hi) return String.raw`${N}_{\text{crít}} = \pm ${fmt(r.hi, 4)}${g}`;
+      if (r.tail === 'two') return String.raw`${N}_{\alpha/2} = ${fmt(r.lo, 4)}, \quad ${N}_{1-\alpha/2} = ${fmt(r.hi, 4)}${g}`;
+      return String.raw`${N}_{\text{crít}} = ${fmt(r.tail === 'left' ? r.lo : r.hi, 4)}${g}`;
+    },
+    ruleTex(N, s, r) {
+      const dec = r.reject ? String.raw`\text{Se rechaza } H_0` : String.raw`\text{No se rechaza } H_0`;
+      let t;
+      if (r.tail === 'two' && r.lo === -r.hi) t = String.raw`|${N}_c| = ${fmt(Math.abs(s), 4)} ${r.reject ? '>' : String.raw`\leq`} ${fmt(r.hi, 4)}`;
+      else if (r.tail === 'two') t = s < r.lo ? String.raw`${N}_c = ${fmt(s, 4)} < ${fmt(r.lo, 4)}`
+        : s > r.hi ? String.raw`${N}_c = ${fmt(s, 4)} > ${fmt(r.hi, 4)}`
+        : String.raw`${fmt(r.lo, 4)} \leq ${N}_c = ${fmt(s, 4)} \leq ${fmt(r.hi, 4)}`;
+      else if (r.tail === 'left') t = String.raw`${N}_c = ${fmt(s, 4)} ${r.reject ? '<' : String.raw`\geq`} ${fmt(r.lo, 4)}`;
+      else t = String.raw`${N}_c = ${fmt(s, 4)} ${r.reject ? '>' : String.raw`\leq`} ${fmt(r.hi, 4)}`;
+      return String.raw`${t} \;\Rightarrow\; ${dec}`;
+    },
+    pTex(N, r, sym) {
+      const pS = r.p < 0.0001 ? '< 0.0001' : `= ${fmt(r.p, 4)}`;
+      const f = r.tail === 'two'
+        ? (sym ? String.raw`p = 2\,P(${N} > |${N}_c|)` : String.raw`p = 2\min\{P(${N} < ${N}_c),\, P(${N} > ${N}_c)\}`)
+        : r.tail === 'left' ? String.raw`p = P(${N} < ${N}_c)` : String.raw`p = P(${N} > ${N}_c)`;
+      return String.raw`${f} ${pS} \;${r.reject ? '<' : String.raw`\geq`}\; \alpha`;
+    },
+    concl(alpha, reject, claim) {
+      return reject
+        ? `Al nivel de significancia α = ${fmt(alpha)}, existe evidencia estadística suficiente para afirmar que ${claim}.`
+        : `Al nivel de significancia α = ${fmt(alpha)}, no existe evidencia estadística suficiente para afirmar que ${claim}.`;
+    },
+    /** Curva de la distribución con zonas de rechazo y el estadístico calculado. */
+    chart(key, d, s, r, label) {
+      const c = Math.max(Math.abs(r.lo ?? 0), Math.abs(r.hi ?? 0));
+      let a, b;
+      if (d.sym) { b = Math.min(8, Math.max(4, Math.abs(s) + 0.75, c + 0.75)); a = -b; }
+      else { a = 0; const q = d.inv(0.999); b = Math.max(q, (r.hi ?? r.lo) * 1.15); if (s > b) b = Math.min(s * 1.1, q * 3); }
+      const eps = (b - a) * 1e-3;
+      const pts = (u, v, m) => {
+        const out = [];
+        for (let i = 0; i <= m; i++) { const x = u + ((v - u) * i) / m; out.push({ x, y: d.pdf(d.sym ? x : Math.max(x, eps)) }); }
+        return out;
+      };
+      const curve = pts(a, b, 300);
+      const top = Math.max(...curve.slice(6).map((q) => q.y)) * 1.15;
+      const clip = (arr) => arr.map((q) => ({ x: q.x, y: Math.min(q.y, top) }));
+      const zone = (u, v) => ({ label: 'Zona de rechazo', data: clip(pts(u, v, 100)), borderColor: 'rgba(220,38,38,0.9)', backgroundColor: 'rgba(220,38,38,0.28)', borderWidth: 1, fill: 'origin', pointRadius: 0 });
+      const zones = [];
+      if (r.lo !== null && r.lo > a) zones.push(zone(a, r.lo));
+      if (r.hi !== null && r.hi < b) zones.push(zone(r.hi, b));
+      const sx = Math.max(a, Math.min(b, s));
+      upsertChart(key, {
+        type: 'line',
+        data: {
+          datasets: [
+            { label, data: clip(curve), borderColor: '#4f46e5', backgroundColor: 'rgba(79,70,229,0.07)', fill: 'origin', borderWidth: 2, pointRadius: 0 },
+            ...zones,
+            {
+              label: `Valor calculado = ${fmt(s, 4)}${sx !== s ? ' (fuera de escala)' : ''}`, isMarker: true,
+              data: [{ x: sx, y: 0 }, { x: sx, y: top * 0.95 }],
+              borderColor: '#d97706', backgroundColor: '#d97706', borderWidth: 2, borderDash: [6, 4], pointRadius: [0, 5], pointHoverRadius: [0, 6], fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          interaction: { mode: 'nearest', intersect: true },
+          scales: { x: { type: 'linear', min: a, max: b, ticks: d.sym ? { stepSize: 1 } : {} }, y: { min: 0, max: top } },
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, filter: (item, data) => data.datasets.findIndex((x) => x.label === item.text) === item.datasetIndex } },
+            tooltip: { filter: (ctx) => ctx.dataset.isMarker && ctx.dataIndex === 1, callbacks: { label: () => `Valor calculado = ${fmt(s, 4)}` } }
+          }
+        }
+      });
+    }
+  };
+  /** Tarjeta KPI de decisión (rojo si se rechaza H₀, verde si no). */
+  function setDecision(k, reject, p) {
+    setText(k + '-k-dec', reject ? 'Se rechaza H₀' : 'No se rechaza H₀');
+    setText(k + '-k-dec-s', `${Test.pLabel(p)} ${reject ? '<' : '≥'} α`);
+    $(k + '-k-dec-card').className = 'kpi ' + (reject ? 'kpi-bad' : 'kpi-ok');
+    $(k + '-k-dec').className = 'kpi-v text-lg ' + (reject ? '!text-red-700 dark:!text-red-300' : '!text-emerald-700 dark:!text-emerald-300');
+  }
+  function clearDecision(k) {
+    setText(k + '-k-dec', '—');
+    setText(k + '-k-dec-s', 'sobre H₀');
+    $(k + '-k-dec-card').className = 'kpi';
+    $(k + '-k-dec').className = 'kpi-v text-lg';
+  }
+
+  /* =========================================================================
+     SECCIÓN · MUESTREO ALEATORIO SIMPLE (Semanas 1 y 3)
+     ========================================================================= */
+  const S5 = {
+    result: null,
+    seed: null,        // semilla automática cuando el campo está vacío
+    lang: 'py',
+    LIST_MAX: 400,
+
+    init() {
+      initSeg($('s5-seg-lang'), (v) => { this.lang = v; this.renderCode(); });
+      $('sec-mas').addEventListener('input', (e) => { if (e.target.id !== 's5-seg-lang') this.compute(); });
+      $('s5-random').addEventListener('click', () => { $('s5-seed').value = ''; this.seed = this.newSeed(); this.compute(); });
+      $('s5-copy-code').addEventListener('click', () => { if (this.result) copyText($('s5-code').textContent, 'Script copiado'); });
+      this.compute();
+    },
+
+    newSeed: () => Math.floor(Math.random() * 1000000),
+
+    /** Generador pseudoaleatorio con semilla (mulberry32). */
+    mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    },
+
+    /** Fisher–Yates parcial: O(n) en tiempo y memoria, sirve aunque N tenga millones de registros. */
+    sample(N, n, rand) {
+      const swap = new Map(), out = [];
+      for (let i = 0; i < n; i++) {
+        const j = i + Math.floor(rand() * (N - i));
+        const vj = swap.has(j) ? swap.get(j) : j;
+        swap.set(j, swap.has(i) ? swap.get(i) : i);
+        out.push(vj + 1);
+      }
+      return out.sort((a, b) => a - b);
+    },
+
+    compute() {
+      const N = readField('s5-N', { min: 1, max: 1e9, int: true, msg: 'N debe ser un entero entre 1 y 1 000 000 000.' });
+      const n = readField('s5-n', { min: 1, max: 100000, int: true, msg: 'n debe ser un entero entre 1 y 100 000.' });
+      const seedEl = $('s5-seed');
+      let seed;
+      if (seedEl.value.trim() === '' && !seedEl.validity.badInput) {
+        setErr(seedEl, '');
+        if (this.seed === null) this.seed = this.newSeed();
+        seed = this.seed;
+      } else {
+        seed = readField('s5-seed', { min: 0, max: 4294967295, int: true, msg: 'Entero entre 0 y 4 294 967 295.' });
+      }
+      if (N === null || n === null || seed === null) return this.showEmpty();
+      if (n > N) { setErr($('s5-n'), `n no puede superar N (${N}).`); return this.showEmpty(); }
+
+      const seq = this.sample(N, n, this.mulberry32(seed));
+      const log10C = (Dist.lgamma(N + 1) - Dist.lgamma(n + 1) - Dist.lgamma(N - n + 1)) / Math.LN10;
+      this.result = { N, n, seed, seq, log10C };
+
+      setText('s5-k-n', n.toLocaleString('es-PE'));
+      setText('s5-k-f', pct(n / N));
+      setText('s5-k-seed', seed);
+      $('s5-k-comb').innerHTML = this.combHtml(log10C);
+      setWarn('s5-warn', '');
+
+      $('s5-count').textContent = `${n.toLocaleString('es-PE')} elemento(s), ordenados`;
+      $('s5-seq').innerHTML = seq.slice(0, this.LIST_MAX).map((x) => `<span class="tag">${x}</span>`).join('')
+        + (n > this.LIST_MAX ? `<span class="px-2 py-0.5 text-xs text-slate-500">… y ${(n - this.LIST_MAX).toLocaleString('es-PE')} más (incluidos en el resumen exportado)</span>` : '');
+
+      this.renderChart();
+      this.renderCode();
+      this.renderSteps();
+      interp('s5-int',
+        `Se eligieron <b>${n.toLocaleString('es-PE')}</b> de ${N.toLocaleString('es-PE')} elementos al azar y sin repetición: todos tenían la misma probabilidad de salir (${pct(n / N)}). `
+        + `Con la semilla <b>${seed}</b> se obtiene siempre esta misma muestra, lo que hace el análisis reproducible. `
+        + `Existen ${this.combHtml(log10C)} muestras distintas posibles.`);
+    },
+
+    /** Número combinatorio C(N, n): exacto si es pequeño; si no, en notación científica. */
+    combHtml(l) {
+      if (l < 15) return Math.round(10 ** l).toLocaleString('es-PE');
+      const e = Math.floor(l);
+      return `${fmt(10 ** (l - e), 2)} × 10<sup>${e}</sup>`;
+    },
+
+    renderChart() {
+      const { N, n, seq } = this.result;
+      const B = Math.min(10, N);
+      const edge = (i) => Math.floor((i * N) / B);
+      const counts = new Array(B).fill(0);
+      seq.forEach((x) => { counts[Math.min(B - 1, Math.floor(((x - 1) * B) / N))]++; });
+      const labels = [], expected = [];
+      for (let i = 0; i < B; i++) {
+        const lo = edge(i) + 1, hi = edge(i + 1);
+        labels.push(lo === hi ? `${lo}` : `${lo.toLocaleString('es-PE')}–${hi.toLocaleString('es-PE')}`);
+        expected.push((n * (hi - lo + 1)) / N);
+      }
+      upsertChart('s5', {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { type: 'bar', label: 'Elegidos', data: counts, backgroundColor: 'rgba(79,70,229,0.75)', borderRadius: 4 },
+            { type: 'line', label: 'Esperado', data: expected, borderColor: '#d97706', borderDash: [6, 4], borderWidth: 2, pointRadius: 0 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          scales: { x: { title: { display: true, text: 'Tramo de la población' } }, y: { beginAtZero: true, title: { display: true, text: 'Elementos elegidos' } } },
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
+        }
+      });
+    },
+
+    renderCode() {
+      if (!this.result) { $('s5-code').textContent = ''; $('s5-code-hint').textContent = ''; return; }
+      const { N, n, seed } = this.result;
+      const code = {
+        py: [
+          'import random',
+          '',
+          `random.seed(${seed})          # semilla: muestra reproducible`,
+          `N, n = ${N}, ${n}`,
+          '',
+          '# MAS sin reemplazo; range() no crea la lista completa, sirve para N muy grande',
+          'muestra = sorted(random.sample(range(1, N + 1), n))',
+          'print(muestra)'
+        ],
+        r: [
+          `set.seed(${seed})             # semilla: muestra reproducible`,
+          `N <- ${N}; n <- ${n}`,
+          '',
+          '# MAS sin reemplazo',
+          'muestra <- sort(sample.int(N, n))',
+          'print(muestra)'
+        ],
+        js: [
+          '// Generador pseudoaleatorio con semilla (mulberry32)',
+          'function mulberry32(a) {',
+          '  return function () {',
+          '    a |= 0; a = (a + 0x6D2B79F5) | 0;',
+          '    let t = Math.imul(a ^ (a >>> 15), 1 | a);',
+          '    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;',
+          '    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;',
+          '  };',
+          '}',
+          '',
+          '// Fisher–Yates parcial: O(n) en tiempo y memoria',
+          'function muestraMAS(N, n, rand) {',
+          '  const swap = new Map(), out = [];',
+          '  for (let i = 0; i < n; i++) {',
+          '    const j = i + Math.floor(rand() * (N - i));',
+          '    const vj = swap.has(j) ? swap.get(j) : j;',
+          '    swap.set(j, swap.has(i) ? swap.get(i) : i);',
+          '    out.push(vj + 1);',
+          '  }',
+          '  return out.sort((a, b) => a - b);',
+          '}',
+          '',
+          `console.log(muestraMAS(${N}, ${n}, mulberry32(${seed})));`
+        ]
+      }[this.lang];
+      $('s5-code').textContent = code.join('\n');
+      $('s5-code-hint').textContent = this.lang === 'js'
+        ? 'Este script reproduce exactamente la muestra mostrada en la página.'
+        : `Usa el generador propio de ${this.lang === 'py' ? 'Python' : 'R'}: con la misma semilla siempre da la misma muestra, aunque distinta de la que muestra la página.`;
+    },
+
+    renderSteps() {
+      const { N, n, seed, seq, log10C } = this.result;
+      const e = Math.floor(log10C);
+      const comb = log10C < 15 ? Math.round(10 ** log10C).toLocaleString('en-US').replace(/,/g, '\\,') : String.raw`${fmt(10 ** (log10C - e), 2)} \times 10^{${e}}`;
+      const first = seq.slice(0, 8).join(',\\; ') + (n > 8 ? String.raw`,\; \dots` : '');
+      renderSteps($('s5-steps'), [
+        { title: 'Identificar los datos', tex: String.raw`N = ${N},\quad n = ${n},\quad \text{semilla} = ${seed}` },
+        { title: 'Fracción de muestreo', tex: String.raw`f = \frac{n}{N} = \frac{${n}}{${N}} = ${fmt(n / N, 6)}` },
+        { title: 'Probabilidad de inclusión (igual para todos)', tex: String.raw`\pi_i = \frac{n}{N} = ${fmt(n / N, 6)} \qquad i = 1, \dots, N` },
+        { title: 'Número de muestras posibles', tex: String.raw`\binom{N}{n} = \frac{N!}{n!\,(N-n)!} = ${log10C < 15 ? '' : String.raw`\approx `}${comb}` },
+        {
+          title: 'Algoritmo de selección (Fisher–Yates parcial)',
+          tex: String.raw`\text{Para } i = 1, \dots, n:\quad j \sim \text{Uniforme}\{i, \dots, N\},\quad \text{intercambiar } i \leftrightarrow j`,
+          html: 'Los n primeros elementos tras los intercambios forman la muestra, sin repeticiones. Solo se guardan las posiciones intercambiadas, por eso el algoritmo funciona igual de rápido con millones de registros.'
+        },
+        { title: 'Muestra obtenida (ordenada)', tex: String.raw`\{${first}\}`, html: `Se seleccionaron <b>${n.toLocaleString('es-PE')}</b> elementos con la semilla ${seed}.` }
+      ]);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s5-k-n', 's5-k-f', 's5-k-seed', 's5-k-comb'].forEach((id) => setText(id, '—'));
+      $('s5-count').textContent = '';
+      $('s5-seq').innerHTML = '<span class="text-sm italic text-slate-400">Sin datos válidos</span>';
+      setWarn('s5-warn', '');
+      interp('s5-int');
+      this.renderCode();
+      placeholderSteps($('s5-steps'));
+      clearChart('s5');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      return ['MUESTREO ALEATORIO SIMPLE (sin reemplazo)', stamp(), '',
+        `Población N = ${r.N}`, `Muestra n = ${r.n}`, `Fracción de muestreo f = ${fmt(r.n / r.N, 6)}`,
+        `Semilla = ${r.seed}`, '', 'Elementos seleccionados (ordenados):', r.seq.join(', ')].join('\n');
+    },
+
+    clear() { resetFields(['s5-N', 's5-n', 's5-seed']); this.seed = null; this.compute(); },
+    example() { $('s5-N').value = '1000'; $('s5-n').value = '50'; $('s5-seed').value = '2026'; this.compute(); }
+  };
+
+  /* =========================================================================
+     SECCIÓN · ERRORES TIPO I Y II Y POTENCIA (Semana 4)
+     ========================================================================= */
+  const S6 = {
+    result: null,
+
+    init() {
+      $('sec-potencia').addEventListener('input', () => this.compute());
+      $('sec-potencia').addEventListener('change', () => this.compute());
+      this.compute();
+    },
+
+    compute() {
+      const mu0 = readField('s6-mu0'), mu1 = readField('s6-mu1');
+      const sigma = readField('s6-sigma', { minEx: 0, msg: 'σ debe ser mayor que 0.' });
+      const n = readField('s6-n', { min: 1, int: true, msg: 'Entero ≥ 1.' });
+      const alpha = readField('s6-alpha', { minEx: 0, maxEx: 0.5, msg: 'α debe estar entre 0 y 0.5 (ej. 0.05).' });
+      const pw = readField('s6-pow', { minEx: 0, maxEx: 1, msg: 'La potencia debe estar entre 0 y 1 (ej. 0.80).' });
+      const tail = $('s6-tail').value;
+      if ([mu0, mu1, sigma, n, alpha, pw].some((v) => v === null)) return this.showEmpty();
+
+      const se = sigma / Math.sqrt(n);
+      const za = Normal.inv(1 - (tail === 'two' ? alpha / 2 : alpha));
+      let cL = null, cU = null, beta;
+      if (tail === 'two') {
+        cL = mu0 - za * se; cU = mu0 + za * se;
+        beta = Normal.cdf((cU - mu1) / se) - Normal.cdf((cL - mu1) / se);
+      } else if (tail === 'right') {
+        cU = mu0 + za * se; beta = Normal.cdf((cU - mu1) / se);
+      } else {
+        cL = mu0 - za * se; beta = 1 - Normal.cdf((cL - mu1) / se);
+      }
+      beta = Math.min(1, Math.max(0, beta));
+      const power = 1 - beta;
+      const delta = Math.abs(mu1 - mu0);
+      const dirOk = tail === 'two' ? delta > 0 : tail === 'right' ? mu1 > mu0 : mu1 < mu0;
+      const zb = Normal.inv(pw);
+      const nReq = dirOk && pw > alpha ? ceilSafe((((za + zb) * sigma) / delta) ** 2) : null;
+      this.result = { mu0, mu1, sigma, n, alpha, pw, tail, se, za, zb, cL, cU, beta, power, delta, nReq };
+
+      setWarn('s6-warn', !dirOk
+        ? (delta === 0 ? 'Con μ₁ = μ₀ no hay diferencia que detectar: la potencia es igual a α.' : 'μ₁ está del lado contrario a H₁: la prueba casi nunca rechazará H₀ (potencia menor que α).')
+        : pw <= alpha ? 'La potencia deseada debe ser mayor que α.' : '');
+
+      setText('s6-k-a', pct(alpha));
+      setText('s6-k-b', pct(beta));
+      setText('s6-k-pow', pct(power));
+      setText('s6-k-nreq', nReq ? nReq.toLocaleString('es-PE') : '—');
+      setText('s6-k-nreq-s', `para ${pct(pw, 0)} de potencia${tail === 'two' ? ' (aprox.)' : ''}`);
+
+      this.renderMatrix();
+      this.renderChart();
+      this.renderSteps();
+      interp('s6-int',
+        `Si H₀ fuera cierta, la prueba daría un <b>falso positivo</b> el ${pct(alpha)} de las veces (error tipo I). `
+        + `Si la media real fuera ${fmt(mu1)}, la prueba detectaría la diferencia el <b>${pct(power, 1)}</b> de las veces (potencia) y la pasaría por alto, un <b>falso negativo</b>, el ${pct(beta, 1)} (error tipo II). `
+        + (nReq ? `Para alcanzar ${pct(pw, 0)} de potencia se necesitan unas <b>${nReq.toLocaleString('es-PE')}</b> observaciones. ` : '')
+        + 'Bajar α reduce los falsos positivos pero aumenta los falsos negativos, salvo que se aumente n.');
+    },
+
+    renderMatrix() {
+      const { alpha, beta, power } = this.result;
+      const cell = (cls, t, v, s) => `<td class="${cls} text-center"><span class="block text-xs">${t}</span><b class="text-base">${v}</b><span class="block text-xs opacity-80">${s}</span></td>`;
+      const bad = 'bg-red-50 text-red-800 dark:bg-red-950/40 dark:text-red-200';
+      const warn = 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200';
+      const ok = 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200';
+      $('s6-matrix').innerHTML = `
+        <table class="tbl w-full">
+          <thead><tr><th>Decisión</th><th class="text-center">H₀ verdadera</th><th class="text-center">H₀ falsa (μ = μ₁)</th></tr></thead>
+          <tbody>
+            <tr><td class="font-medium">Rechazar H₀</td>${cell(bad, 'Error tipo I', `α = ${pct(alpha)}`, 'falso positivo')}${cell(ok, 'Decisión correcta', `1 − β = ${pct(power, 1)}`, 'potencia')}</tr>
+            <tr><td class="font-medium">No rechazar H₀</td>${cell(ok, 'Decisión correcta', `1 − α = ${pct(1 - alpha)}`, 'confianza')}${cell(warn, 'Error tipo II', `β = ${pct(beta, 1)}`, 'falso negativo')}</tr>
+          </tbody>
+        </table>`;
+    },
+
+    renderChart() {
+      const { mu0, mu1, se, cL, cU, tail } = this.result;
+      const a = Math.min(mu0, mu1) - 4 * se, b = Math.max(mu0, mu1) + 4 * se;
+      const f = (m) => (x) => Normal.pdf((x - m) / se) / se;
+      const pts = (g, u, v, k = 200) => {
+        const out = [];
+        u = Math.max(u, a); v = Math.min(v, b);
+        for (let i = 0; i <= k; i++) { const x = u + ((v - u) * i) / k; out.push({ x, y: g(x) }); }
+        return out;
+      };
+      const f0 = f(mu0), f1 = f(mu1);
+      const zoneA = (u, v) => ({ label: 'α · Error tipo I', data: pts(f0, u, v, 80), borderColor: 'rgba(220,38,38,0.9)', backgroundColor: 'rgba(220,38,38,0.3)', borderWidth: 1, fill: 'origin', pointRadius: 0 });
+      const zones = [];
+      if (cL !== null && cL > a) zones.push(zoneA(a, cL));
+      if (cU !== null && cU < b) zones.push(zoneA(cU, b));
+      const bLo = tail === 'left' ? cL : tail === 'right' ? a : cL;
+      const bHi = tail === 'left' ? b : cU;
+      if (bHi > bLo) zones.push({ label: 'β · Error tipo II', data: pts(f1, bLo, bHi, 120), borderColor: 'rgba(217,119,6,0.9)', backgroundColor: 'rgba(245,158,11,0.3)', borderWidth: 1, fill: 'origin', pointRadius: 0 });
+      upsertChart('s6', {
+        type: 'line',
+        data: {
+          datasets: [
+            { label: `Bajo H₀ (μ₀ = ${fmt(mu0)})`, data: pts(f0, a, b, 300), borderColor: '#4f46e5', borderWidth: 2, pointRadius: 0, fill: false },
+            { label: `Media real (μ₁ = ${fmt(mu1)})`, data: pts(f1, a, b, 300), borderColor: '#0d9488', borderWidth: 2, pointRadius: 0, fill: false },
+            ...zones
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          interaction: { mode: 'nearest', intersect: false },
+          scales: { x: { type: 'linear', min: a, max: b, title: { display: true, text: 'X̄' } }, y: { min: 0, title: { display: true, text: 'densidad' } } },
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, filter: (item, data) => data.datasets.findIndex((x) => x.label === item.text) === item.datasetIndex } },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+    },
+
+    renderSteps() {
+      const r = this.result;
+      const H = Test.hyp(String.raw`\mu`, fmt(r.mu0), r.tail);
+      const zaName = r.tail === 'two' ? String.raw`z_{1-\alpha/2}` : String.raw`z_{1-\alpha}`;
+      let region, betaTex;
+      if (r.tail === 'two') {
+        region = String.raw`\bar X < ${fmt(r.mu0)} - ${fmt(r.za, 4)}\cdot ${fmt(r.se, 4)} = ${fmt(r.cL, 4)} \quad\text{o}\quad \bar X > ${fmt(r.cU, 4)}`;
+        betaTex = [
+          String.raw`\beta = P(${fmt(r.cL, 4)} \leq \bar X \leq ${fmt(r.cU, 4)} \mid \mu = ${fmt(r.mu1)})`,
+          String.raw`\beta = \Phi\!\left(\frac{${fmt(r.cU, 4)} - ${par(r.mu1)}}{${fmt(r.se, 4)}}\right) - \Phi\!\left(\frac{${fmt(r.cL, 4)} - ${par(r.mu1)}}{${fmt(r.se, 4)}}\right) = ${fmt(r.beta, 4)}`
+        ];
+      } else if (r.tail === 'right') {
+        region = String.raw`\bar X > ${fmt(r.mu0)} + ${fmt(r.za, 4)}\cdot ${fmt(r.se, 4)} = ${fmt(r.cU, 4)}`;
+        betaTex = String.raw`\beta = P(\bar X \leq ${fmt(r.cU, 4)} \mid \mu = ${fmt(r.mu1)}) = \Phi\!\left(\frac{${fmt(r.cU, 4)} - ${par(r.mu1)}}{${fmt(r.se, 4)}}\right) = ${fmt(r.beta, 4)}`;
+      } else {
+        region = String.raw`\bar X < ${fmt(r.mu0)} - ${fmt(r.za, 4)}\cdot ${fmt(r.se, 4)} = ${fmt(r.cL, 4)}`;
+        betaTex = String.raw`\beta = P(\bar X \geq ${fmt(r.cL, 4)} \mid \mu = ${fmt(r.mu1)}) = 1 - \Phi\!\left(\frac{${fmt(r.cL, 4)} - ${par(r.mu1)}}{${fmt(r.se, 4)}}\right) = ${fmt(r.beta, 4)}`;
+      }
+      const steps = [
+        { title: 'Plantear las hipótesis', tex: H },
+        { title: 'Error estándar de la media', tex: String.raw`\sigma_{\bar X} = \frac{\sigma}{\sqrt{n}} = \frac{${fmt(r.sigma)}}{\sqrt{${r.n}}} = ${fmt(r.se, 4)}` },
+        { title: 'Región de rechazo (en unidades de X̄)', tex: [String.raw`\alpha = ${fmt(r.alpha)} \;\Rightarrow\; ${zaName} = ${fmt(r.za, 4)}`, region], html: 'α es la probabilidad de caer en esta región cuando H₀ es verdadera: el riesgo de un falso positivo.' },
+        { title: 'Probabilidad de error tipo II (β)', tex: betaTex, html: 'β es la probabilidad de no rechazar H₀ cuando la media real es μ₁: el riesgo de un falso negativo.' },
+        { title: 'Potencia de la prueba', tex: String.raw`1 - \beta = 1 - ${fmt(r.beta, 4)} = ${fmt(r.power, 4)}` }
+      ];
+      if (r.nReq) {
+        steps.push({
+          title: 'Tamaño de muestra para la potencia deseada',
+          tex: String.raw`n = \left(\frac{(${zaName} + z_{1-\beta})\,\sigma}{|\mu_1 - \mu_0|}\right)^2 = \left(\frac{(${fmt(r.za, 4)} + ${fmt(r.zb, 4)})\cdot ${fmt(r.sigma)}}{${fmt(r.delta)}}\right)^2 \;\Rightarrow\; n = ${r.nReq}`,
+          html: (r.tail === 'two' ? 'En la prueba de dos colas la fórmula es una aproximación (desprecia la cola opuesta). ' : '')
+            + 'Aumentar n reduce β sin aumentar α: es la forma de equilibrar ambos errores.'
+        });
+      }
+      renderSteps($('s6-steps'), steps);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s6-k-a', 's6-k-b', 's6-k-pow', 's6-k-nreq'].forEach((id) => setText(id, '—'));
+      $('s6-matrix').innerHTML = '';
+      setWarn('s6-warn', '');
+      interp('s6-int');
+      placeholderSteps($('s6-steps'));
+      clearChart('s6');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      return ['ERRORES TIPO I Y II Y POTENCIA (prueba Z para una media)', stamp(), '',
+        `μ₀ = ${fmt(r.mu0)}, μ₁ (real) = ${fmt(r.mu1)}, σ = ${fmt(r.sigma)}, n = ${r.n}`,
+        `Prueba: ${{ two: 'dos colas', left: 'cola izquierda', right: 'cola derecha' }[r.tail]}, α = ${fmt(r.alpha)}`, '',
+        `Error estándar = ${fmt(r.se, 6)}`,
+        `Error tipo I (α) = ${fmt(r.alpha, 4)}`,
+        `Error tipo II (β) = ${fmt(r.beta, 4)}`,
+        `Potencia (1 − β) = ${fmt(r.power, 4)}`,
+        `n para potencia ${fmt(r.pw)} = ${r.nReq ?? '—'}`].join('\n');
+    },
+
+    clear() { resetFields(['s6-mu0', 's6-mu1', 's6-sigma', 's6-n']); $('s6-alpha').value = '0.05'; $('s6-pow').value = '0.80'; this.compute(); },
+    example() {
+      Object.entries({ 's6-mu0': '100', 's6-mu1': '104', 's6-sigma': '12', 's6-n': '36', 's6-alpha': '0.05', 's6-pow': '0.80' })
+        .forEach(([id, v]) => { $(id).value = v; setErr($(id), ''); });
+      $('s6-tail').value = 'two';
+      this.compute();
+    }
+  };
+
+  /* =========================================================================
+     SECCIÓN · PRUEBA PARA UNA POBLACIÓN: MEDIA, PROPORCIÓN, VARIANZA (Semana 5)
+     ========================================================================= */
+  const S7 = {
+    state: { param: 'media' },
+    result: null,
+    TXT: { media: 'μ', prop: 'P', var: 'σ²' },
+    NAME: { media: 'la media poblacional', prop: 'la proporción poblacional', var: 'la varianza poblacional' },
+
+    init() {
+      initSeg($('s7-seg-param'), (v) => { this.state.param = v; this.compute(); });
+      $('sec-unapob').addEventListener('input', () => this.compute());
+      $('sec-unapob').addEventListener('change', () => this.compute());
+      this.compute();
+    },
+
+    syncUI() {
+      const p = this.state.param;
+      ['media', 'prop', 'var'].forEach((k) => document.querySelectorAll(`#sec-unapob .only-${k}`).forEach((el) => el.classList.toggle('hidden', k !== p)));
+      $('s7-sd-lbl').textContent = $('s7-sd-type').value === 'sigma' ? 'Desviación poblacional (σ)' : 'Desviación muestral (s)';
+      const t = this.TXT[p], o = $('s7-tail').options;
+      o[0].text = `Dos colas: ${t} ≠ ${t}₀`;
+      o[1].text = `Cola izquierda: ${t} < ${t}₀`;
+      o[2].text = `Cola derecha: ${t} > ${t}₀`;
+    },
+
+    compute() {
+      this.syncUI();
+      const p = this.state.param;
+      const n = readField('s7-n', { min: 2, int: true, msg: 'n debe ser un entero mayor o igual que 2.' });
+      const alpha = readField('s7-alpha', { minEx: 0, maxEx: 0.5, msg: 'α debe estar entre 0 y 0.5 (ej. 0.05).' });
+      const tail = $('s7-tail').value;
+      const k = {};
+      let need;
+      if (p === 'media') {
+        k.xbar = readField('s7-xbar'); k.mu0 = readField('s7-mu0');
+        k.known = $('s7-sd-type').value === 'sigma';
+        k.sd = readField('s7-sd', { minEx: 0, msg: 'La desviación debe ser mayor que 0.' });
+        need = [k.xbar, k.mu0, k.sd];
+      } else if (p === 'prop') {
+        k.ph = readField('s7-ph', { min: 0, max: 1, msg: 'p̂ debe estar entre 0 y 1 (formato decimal).' });
+        k.p0 = readField('s7-p0', { minEx: 0, maxEx: 1, msg: 'P₀ debe estar entre 0 y 1, sin incluirlos.' });
+        need = [k.ph, k.p0];
+      } else {
+        k.s2 = readField('s7-s2', { minEx: 0, msg: 'La varianza debe ser mayor que 0.' });
+        k.v0 = readField('s7-v0', { minEx: 0, msg: 'La varianza debe ser mayor que 0.' });
+        need = [k.s2, k.v0];
+      }
+      let warn = '';
+      if (p === 'media' && n !== null && n < 30) warn = k.known ? 'Con n < 30 la prueba Z requiere que la población sea normal.' : 'La prueba t supone que la población es aproximadamente normal.';
+      if (p === 'prop' && n !== null && k.p0 !== null && (n * k.p0 < 5 || n * (1 - k.p0) < 5)) warn = 'n·P₀ o n·(1 − P₀) es menor que 5: la aproximación normal no es confiable; aumente n.';
+      if (p === 'var') warn = 'La prueba χ² para la varianza supone que la población es normal.';
+      setWarn('s7-warn', warn);
+      if ([n, alpha, ...need].some((v) => v === null)) return this.showEmpty();
+
+      let s, se, d, N, plain, gl = null, v0;
+      if (p === 'media') {
+        se = k.sd / Math.sqrt(n); s = (k.xbar - k.mu0) / se; v0 = k.mu0;
+        if (k.known) { d = DIST.z(); N = 'Z'; plain = 'Z'; } else { d = DIST.t(n - 1); N = 't'; plain = 't'; gl = n - 1; }
+      } else if (p === 'prop') {
+        se = Math.sqrt((k.p0 * (1 - k.p0)) / n); s = (k.ph - k.p0) / se; d = DIST.z(); N = 'Z'; plain = 'Z'; v0 = k.p0;
+      } else {
+        s = ((n - 1) * k.s2) / k.v0; d = DIST.chi(n - 1); N = String.raw`\chi^2`; plain = 'χ²'; gl = n - 1; v0 = k.v0;
+      }
+      const r = Test.decide(d, s, alpha, tail);
+      this.result = { p, n, alpha, tail, ...k, se, s, r, d, N, plain, gl, v0 };
+
+      setText('s7-k-st-l', `${plain} calculado`);
+      setText('s7-k-st', fmt(s, 4));
+      setText('s7-k-c', Test.critKpi(r));
+      setText('s7-k-c-s', gl ? `${plain} con gl = ${gl}` : `normal estándar (α = ${fmt(alpha)})`);
+      setText('s7-k-p', Test.pVal(r.p));
+      setDecision('s7', r.reject, r.p);
+      setText('s7-region', 'Rechazo: ' + Test.regionText(r, plain));
+
+      Test.chart('s7', d, s, r, gl ? `${plain} (gl = ${gl})` : 'N(0, 1)');
+      this.renderSteps();
+
+      const t = this.TXT[p];
+      const claim = { two: `${this.NAME[p]} es distinta de ${fmt(v0)}`, left: `${this.NAME[p]} es menor que ${fmt(v0)}`, right: `${this.NAME[p]} es mayor que ${fmt(v0)}` }[tail];
+      const metodo = p === 'media' ? (k.known ? 'Se usó Z porque σ es conocida.' : `Se usó t de Student con ${n - 1} grados de libertad porque σ es desconocida.`)
+        : p === 'prop' ? 'Se usó Z con la aproximación normal de la proporción.' : `Se usó χ² con ${n - 1} grados de libertad.`;
+      interp('s7-int',
+        `El estadístico ${plain} = ${fmt(s, 3)} ${r.reject ? 'cae <b>dentro</b>' : 'queda <b>fuera</b>'} de la zona de rechazo. `
+        + `${r.reject ? 'Hay' : 'No hay'} evidencia suficiente (α = ${fmt(alpha)}) para afirmar que ${claim} (${t}). `
+        + `${metodo} El p-valor (${Test.pVal(r.p)}) indica qué tan raro sería este resultado si H₀ fuera cierta.`);
+    },
+
+    renderSteps() {
+      const r = this.result;
+      const sym = { media: String.raw`\mu`, prop: 'P', var: String.raw`\sigma^2` }[r.p];
+      let formula, sub;
+      if (r.p === 'media') {
+        const sd = r.known ? String.raw`\sigma` : 's';
+        formula = String.raw`${r.N}_c = \frac{\bar X - \mu_0}{${sd}/\sqrt{n}}`;
+        sub = String.raw`${r.N}_c = \frac{${fmt(r.xbar)} - ${par(r.mu0)}}{${fmt(r.sd)}/\sqrt{${r.n}}} = \frac{${fmt(r.xbar - r.mu0)}}{${fmt(r.se, 6)}} = ${fmt(r.s, 4)}`;
+      } else if (r.p === 'prop') {
+        formula = String.raw`Z_c = \frac{\hat p - P_0}{\sqrt{P_0(1-P_0)/n}}`;
+        sub = String.raw`Z_c = \frac{${fmt(r.ph)} - ${fmt(r.p0)}}{\sqrt{${fmt(r.p0)}\,(1-${fmt(r.p0)})/${r.n}}} = \frac{${fmt(r.ph - r.p0)}}{${fmt(r.se, 6)}} = ${fmt(r.s, 4)}`;
+      } else {
+        formula = String.raw`\chi^2_c = \frac{(n-1)\,s^2}{\sigma_0^2}`;
+        sub = String.raw`\chi^2_c = \frac{(${r.n}-1)\cdot ${fmt(r.s2)}}{${fmt(r.v0)}} = \frac{${fmt((r.n - 1) * r.s2)}}{${fmt(r.v0)}} = ${fmt(r.s, 4)}`;
+      }
+      const claim = { two: `${this.NAME[r.p]} es distinta de ${fmt(r.v0)}`, left: `${this.NAME[r.p]} es menor que ${fmt(r.v0)}`, right: `${this.NAME[r.p]} es mayor que ${fmt(r.v0)}` }[r.tail];
+      renderSteps($('s7-steps'), [
+        { title: 'Plantear las hipótesis', tex: Test.hyp(sym, fmt(r.v0), r.tail) },
+        { title: 'Nivel de significancia y valor crítico', tex: [String.raw`\alpha = ${fmt(r.alpha)}`, Test.critTex(r.N, r.r, r.gl ? String.raw`\text{gl} = ${r.gl}` : '')] },
+        { title: 'Estadístico de prueba', tex: formula },
+        { title: 'Sustituir y calcular', tex: sub },
+        { title: 'Regla de decisión', tex: Test.ruleTex(r.N, r.s, r.r) },
+        { title: 'p-valor (criterio equivalente)', tex: Test.pTex(r.N, r.r, r.d.sym) },
+        { title: 'Conclusión', html: Test.concl(r.alpha, r.r.reject, claim) }
+      ]);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s7-k-st', 's7-k-c', 's7-k-p'].forEach((id) => setText(id, '—'));
+      setText('s7-k-c-s', 'de tabla');
+      clearDecision('s7');
+      setText('s7-region', '');
+      interp('s7-int');
+      placeholderSteps($('s7-steps'));
+      clearChart('s7');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      const t = this.TXT[r.p];
+      const h1 = { two: '≠', left: '<', right: '>' }[r.tail];
+      const L = [`PRUEBA DE HIPÓTESIS PARA ${{ media: 'LA MEDIA', prop: 'LA PROPORCIÓN', var: 'LA VARIANZA' }[r.p]}`, stamp(), ''];
+      if (r.p === 'media') L.push(`X̄ = ${fmt(r.xbar)}, ${r.known ? 'σ' : 's'} = ${fmt(r.sd)}, n = ${r.n}`);
+      if (r.p === 'prop') L.push(`p̂ = ${fmt(r.ph)}, n = ${r.n}`);
+      if (r.p === 'var') L.push(`s² = ${fmt(r.s2)}, n = ${r.n}`);
+      L.push(`H₀: ${t} = ${fmt(r.v0)}    H₁: ${t} ${h1} ${fmt(r.v0)}    α = ${fmt(r.alpha)}`, '');
+      L.push(`${r.plain} calculado = ${fmt(r.s, 4)}${r.gl ? ` (gl = ${r.gl})` : ''}`);
+      L.push(`Valor crítico = ${Test.critKpi(r.r)}`);
+      L.push(`p-valor = ${Test.pVal(r.r.p)}`);
+      L.push(`Decisión: ${r.r.reject ? 'Se rechaza H₀' : 'No se rechaza H₀'}`);
+      return L.join('\n');
+    },
+
+    clear() { resetFields(['s7-xbar', 's7-mu0', 's7-sd', 's7-ph', 's7-p0', 's7-s2', 's7-v0', 's7-n']); $('s7-alpha').value = '0.05'; this.compute(); },
+    example() {
+      Object.entries({ 's7-xbar': '52', 's7-mu0': '50', 's7-sd': '6', 's7-ph': '0.58', 's7-p0': '0.5', 's7-s2': '30', 's7-v0': '25', 's7-n': '25', 's7-alpha': '0.05' })
+        .forEach(([id, v]) => { $(id).value = v; setErr($(id), ''); });
+      $('s7-sd-type').value = 's';
+      $('s7-tail').value = 'two';
+      this.compute();
+    }
+  };
+
+  /* =========================================================================
+     SECCIÓN · PRUEBA F PARA DOS VARIANZAS (Semana 6)
+     ========================================================================= */
+  const S8 = {
+    result: null,
+
+    init() {
+      $('sec-varianzas').addEventListener('input', () => this.compute());
+      $('sec-varianzas').addEventListener('change', () => this.compute());
+      this.compute();
+    },
+
+    compute() {
+      const sd = $('s8-type').value === 'sd';
+      $('s8-v1-lbl').textContent = sd ? 'Desviación s₁' : 'Varianza s₁²';
+      $('s8-v2-lbl').textContent = sd ? 'Desviación s₂' : 'Varianza s₂²';
+      const msg = sd ? 'La desviación debe ser mayor que 0.' : 'La varianza debe ser mayor que 0.';
+      const a1 = readField('s8-v1', { minEx: 0, msg }), a2 = readField('s8-v2', { minEx: 0, msg });
+      const n1 = readField('s8-n1', { min: 2, int: true, msg: 'Entero ≥ 2.' });
+      const n2 = readField('s8-n2', { min: 2, int: true, msg: 'Entero ≥ 2.' });
+      const alpha = readField('s8-alpha', { minEx: 0, maxEx: 0.5, msg: 'α debe estar entre 0 y 0.5 (ej. 0.05).' });
+      const tail = $('s8-tail').value;
+      setWarn('s8-warn', 'La prueba F supone que ambas poblaciones son normales e independientes.');
+      if ([a1, a2, n1, n2, alpha].some((v) => v === null)) return this.showEmpty();
+
+      const v1 = sd ? a1 ** 2 : a1, v2 = sd ? a2 ** 2 : a2;
+      const g1 = n1 - 1, g2 = n2 - 1;
+      const F = v1 / v2;
+      const d = DIST.f(g1, g2);
+      const r = Test.decide(d, F, alpha, tail);
+      this.result = { sd, a1, a2, v1, v2, n1, n2, g1, g2, F, alpha, tail, r, d };
+
+      setText('s8-k-f', fmt(F, 4));
+      setText('s8-k-c', Test.critKpi(r));
+      setText('s8-k-c-s', `gl = (${g1}, ${g2})`);
+      setText('s8-k-p', Test.pVal(r.p));
+      setDecision('s8', r.reject, r.p);
+      setText('s8-region', 'Rechazo: ' + Test.regionText(r, 'F'));
+
+      Test.chart('s8', d, F, r, `F(${g1}, ${g2})`);
+      this.renderSteps();
+      const iguales = tail === 'two' && !r.reject;
+      interp('s8-int',
+        `La razón de varianzas es F = ${fmt(F, 3)}: la varianza del grupo 1 es ${fmt(F, 2)} veces la del grupo 2. `
+        + (r.reject
+          ? `Con α = ${fmt(alpha)} <b>las varianzas son diferentes</b> (${Test.pLabel(r.p)}). Para comparar las medias conviene usar la prueba t de Welch (varianzas distintas).`
+          : `Con α = ${fmt(alpha)} <b>no hay evidencia de que las varianzas difieran</b> (${Test.pLabel(r.p)}).`
+            + (iguales ? ' Se puede asumir homogeneidad de varianzas y comparar las medias con la prueba t de varianzas combinadas.' : '')));
+    },
+
+    renderSteps() {
+      const r = this.result;
+      const H = {
+        two:   [String.raw`H_0: \sigma_1^2 = \sigma_2^2`, String.raw`H_1: \sigma_1^2 \neq \sigma_2^2`],
+        left:  [String.raw`H_0: \sigma_1^2 \geq \sigma_2^2`, String.raw`H_1: \sigma_1^2 < \sigma_2^2`],
+        right: [String.raw`H_0: \sigma_1^2 \leq \sigma_2^2`, String.raw`H_1: \sigma_1^2 > \sigma_2^2`]
+      }[r.tail].join(String.raw`\qquad `);
+      const steps = [
+        { title: 'Plantear las hipótesis', tex: H },
+        { title: 'Grados de libertad', tex: String.raw`gl_1 = n_1 - 1 = ${r.n1} - 1 = ${r.g1}, \qquad gl_2 = n_2 - 1 = ${r.n2} - 1 = ${r.g2}` },
+        {
+          title: 'Nivel de significancia y valores críticos',
+          tex: [String.raw`\alpha = ${fmt(r.alpha)}`, Test.critTex('F', r.r, String.raw`gl = ${r.g1},\, ${r.g2}`)],
+          html: r.tail !== 'right' ? 'El valor crítico inferior cumple F<sub>α/2</sub>(gl₁, gl₂) = 1 / F<sub>1−α/2</sub>(gl₂, gl₁).' : ''
+        }
+      ];
+      if (r.sd) steps.push({ title: 'Obtener las varianzas', tex: String.raw`s_1^2 = (${fmt(r.a1)})^2 = ${fmt(r.v1)}, \qquad s_2^2 = (${fmt(r.a2)})^2 = ${fmt(r.v2)}` });
+      steps.push(
+        { title: 'Estadístico de prueba', tex: [String.raw`F_c = \frac{s_1^2}{s_2^2}`, String.raw`F_c = \frac{${fmt(r.v1)}}{${fmt(r.v2)}} = ${fmt(r.F, 4)}`] },
+        { title: 'Regla de decisión', tex: Test.ruleTex('F', r.F, r.r) },
+        { title: 'p-valor (criterio equivalente)', tex: Test.pTex('F', r.r, false) },
+        {
+          title: 'Conclusión',
+          html: Test.concl(r.alpha, r.r.reject, { two: 'las varianzas poblacionales son diferentes', left: 'la varianza de la población 1 es menor que la de la población 2', right: 'la varianza de la población 1 es mayor que la de la población 2' }[r.tail])
+            + (r.tail === 'two' ? (r.r.reject ? ' Para comparar medias se usa la prueba t de Welch.' : ' Se cumple el supuesto de homogeneidad de varianzas para comparar medias.') : '')
+        }
+      );
+      renderSteps($('s8-steps'), steps);
+    },
+
+    showEmpty() {
+      this.result = null;
+      ['s8-k-f', 's8-k-c', 's8-k-p'].forEach((id) => setText(id, '—'));
+      setText('s8-k-c-s', 'de tabla');
+      clearDecision('s8');
+      setText('s8-region', '');
+      interp('s8-int');
+      placeholderSteps($('s8-steps'));
+      clearChart('s8');
+    },
+
+    summary() {
+      const r = this.result;
+      if (!r) return null;
+      const h1 = { two: 'σ₁² ≠ σ₂²', left: 'σ₁² < σ₂²', right: 'σ₁² > σ₂²' }[r.tail];
+      return ['PRUEBA F PARA LA RAZÓN DE DOS VARIANZAS', stamp(), '',
+        `Grupo 1: s₁² = ${fmt(r.v1)}, n₁ = ${r.n1}`, `Grupo 2: s₂² = ${fmt(r.v2)}, n₂ = ${r.n2}`,
+        `H₁: ${h1}    α = ${fmt(r.alpha)}`, '',
+        `F calculado = ${fmt(r.F, 4)} (gl = ${r.g1}, ${r.g2})`,
+        `F crítico = ${Test.critKpi(r.r)}`,
+        `p-valor = ${Test.pVal(r.r.p)}`,
+        `Decisión: ${r.r.reject ? 'Se rechaza H₀' : 'No se rechaza H₀'}`].join('\n');
+    },
+
+    clear() { resetFields(['s8-v1', 's8-v2', 's8-n1', 's8-n2']); $('s8-alpha').value = '0.05'; this.compute(); },
+    example() {
+      Object.entries({ 's8-v1': '120', 's8-v2': '80', 's8-n1': '15', 's8-n2': '13', 's8-alpha': '0.05' })
+        .forEach(([id, v]) => { $(id).value = v; setErr($(id), ''); });
+      $('s8-type').value = 'var';
+      $('s8-tail').value = 'two';
+      this.compute();
+    }
+  };
+
+  /* =========================================================================
      7. BARRA DE ACCIONES (copiar, exportar, ejemplo, limpiar)
      ========================================================================= */
-  const MODULES = { s1: S1, s2: S2, s3: S3, s4: S4 };
-  const FILES = { s1: 'tamano-muestra', s2: 'afijacion-proporcional', s3: 'muestreo-sistematico', s4: 'prueba-z-dos-medias' };
+  const MODULES = { s1: S1, s2: S2, s3: S3, s4: S4, s5: S5, s6: S6, s7: S7, s8: S8 };
+  const FILES = { s1: 'tamano-muestra', s2: 'muestreo-estratificado', s3: 'muestreo-sistematico', s4: 'prueba-z-dos-medias', s5: 'muestreo-aleatorio-simple', s6: 'errores-y-potencia', s7: 'prueba-una-poblacion', s8: 'prueba-f-dos-varianzas' };
   const ICON = {
     copy: '<path stroke-linecap="round" stroke-linejoin="round" d="M8 8V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3M5 8h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/>',
     export: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/>',
@@ -1817,10 +3076,19 @@
     });
   });
 
+  /* Botones rápidos de α: escriben en el campo α de su propia sección */
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-alpha]');
+    if (!b) return;
+    const inp = b.closest('section').querySelector('input[id$="-alpha"]');
+    inp.value = b.dataset.alpha;
+    inp.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+
   /* =========================================================================
      8. NAVEGACIÓN (router por hash + sidebar responsivo)
      ========================================================================= */
-  const SECTIONS = ['tamano', 'afijacion', 'sistematico', 'pruebaz'];
+  const SECTIONS = ['tamano', 'mas', 'sistematico', 'afijacion', 'potencia', 'unapob', 'varianzas', 'pruebaz'];
 
   function openSidebar(open) {
     $('sidebar').classList.toggle('-translate-x-full', !open);
@@ -1845,6 +3113,7 @@
     SECTIONS.forEach((s) => $('sec-' + s).classList.toggle('hidden', s !== h));
     document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('active', a.dataset.nav === h));
     $('page-title').textContent = $('sec-' + h).dataset.title;
+    $('page-group').textContent = $('sec-' + h).dataset.group;
     document.title = `${$('sec-' + h).dataset.title} · Estadística Inferencial`;
     openSidebar(false);
     window.scrollTo({ top: 0 });
@@ -1861,6 +3130,10 @@
   S2.init();
   S3.init();
   S4.init();
+  S5.init();
+  S6.init();
+  S7.init();
+  S8.init();
   </script>
 </body>
 </html>
